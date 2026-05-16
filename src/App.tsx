@@ -2316,6 +2316,25 @@ export default function App() {
             >
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-8">
+                  {/* Non-Pet Warning */}
+                  {selectedAnalysis.result?.isDogOrCat === false && (
+                    <div className="bg-red-500/10 border border-red-500/50 p-8 rounded-3xl text-center space-y-4">
+                      <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto">
+                        <AlertCircle className="w-8 h-8 text-red-500" />
+                      </div>
+                      <h3 className="text-xl font-black font-serif text-red-500">Analysis Limited</h3>
+                      <p className="text-zinc-400 leading-relaxed">
+                        {selectedAnalysis.result?.userQuestionAnswer || "Our AI behaviorist only specializes in canine (dog) and feline (cat) behavior. This media does not appear to contain a dog or a cat."}
+                      </p>
+                      <button 
+                        onClick={() => setSelectedAnalysis(null)}
+                        className="bg-zinc-800 text-zinc-100 px-6 py-2 rounded-xl font-bold hover:bg-zinc-700 transition-all"
+                      >
+                        Try Another Video
+                      </button>
+                    </div>
+                  )}
+
                   {/* Media Player */}
                   {selectedAnalysis.mediaUrl && (
                     <div className="bg-black rounded-3xl overflow-hidden shadow-2xl aspect-video relative group">
@@ -2335,7 +2354,7 @@ export default function App() {
                   )}
 
                   {/* User Question & Answer */}
-                  {selectedAnalysis.userQuestion && (
+                  {selectedAnalysis.result?.isDogOrCat !== false && selectedAnalysis.userQuestion && (
                     <div className="bg-gold-500 p-8 rounded-3xl text-white shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-gold-500/20 relative overflow-hidden">
                       <div className="absolute top-0 right-0 p-4 opacity-10">
                         <MessageSquare className="w-24 h-24" />
@@ -2352,53 +2371,59 @@ export default function App() {
                   )}
 
                   {/* Observations */}
-                  <div className="bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
-                    <h3 className="text-xl font-black font-serif text-gold-400 mb-6 flex items-center gap-3">
-                      <Activity className="w-6 h-6 text-gold-400" />
-                      Detailed Observations
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {selectedAnalysis.result?.observations?.map((obs: any, i: number) => (
-                        <div key={i} className="p-5 bg-zinc-950 rounded-2xl border border-zinc-800 hover:border-indigo-200 transition-colors">
-                          <p className="font-bold text-gold-400 text-xs uppercase tracking-widest mb-2">{obs.event}</p>
-                          <p className="text-zinc-300 leading-relaxed">{obs.meaning}</p>
-                        </div>
-                      )) || <p className="text-zinc-400 italic">No detailed observations recorded.</p>}
+                  {selectedAnalysis.result?.isDogOrCat !== false && (
+                    <div className="bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                      <h3 className="text-xl font-black font-serif text-gold-400 mb-6 flex items-center gap-3">
+                        <Activity className="w-6 h-6 text-gold-400" />
+                        Detailed Observations
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {selectedAnalysis.result?.observations?.map((obs: any, i: number) => (
+                          <div key={i} className="p-5 bg-zinc-950 rounded-2xl border border-zinc-800 hover:border-indigo-200 transition-colors">
+                            <p className="font-bold text-gold-400 text-xs uppercase tracking-widest mb-2">{obs.event}</p>
+                            <p className="text-zinc-300 leading-relaxed">{obs.meaning}</p>
+                          </div>
+                        )) || <p className="text-zinc-400 italic">No detailed observations recorded.</p>}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Action Steps */}
-                  <div className="bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
-                    <h3 className="text-xl font-black font-serif text-gold-400 mb-6 flex items-center gap-3">
-                      <CheckCircle2 className="w-6 h-6 text-emerald-600" />
-                      Recommended Action Steps
-                    </h3>
-                    <div className="space-y-4">
-                      {selectedAnalysis.result?.actionSteps?.map((step: string, i: number) => (
-                        <div key={i} className="flex items-start gap-4 p-4 rounded-2xl hover:bg-zinc-950 transition-colors">
-                          <div className="w-8 h-8 bg-emerald-500/20 text-emerald-700 rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-sm">
-                            {i + 1}
+                  {selectedAnalysis.result?.isDogOrCat !== false && (
+                    <div className="bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                      <h3 className="text-xl font-black font-serif text-gold-400 mb-6 flex items-center gap-3">
+                        <CheckCircle2 className="w-6 h-6 text-emerald-600" />
+                        Recommended Action Steps
+                      </h3>
+                      <div className="space-y-4">
+                        {selectedAnalysis.result?.actionSteps?.map((step: string, i: number) => (
+                          <div key={i} className="flex items-start gap-4 p-4 rounded-2xl hover:bg-zinc-950 transition-colors">
+                            <div className="w-8 h-8 bg-emerald-500/20 text-emerald-700 rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-sm">
+                              {i + 1}
+                            </div>
+                            <span className="text-zinc-300 text-lg leading-relaxed">{step}</span>
                           </div>
-                          <span className="text-zinc-300 text-lg leading-relaxed">{step}</span>
-                        </div>
-                      )) || <p className="text-zinc-400 italic">No specific action steps provided.</p>}
+                        )) || <p className="text-zinc-400 italic">No specific action steps provided.</p>}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Training Challenge */}
-                  {selectedAnalysis.result?.trainingChallenge && (
+                  {selectedAnalysis.result?.isDogOrCat !== false && selectedAnalysis.result?.trainingChallenge && (
                     <TrainingChallengeCard challenge={selectedAnalysis.result.trainingChallenge} />
                   )}
                 </div>
 
                 <div className="space-y-8">
                   {/* Emotional State Card */}
-                  <div className="bg-gradient-to-br from-indigo-600 to-purple-700 p-8 rounded-3xl text-white shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-gold-500/20">
-                    <h3 className="text-xs font-bold uppercase tracking-widest opacity-70 mb-2">Primary Emotional State</h3>
-                    <p className="text-4xl font-black font-serif tracking-tight">
-                      {selectedAnalysis.result?.emotionalState || 'Unknown'}
-                    </p>
-                  </div>
+                  {selectedAnalysis.result?.isDogOrCat !== false && (
+                    <div className="bg-gradient-to-br from-indigo-600 to-purple-700 p-8 rounded-3xl text-white shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-gold-500/20">
+                      <h3 className="text-xs font-bold uppercase tracking-widest opacity-70 mb-2">Primary Emotional State</h3>
+                      <p className="text-4xl font-black font-serif tracking-tight">
+                        {selectedAnalysis.result?.emotionalState || 'Unknown'}
+                      </p>
+                    </div>
+                  )}
 
                   {/* Follow-up Chat */}
                   <div className="bg-zinc-900 rounded-3xl border border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex flex-col h-[500px] lg:h-[600px] overflow-hidden">

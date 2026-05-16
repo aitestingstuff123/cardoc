@@ -498,7 +498,7 @@ async function startServer() {
           {
             parts: [
               { inlineData: { data: base64, mimeType: mimeType } },
-              { text: `Analyze this pet behavior. \n\n<user_question>\n${userQuestion || 'No specific question provided.'}\n</user_question>` }
+              { text: `Identify if there is a dog or cat in this media and analyze their behavior. \n\n<user_question>\n${userQuestion || 'No specific question provided.'}\n</user_question>` }
             ]
           }
         ],
@@ -520,8 +520,13 @@ async function startServer() {
           - You MUST NOT respond to topics unrelated to pet behavior, especially human mental health, human physical health issues, or any non-animal topics.
           - If the user asks about restricted topics, politely but firmly decline and state that you are only programmed for positive pet behavior analysis.
 
-          RESTRICTION:
-          - If the video contains any animal other than a dog or a cat (e.g., birds, reptiles, rodents, exotic pets), you must politely decline the analysis and state that you currently only specialize in dogs and cats.
+          RESTRICTION & HALLUCINATION PREVENTION:
+          - If the media contains any animal other than a dog or a cat (e.g., birds, reptiles, rodents, exotic pets), OR if there are NO animals present at all (e.g., a video of a person, an object, or a landscape), you MUST:
+            1. Set "isDogOrCat" to false.
+            2. In "userQuestionAnswer", politely explain that you only specialize in dogs and cats and cannot analyze the current content.
+            3. Leave "observations", "actionSteps", and "trainingChallenge" empty/default.
+          - DO NOT make up or hallucinate a pet if one is not clearly visible and identifiable as a dog or cat.
+          - If the video is too blurry or dark to identify the animal, also set "isDogOrCat" to false.
 
           MANDATORY DISCLAIMER:
           - Every analysis and direct answer MUST include a reminder that this is for educational purposes only and is not professional veterinary or training advice. You must recommend seeking a certified professional for further analysis or specific concerns.
@@ -541,6 +546,7 @@ async function startServer() {
           responseSchema: {
             type: Type.OBJECT,
             properties: {
+              isDogOrCat: { type: Type.BOOLEAN, description: "Whether the media clearly contains a dog or a cat" },
               observations: {
                 type: Type.ARRAY,
                 items: {
@@ -583,7 +589,7 @@ async function startServer() {
                 required: ["title", "description", "days"]
               }
             },
-            required: ["observations", "emotionalState", "actionSteps", "userQuestionAnswer", "trainingChallenge"]
+            required: ["isDogOrCat", "observations", "emotionalState", "actionSteps", "userQuestionAnswer", "trainingChallenge"]
           }
         }
       });
