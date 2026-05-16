@@ -466,6 +466,7 @@ export default function App() {
   // Upload/Recording state
   const [showUploadTypeModal, setShowUploadTypeModal] = useState(false);
   const [isRecordingVideo, setIsRecordingVideo] = useState(false);
+  const [isCameraPreview, setIsCameraPreview] = useState(false);
   const [recordingTimeLeft, setRecordingTimeLeft] = useState(30);
   const videoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -793,7 +794,7 @@ export default function App() {
     return () => clearTimeout(timer);
   }, [isRecordingVideo, recordingTimeLeft]);
 
-  const startRecording = async () => {
+  const startCameraPreview = async () => {
     try {
       isCancelledRef.current = false;
       if (Capacitor.isNativePlatform()) {
@@ -811,6 +812,28 @@ export default function App() {
         video: { facingMode: cameraFacingMode }, 
         audio: true 
       });
+      
+      setIsCameraPreview(true);
+      
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.muted = true;
+        }
+      }, 50);
+    } catch (err) {
+      console.error("Failed to start camera preview:", err);
+      setNotification({ message: 'Could not access camera/microphone.', type: 'error' });
+    }
+  };
+
+  const startRecording = async () => {
+    try {
+      if (!videoRef.current || !videoRef.current.srcObject) {
+        await startCameraPreview();
+      }
+      
+      const stream = videoRef.current!.srcObject as MediaStream;
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorderRef.current = mediaRecorder;
       chunksRef.current = [];
@@ -856,19 +879,10 @@ export default function App() {
 
       mediaRecorder.start();
       setIsRecordingVideo(true);
-      setActiveTab('upload'); // Ensure user is on upload tab to see progress after modal closes
       setRecordingTimeLeft(30);
-
-      // Give React a tick to render the video element
-      setTimeout(() => {
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          videoRef.current.muted = true;
-        }
-      }, 50);
     } catch (err) {
       console.error("Failed to start recording:", err);
-      setNotification({ message: 'Could not access camera/microphone.', type: 'error' });
+      setNotification({ message: 'Recording failed to start.', type: 'error' });
     }
   };
 
@@ -884,6 +898,8 @@ export default function App() {
       videoRef.current.srcObject = null;
     }
     setIsRecordingVideo(false);
+    setIsCameraPreview(false);
+    setCameraFacingMode('environment'); // Reset to default for next time
   };
 
   const cancelRecording = () => {
@@ -896,35 +912,50 @@ export default function App() {
     setCameraFacingMode(newMode);
     
     if (isRecordingVideo) {
-      // Stop current stream
-      if (videoRef.current && videoRef.current.srcObject) {
-        const stream = videoRef.current.srcObject as MediaStream;
-        stream.getTracks().forEach(track => track.stop());
-      }
-      
-      // If we were recording, we need to handle the recorder too
-      // However, usually flipping during a single recording is tricky with MediaRecorder
-      // For now, let's just restart the stream for the preview
-      try {
-        const newStream = await navigator.mediaDevices.getUserMedia({ 
-          video: { facingMode: newMode }, 
-          audio: true 
-        });
-        if (videoRef.current) {
-          videoRef.current.srcObject = newStream;
+      // If flipping while recording, we must mark it as cancelled BEFORE stopping tracks
+      // because stopping tracks will trigger the MediaRecorder's onstop event.
+      isCancelledRef.current = true;
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+        try {
+          mediaRecorderRef.current.stop();
+        } catch (e) {
+          console.log("Error stopping recorder during flip:", e);
         }
-        // If we want to continue recording into the same file, we'd need to stop/start chunks
-        // But for simplicity, let's just update the preview. 
-        // Realistically, MediaRecorder doesn't like track changes mid-stream.
-        // So we'll just inform the user or restart the recording.
-        // Let's just restart the recording process if they flip.
-        
-        // Actually, let's just stop the recording and start a new one if they flip, 
-        // or just let them flip BEFORE they start recording if we had a preview.
-        // But here startRecording IS the trigger.
-      } catch (err) {
-        console.error("Failed to flip camera:", err);
       }
+      setIsRecordingVideo(false);
+    }
+
+    // Stop current stream tracks to free up the camera for the new mode
+    if (videoRef.current && videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject as MediaStream;
+      stream.getTracks().forEach(track => {
+        track.stop();
+        console.log("[Camera] Track stopped for flip:", track.label);
+      });
+      videoRef.current.srcObject = null;
+    }
+    
+    // Restart preview with new mode
+    try {
+      console.log("[Camera] Requesting new stream with mode:", newMode);
+      const newStream = await navigator.mediaDevices.getUserMedia({ 
+        video: { facingMode: newMode }, 
+        audio: true 
+      });
+      
+      setIsCameraPreview(true); // Ensure we stay in preview mode
+      
+      if (videoRef.current) {
+        videoRef.current.srcObject = newStream;
+        videoRef.current.muted = true;
+        await videoRef.current.play().catch(e => console.log("Video play error after flip:", e));
+      }
+      console.log("[Camera] Successfully switched to", newMode);
+    } catch (err) {
+      console.error("Failed to flip camera:", err);
+      setNotification({ message: 'Failed to switch camera.', type: 'error' });
+      // If flip fails, we might be left with no stream. Let's try to recover default.
+      setIsCameraPreview(false);
     }
   };
 
@@ -4077,7 +4108,7 @@ export default function App() {
                 <button
                   onClick={() => {
                     setShowUploadTypeModal(false);
-                    startRecording();
+                    startCameraPreview();
                   }}
                   className="w-full flex items-center gap-4 p-4 rounded-2xl bg-zinc-950 border border-zinc-800 hover:border-gold-500/50 hover:bg-zinc-900 transition-all text-left"
                 >
@@ -4097,7 +4128,7 @@ export default function App() {
 
       {/* Recording Modal */}
       <AnimatePresence>
-        {isRecordingVideo && (
+        {(isRecordingVideo || isCameraPreview) && (
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -4147,18 +4178,27 @@ export default function App() {
                 <span className="text-xs font-bold uppercase tracking-wider">{cameraFacingMode === 'user' ? 'Switch to Back' : 'Switch to Front'}</span>
               </button>
               
-              <div className="absolute bottom-12 inset-x-0 flex justify-center">
-                <button
-                  onClick={stopRecording}
-                  disabled={isStopping}
-                  className="w-20 h-20 bg-red-500 rounded-full border-4 border-white/20 shadow-[0_0_20px_rgba(239,68,68,0.5)] flex items-center justify-center hover:scale-105 transition-transform disabled:opacity-50"
-                >
-                  {isStopping ? (
-                    <Loader2 className="w-8 h-8 text-white animate-spin" />
-                  ) : (
-                    <div className="w-8 h-8 bg-white rounded-sm" />
-                  )}
-                </button>
+              <div className="absolute bottom-12 inset-x-0 flex justify-center items-center gap-8">
+                {isRecordingVideo ? (
+                  <button
+                    onClick={stopRecording}
+                    disabled={isStopping}
+                    className="w-20 h-20 bg-red-500 rounded-full border-4 border-white/20 shadow-[0_0_20px_rgba(239,68,68,0.5)] flex items-center justify-center hover:scale-105 transition-transform disabled:opacity-50"
+                  >
+                    {isStopping ? (
+                      <Loader2 className="w-8 h-8 text-white animate-spin" />
+                    ) : (
+                      <div className="w-8 h-8 bg-white rounded-sm" />
+                    )}
+                  </button>
+                ) : (
+                  <button
+                    onClick={startRecording}
+                    className="w-20 h-20 bg-white rounded-full border-4 border-white/20 shadow-[0_0_20px_rgba(255,255,255,0.3)] flex items-center justify-center hover:scale-105 transition-transform"
+                  >
+                    <div className="w-16 h-16 bg-red-500 rounded-full border-4 border-white" />
+                  </button>
+                )}
               </div>
             </div>
           </motion.div>

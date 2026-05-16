@@ -111,7 +111,9 @@ async function startServer() {
     'https://petanalysis.app',
     'https://ais-dev-ffaggajiuq-nw.a.run.app',
     'capacitor://localhost',
-    'https://localhost'
+    'https://localhost',
+    'http://localhost:8080',
+    'http://localhost:3000'
   ];
 
   app.use(cors({
