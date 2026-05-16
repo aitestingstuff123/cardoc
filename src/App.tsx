@@ -865,9 +865,18 @@ export default function App() {
         const file = new File([blob], `recording_${Date.now()}.${extension}`, { type: finalMimeType });
         processUploadFile(file);
         
+        // Stop tracks after recording is finished and processed
+        if (videoRef.current && videoRef.current.srcObject) {
+          const stream = videoRef.current.srcObject as MediaStream;
+          stream.getTracks().forEach(track => track.stop());
+          videoRef.current.srcObject = null;
+        }
+
         // Small delay before closing modal for smoother transition
         setTimeout(() => {
           setIsRecordingVideo(false);
+          setIsCameraPreview(false);
+          setCameraFacingMode('environment'); // Reset to default
         }, 800);
       };
 
@@ -890,16 +899,17 @@ export default function App() {
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
       setIsStopping(true);
       mediaRecorderRef.current.stop();
+    } else {
+      // If called during preview, we can stop tracks immediately
+      if (videoRef.current && videoRef.current.srcObject) {
+        const stream = videoRef.current.srcObject as MediaStream;
+        stream.getTracks().forEach(track => track.stop());
+        videoRef.current.srcObject = null;
+      }
+      setIsCameraPreview(false);
+      setIsRecordingVideo(false);
+      setCameraFacingMode('environment');
     }
-
-    if (videoRef.current && videoRef.current.srcObject) {
-      const stream = videoRef.current.srcObject as MediaStream;
-      stream.getTracks().forEach(track => track.stop());
-      videoRef.current.srcObject = null;
-    }
-    setIsRecordingVideo(false);
-    setIsCameraPreview(false);
-    setCameraFacingMode('environment'); // Reset to default for next time
   };
 
   const cancelRecording = () => {
@@ -994,6 +1004,7 @@ export default function App() {
     }
 
     setIsUploading(true);
+    setActiveTab('upload'); // Ensure user sees the progress
     setUploadProgress(10);
     setUploadStatus('Preparing media...');
 
