@@ -2351,14 +2351,15 @@ export default function App() {
                     <div className="bg-black rounded-3xl overflow-hidden shadow-2xl aspect-video relative group">
                       {selectedAnalysis.mediaType === 'video' ? (
                         <video
-                          src={selectedAnalysis.mediaUrl}
                           controls
                           playsInline
                           webkit-playsinline="true"
-                          crossOrigin="anonymous"
                           preload="metadata"
                           className="w-full h-full object-contain"
-                        />
+                        >
+                          <source src={selectedAnalysis.mediaUrl} type={selectedAnalysis.mediaType === 'video' ? 'video/mp4' : 'audio/mpeg'} />
+                          Your browser does not support the video tag.
+                        </video>
                       ) : (
                         <div className="w-full h-full flex flex-col items-center justify-center bg-slate-900">
                           <Activity className="w-16 h-16 text-indigo-500 animate-pulse mb-4" />

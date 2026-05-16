@@ -216,6 +216,57 @@ async function startServer() {
     }
   });
 
+  // Media Proxy to bypass CORS issues on mobile
+  apiRouter.get("/proxy-media", async (req, res) => {
+    const { path: filePath } = req.query;
+    if (!filePath || typeof filePath !== 'string') {
+      return res.status(400).send("File path is required");
+    }
+
+    if (!bucket) {
+      return res.status(500).send("Storage not initialized");
+    }
+
+    try {
+      const file = bucket.file(filePath);
+      const [exists] = await file.exists();
+      if (!exists) {
+        return res.status(404).send("File not found");
+      }
+
+      const [metadata] = await file.getMetadata();
+      const fileSize = parseInt(metadata.size);
+      const contentType = metadata.contentType || 'video/mp4';
+
+      const range = req.headers.range;
+      if (range) {
+        const parts = range.replace(/bytes=/, "").split("-");
+        const start = parseInt(parts[0], 10);
+        const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+        const chunksize = (end - start) + 1;
+
+        res.writeHead(206, {
+          "Content-Range": `bytes ${start}-${end}/${fileSize}`,
+          "Accept-Ranges": "bytes",
+          "Content-Length": chunksize,
+          "Content-Type": contentType,
+        });
+
+        const stream = file.createReadStream({ start, end });
+        stream.pipe(res);
+      } else {
+        res.writeHead(200, {
+          "Content-Length": fileSize,
+          "Content-Type": contentType,
+        });
+        file.createReadStream().pipe(res);
+      }
+    } catch (err) {
+      console.error("[Proxy] Error streaming media:", err);
+      res.status(500).send("Error streaming media");
+    }
+  });
+
   // Subscription Sync (Immediate update after purchase)
   apiRouter.post("/sync-subscription", async (req, res) => {
     const { app_user_id } = req.body;
@@ -429,13 +480,9 @@ async function startServer() {
           await file.save(fs.readFileSync(compressedPath || tempPath), {
             metadata: { contentType: finalMimeType }
           });
-          // Generate a signed URL that's valid for 1 week
-          const [url] = await file.getSignedUrl({
-            action: 'read',
-            expires: Date.now() + 7 * 24 * 60 * 60 * 1000 // 7 days
-          });
-          mediaUrl = url;
-          console.log("[Server] Uploaded and generated signed URL:", mediaUrl);
+          // Use our proxy URL to bypass CORS and mobile playback issues
+          mediaUrl = `${API_BASE_URL}/api/proxy-media?path=${encodeURIComponent(fileName)}`;
+          console.log("[Server] Uploaded and generated proxy URL:", mediaUrl);
         } else {
           throw new Error("Storage bucket not initialized");
         }
