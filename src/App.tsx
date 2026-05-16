@@ -2353,6 +2353,10 @@ export default function App() {
                         <video
                           src={selectedAnalysis.mediaUrl}
                           controls
+                          playsInline
+                          webkit-playsinline="true"
+                          crossOrigin="anonymous"
+                          preload="metadata"
                           className="w-full h-full object-contain"
                         />
                       ) : (

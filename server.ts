@@ -429,9 +429,13 @@ async function startServer() {
           await file.save(fs.readFileSync(compressedPath || tempPath), {
             metadata: { contentType: finalMimeType }
           });
-          // Construct public URL - if public:true fails, we can use a signed URL or a standard Firebase Storage URL
-          mediaUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(fileName)}?alt=media`;
-          console.log("[Server] Uploaded to Storage via Admin SDK:", mediaUrl);
+          // Generate a signed URL that's valid for 1 week
+          const [url] = await file.getSignedUrl({
+            action: 'read',
+            expires: Date.now() + 7 * 24 * 60 * 60 * 1000 // 7 days
+          });
+          mediaUrl = url;
+          console.log("[Server] Uploaded and generated signed URL:", mediaUrl);
         } else {
           throw new Error("Storage bucket not initialized");
         }
