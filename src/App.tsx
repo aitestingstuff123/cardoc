@@ -68,6 +68,15 @@ const API_BASE_URL = CLOUD_RUN_URL;
 
 console.log("[API] Production Base URL:", API_BASE_URL);
 
+const resolveMediaUrl = (url: string) => {
+  if (!url) return url;
+  if (url.includes('/api/proxy-media?path=')) {
+    const path = url.split('/api/proxy-media?path=')[1];
+    return `${API_BASE_URL}/api/proxy-media?path=${path}`;
+  }
+  return url;
+};
+
 const TrainingChallengeCard = ({ challenge, onCompleteDay }: { challenge: any, onCompleteDay?: (day: number) => void }) => {
   if (!challenge) return null;
 
@@ -2357,13 +2366,13 @@ export default function App() {
                           preload="metadata"
                           className="w-full h-full object-contain"
                         >
-                          <source src={selectedAnalysis.mediaUrl} type={selectedAnalysis.mediaType === 'video' ? 'video/mp4' : 'audio/mpeg'} />
+                          <source src={resolveMediaUrl(selectedAnalysis.mediaUrl)} type={selectedAnalysis.mediaType === 'video' ? 'video/mp4' : 'audio/mpeg'} />
                           Your browser does not support the video tag.
                         </video>
                       ) : (
                         <div className="w-full h-full flex flex-col items-center justify-center bg-slate-900">
                           <Activity className="w-16 h-16 text-indigo-500 animate-pulse mb-4" />
-                          <audio src={selectedAnalysis.mediaUrl} controls className="w-2/3" />
+                          <audio src={resolveMediaUrl(selectedAnalysis.mediaUrl)} controls className="w-2/3" />
                         </div>
                       )}
                     </div>

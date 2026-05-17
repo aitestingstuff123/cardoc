@@ -250,6 +250,8 @@ async function startServer() {
           "Accept-Ranges": "bytes",
           "Content-Length": chunksize,
           "Content-Type": contentType,
+          "Access-Control-Allow-Origin": req.headers.origin || "*",
+          "Access-Control-Allow-Credentials": "true"
         });
 
         const stream = file.createReadStream({ start, end });
@@ -258,6 +260,8 @@ async function startServer() {
         res.writeHead(200, {
           "Content-Length": fileSize,
           "Content-Type": contentType,
+          "Access-Control-Allow-Origin": req.headers.origin || "*",
+          "Access-Control-Allow-Credentials": "true"
         });
         file.createReadStream().pipe(res);
       }
