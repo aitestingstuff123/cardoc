@@ -163,7 +163,8 @@ const MaintenancePlanCard = ({ challenge, onCompleteDay }: { challenge: any, onC
   );
 };
 
-const SubscriptionPage = ({ message, onUpgrade, onRestore, onClose, isSandbox, onWatchAd, isWatchingAd, type, onShowTerms, onShowPrivacy }: { messyear: string, onUpgrade: (pkg?: any) => void, onRestore: () => void, onClose: () => void, isSandbox?: boolean, onWatchAd?: () => void, isWatchingAd?: boolean, type?: 'analysis' | 'chat' | 'upgrade', onShowTerms: () => void, onShowPrivacy: () => void }) => {
+const SubscriptionPage = ({ message, onUpgrade, onRestore, onClose, isSandbox, onWatchAd, isWatchingAd, type, onShowTerms, onShowPrivacy }: { message: string, onUpgrade: (pkg?: any) => void, onRestore: () => void, onClose: () => void, isSandbox?: boolean, onWatchAd?: () => void, isWatchingAd?: boolean, type?: 'analysis' | 'chat' | 'upgrade', onShowTerms: () => void, onShowPrivacy: () => void }) => {
+  const { t } = useLanguage();
   const [packages, setPackages] = useState<any[]>([]);
   const [isLoadingPackages, setIsLoadingPackages] = useState(true);
 
@@ -207,7 +208,7 @@ const SubscriptionPage = ({ message, onUpgrade, onRestore, onClose, isSandbox, o
             </div>
             {isSandbox && (
               <span className="bg-orange-500/20 text-orange-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">
-                Sandbox Mode
+                {t('sandbox_mode')}
               </span>
             )}
           </div>
@@ -217,10 +218,10 @@ const SubscriptionPage = ({ message, onUpgrade, onRestore, onClose, isSandbox, o
         </div>
 
         <h3 className="text-2xl font-black font-serif text-orange-400 mb-3">
-          Unlock AutoDiagnostic Pro
+          {t('unlock_pro_title')}
         </h3>
         <p className="text-slate-400 mb-8 leading-relaxed">
-          {message || "Get unlimited access to diagnostic analyses, expert mechanic chats, and advanced maintenance plans."}
+          {message || t('unlock_pro_desc_default')}
         </p>
 
         <div className="space-y-4 mb-8">
@@ -228,19 +229,19 @@ const SubscriptionPage = ({ message, onUpgrade, onRestore, onClose, isSandbox, o
             <div className="w-5 h-5 bg-emerald-500/20 rounded-full flex items-center justify-center shrink-0">
               <CheckCircle2 className="w-3 h-3 text-emerald-600" />
             </div>
-            Unlimited Video Analyses
+            {t('pro_feature_1')}
           </div>
           <div className="flex items-center gap-3 text-sm text-slate-400">
             <div className="w-5 h-5 bg-emerald-500/20 rounded-full flex items-center justify-center shrink-0">
               <CheckCircle2 className="w-3 h-3 text-emerald-600" />
             </div>
-            Unlimited Expert Chat Follow-ups
+            {t('pro_feature_2')}
           </div>
           <div className="flex items-center gap-3 text-sm text-slate-400">
             <div className="w-5 h-5 bg-emerald-500/20 rounded-full flex items-center justify-center shrink-0">
               <CheckCircle2 className="w-3 h-3 text-emerald-600" />
             </div>
-            Priority AI Processing
+            {t('pro_feature_3')}
           </div>
         </div>
 
@@ -256,8 +257,8 @@ const SubscriptionPage = ({ message, onUpgrade, onRestore, onClose, isSandbox, o
                 onClick={() => onUpgrade(pkg)}
                 className="w-full py-4 mb-3 bg-orange-500 text-white font-bold rounded-2xl hover:bg-orange-600 transition-all shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-orange-500/20 flex flex-col items-center justify-center gap-1"
               >
-                <span>{pkg.packageType === 'ANNUAL' ? 'Yearly Pro' : 'Monthly Pro'}</span>
-                <span className="text-xs font-normal opacity-90">{pkg.product.priceString} {pkg.packageType === 'ANNUAL' ? '/ year' : '/ month'}</span>
+                <span>{pkg.packageType === 'ANNUAL' ? t('yearly_pro') : t('monthly_pro')}</span>
+                <span className="text-xs font-normal opacity-90">{pkg.product.priceString} {pkg.packageType === 'ANNUAL' ? t('per_year') : t('per_month')}</span>
               </button>
             ))
           ) : (
@@ -265,7 +266,7 @@ const SubscriptionPage = ({ message, onUpgrade, onRestore, onClose, isSandbox, o
               onClick={() => onUpgrade()}
               className="w-full py-4 bg-orange-500 text-white font-bold rounded-2xl hover:bg-orange-600 transition-all shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-orange-500/20 flex items-center justify-center gap-2"
             >
-              Subscribe for $9.99/mo
+              {t('subscribe_default')}
             </button>
           )}
 
@@ -280,7 +281,7 @@ const SubscriptionPage = ({ message, onUpgrade, onRestore, onClose, isSandbox, o
               ) : (
                 <Play className="w-5 h-5" />
               )}
-              Watch Ad for 1 Free {type === 'chat' ? 'Chat' : 'Analysis'}
+              {t('watch_ad_free')}{type === 'chat' ? t('chat') : t('analysis')}
             </button>
           )}
 
@@ -288,13 +289,13 @@ const SubscriptionPage = ({ message, onUpgrade, onRestore, onClose, isSandbox, o
             onClick={onRestore}
             className="w-full py-3 text-slate-400 font-bold hover:bg-slate-950 rounded-2xl transition-all text-sm"
           >
-            Restore Purchases
+            {t('restore_purchases')}
           </button>
         </div>
 
         <div className="mt-8 pt-6 border-t border-slate-800 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[10px] text-slate-500 font-medium">
-          <button onClick={onShowTerms} className="hover:text-orange-400 underline">Terms of Use (EULA)</button>
-          <button onClick={onShowPrivacy} className="hover:text-orange-400 underline">Privacy Policy</button>
+          <button onClick={onShowTerms} className="hover:text-orange-400 underline">{t('terms_of_use')}</button>
+          <button onClick={onShowPrivacy} className="hover:text-orange-400 underline">{t('privacy_policy')}</button>
         </div>
       </motion.div>
     </div>
