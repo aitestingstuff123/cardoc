@@ -26,16 +26,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let unsubscribeSnapshot: (() => void) | null = null;
 
-    // Safety timeout to prevent infinite loading if auth state takes too long
-    const loadingTimeout = setTimeout(() => {
-      if (loading) {
-        console.warn("[AuthContext] Loading timeout reached. Forcing loading to false.");
-        setLoading(false);
-      }
-    }, 5000);
+    // Safety timeout to prevent infinite loading if auth/firestore takes too long
+    const safetyTimeout = setTimeout(() => {
+      console.warn("[AuthContext] Safety timeout reached. Forcing loading to false.");
+      setLoading(false);
+    }, 6000);
 
     const unsubscribeAuth = onAuthStateChanged(auth, async (currentUser) => {
-      clearTimeout(loadingTimeout);
       setUser(currentUser);
       
       if (unsubscribeSnapshot) {
@@ -67,6 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setUserData(data);
             setIsAdmin(data.role === 'admin');
             setLoading(false);
+            clearTimeout(safetyTimeout);
           } else {
             // Document doesn't exist yet, create it
             const referralCode = Math.random().toString(36).substring(2, 8).toUpperCase();
@@ -86,22 +84,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               console.error("Error creating user doc:", err);
             }).finally(() => {
               setLoading(false);
+              clearTimeout(safetyTimeout);
             });
           }
         }, (error) => {
           console.error("User snapshot error:", error);
           setLoading(false);
+          clearTimeout(safetyTimeout);
         });
       } else {
         setUserData(null);
         setIsAdmin(false);
         setLoading(false);
+        clearTimeout(safetyTimeout);
       }
     });
 
     return () => {
       unsubscribeAuth();
       if (unsubscribeSnapshot) unsubscribeSnapshot();
+      clearTimeout(safetyTimeout);
     };
   }, []);
 

@@ -64,7 +64,18 @@ import { useAuth } from './lib/AuthContext';
 //   The Gemini API key is NEVER in the bundle — it lives only on the server.
 // ─────────────────────────────────────────────────────────────────────────────
 const CLOUD_RUN_URL = 'https://ais-dev-ffaggajiuq-nw.a.run.app';
-const API_BASE_URL = CLOUD_RUN_URL;
+
+const getApiBaseUrl = () => {
+  if (import.meta.env.DEV) {
+    const isAndroidNative = /Android/i.test(navigator.userAgent) && (window.location.protocol.startsWith('capacitor') || window.location.hostname === 'localhost');
+    if (isAndroidNative) {
+      return 'http://10.0.2.2:8080';
+    }
+    return 'http://localhost:8080';
+  }
+  return CLOUD_RUN_URL;
+};
+const API_BASE_URL = getApiBaseUrl();
 
 console.log("[API] Production Base URL:", API_BASE_URL);
 
@@ -500,7 +511,7 @@ export default function App() {
   const [isUploadingVehicleImage, setIsUploadingPetImage] = useState(false);
   const [newVehicle, setNewPet] = useState({
     name: '',
-    make: 'dog',
+    make: 'toyota',
     model: '',
     year: '',
     mileage: '',
@@ -761,7 +772,7 @@ export default function App() {
 
     return () => {
       unsubscribeAnalyses();
-      unsubscribePets();
+      unsubscribeVehicles();
       unsubscribeReminders();
       unsubscribeChallenges();
       unsubscribeStats();
@@ -1021,10 +1032,10 @@ export default function App() {
     const vehicleContext = selectedVehicle ? `
       Vehicle Context:
       - Name: ${selectedVehicle.name}
-      - Make: ${selectedVehicle.species}
-      - Model: ${selectedVehicle.breed || 'Unknown'}
-      - Year: ${selectedVehicle.age || 'Unknown'}
-      - Mileage: ${selectedVehicle.personality || 'Unknown'}
+      - Make: ${selectedVehicle.make || selectedVehicle.species || 'Unknown'}
+      - Model: ${selectedVehicle.model || selectedVehicle.breed || 'Unknown'}
+      - Year: ${selectedVehicle.year || selectedVehicle.age || 'Unknown'}
+      - Mileage: ${selectedVehicle.mileage || selectedVehicle.personality || 'Unknown'}
     ` : '';
 
     const formData = new FormData();
@@ -1517,7 +1528,7 @@ export default function App() {
       setVehicleImageFile(null);
       setNewPet({
         name: '',
-        make: 'dog',
+        make: 'toyota',
         model: '',
         year: '',
         mileage: '',
@@ -2344,7 +2355,7 @@ export default function App() {
                       </div>
                       <h3 className="text-xl font-black font-serif text-red-500">Analysis Limited</h3>
                       <p className="text-slate-400 leading-relaxed">
-                        {selectedAnalysis.result?.userQuestionAnswer || "Our AI behaviorist only specializes in canine (dog) and feline (cat) behavior. This media does not appear to contain a dog or a cat."}
+                        {selectedAnalysis.result?.userQuestionAnswer || "Our AI Mechanic only specializes in automotive vehicle diagnostics. This media does not appear to contain a vehicle or car part."}
                       </p>
                       <button 
                         onClick={() => setSelectedAnalysis(null)}
@@ -2387,7 +2398,7 @@ export default function App() {
                       <h3 className="text-sm font-bold uppercase tracking-wider opacity-80 mb-2">Your Initial Question</h3>
                       <p className="text-2xl font-medium mb-8 leading-tight">"{selectedAnalysis.userQuestion}"</p>
                       <div className="bg-slate-900/10 backdrop-blur-md p-6 rounded-2xl border border-white/20">
-                        <h4 className="text-xs font-bold uppercase tracking-wider opacity-80 mb-3">AI Behaviorist Answer</h4>
+                        <h4 className="text-xs font-bold uppercase tracking-wider opacity-80 mb-3">AI Mechanic Answer</h4>
                         <p className="text-white/90 leading-relaxed text-lg">
                           {selectedAnalysis.result?.userQuestionAnswer || "No specific answer provided."}
                         </p>
@@ -2403,12 +2414,16 @@ export default function App() {
                         Detailed Observations
                       </h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {selectedAnalysis.result?.observations?.map((obs: any, i: number) => (
-                          <div key={i} className="p-5 bg-slate-950 rounded-2xl border border-slate-800 hover:border-indigo-200 transition-colors">
-                            <p className="font-bold text-orange-400 text-xs uppercase tracking-widest mb-2">{obs.event}</p>
-                            <p className="text-slate-300 leading-relaxed">{obs.meaning}</p>
-                          </div>
-                        )) || <p className="text-slate-400 italic">No detailed observations recorded.</p>}
+                        {selectedAnalysis.result?.observations && selectedAnalysis.result.observations.length > 0 ? (
+                          selectedAnalysis.result.observations.map((obs: any, i: number) => (
+                            <div key={i} className="p-5 bg-slate-950 rounded-2xl border border-slate-800 hover:border-indigo-200 transition-colors">
+                              <p className="font-bold text-orange-400 text-xs uppercase tracking-widest mb-2">{obs.event}</p>
+                              <p className="text-slate-300 leading-relaxed">{obs.meaning}</p>
+                            </div>
+                          ))
+                        ) : (
+                          <p className="text-slate-400 italic col-span-full">No detailed observations recorded for this analysis.</p>
+                        )}
                       </div>
                     </div>
                   )}
@@ -2421,14 +2436,18 @@ export default function App() {
                         Recommended Action Steps
                       </h3>
                       <div className="space-y-4">
-                        {selectedAnalysis.result?.actionSteps?.map((step: string, i: number) => (
-                          <div key={i} className="flex items-start gap-4 p-4 rounded-2xl hover:bg-slate-950 transition-colors">
-                            <div className="w-8 h-8 bg-emerald-500/20 text-emerald-700 rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-sm">
-                              {i + 1}
+                        {selectedAnalysis.result?.actionSteps && selectedAnalysis.result.actionSteps.length > 0 ? (
+                          selectedAnalysis.result.actionSteps.map((step: string, i: number) => (
+                            <div key={i} className="flex items-start gap-4 p-4 rounded-2xl hover:bg-slate-950 transition-colors">
+                              <div className="w-8 h-8 bg-emerald-500/20 text-emerald-700 rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-sm">
+                                {i + 1}
+                              </div>
+                              <span className="text-slate-300 text-lg leading-relaxed">{step}</span>
                             </div>
-                            <span className="text-slate-300 text-lg leading-relaxed">{step}</span>
-                          </div>
-                        )) || <p className="text-slate-400 italic">No specific action steps provided.</p>}
+                          ))
+                        ) : (
+                          <p className="text-slate-400 italic">No specific action steps required at this time.</p>
+                        )}
                       </div>
                     </div>
                   )}
@@ -2440,12 +2459,12 @@ export default function App() {
                 </div>
 
                 <div className="space-y-8">
-                  {/* Emotional State Card */}
+                  {/* Overall Condition Card */}
                   {selectedAnalysis.result?.isVehicleOrPart !== false && (
                     <div className="bg-gradient-to-br from-indigo-600 to-purple-700 p-8 rounded-3xl text-white shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-orange-500/20">
-                      <h3 className="text-xs font-bold uppercase tracking-widest opacity-70 mb-2">Primary Emotional State</h3>
+                      <h3 className="text-xs font-bold uppercase tracking-widest opacity-70 mb-2">Overall Vehicle Condition</h3>
                       <p className="text-4xl font-black font-serif tracking-tight">
-                        {selectedAnalysis.result?.emotionalState || 'Unknown'}
+                        {selectedAnalysis.result?.overallCondition || selectedAnalysis.result?.emotionalState || 'Unknown'}
                       </p>
                     </div>
                   )}
@@ -2458,13 +2477,13 @@ export default function App() {
                       </div>
                       <div>
                         <h3 className="font-black font-serif text-orange-400 text-sm lg:text-base">Follow-up Chat</h3>
-                        <p className="text-[10px] lg:text-xs text-slate-400">Ask more about this behavior</p>
+                        <p className="text-[10px] lg:text-xs text-slate-400">Ask more about this diagnosis</p>
                       </div>
                     </div>
 
                     <div className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-4 bg-slate-950/30">
-                      <div className="bg-orange-500/10 p-3 lg:p-4 rounded-2xl rounded-tl-none text-xs lg:text-sm text-indigo-900 border border-orange-500/20">
-                        Hello! I'm your AI Behaviorist. Based on the analysis above, do you have any specific questions about your vehicle's behavior?
+                      <div className="bg-orange-500/10 p-3 lg:p-4 rounded-2xl rounded-tl-none text-xs lg:text-sm text-slate-100 border border-orange-500/20">
+                        Hello! I'm your AI Mechanic. Based on the analysis above, do you have any specific questions about your vehicle's diagnostics?
                       </div>
                       {chatMessages.map((msg) => (
                         <div
@@ -2641,10 +2660,10 @@ export default function App() {
                       </div>
 
                       <div className="bg-slate-900 p-6 rounded-3xl text-white">
-                        <h4 className="font-bold mb-2">Why this challenge?</h4>
+                        <h4 className="font-bold mb-2">Why this maintenance plan?</h4>
                         <p className="text-sm text-slate-500 leading-relaxed">
-                          This challenge was custom-generated by our AI Behaviorist based on your analysis of {selectedChallenge.petName}.
-                          Consistent daily practice is key to long-term behavioral change.
+                          This checklist was custom-generated by our AI Mechanic based on your analysis of {selectedChallenge.petName || 'your vehicle'}.
+                          Consistent follow-up is key to maintaining your vehicle's health and safety.
                         </p>
                       </div>
                     </div>
@@ -3012,7 +3031,7 @@ export default function App() {
                   {isAddingVehicle && (
                     <div className="bg-slate-900 p-6 rounded-2xl border border-orange-500/20 shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-indigo-50 animate-in fade-in slide-in-from-top-4 duration-300">
                       <h4 className="text-lg font-black font-serif text-orange-400 mb-4">{editingVehicleId ? 'Edit Vehicle Profile' : 'Add New Vehicle'}</h4>
-                      <form onSubmit={handleSavePet} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <form onSubmit={handleSaveVehicle} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-1">
                           <label className="text-xs font-bold text-slate-400 uppercase">Vehicle Name</label>
                           <input
@@ -3020,37 +3039,46 @@ export default function App() {
                             value={newVehicle.name}
                             onChange={e => setNewPet({ ...newVehicle, name: e.target.value })}
                             className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none"
-                            placeholder="e.g., Buddy"
+                            placeholder="e.g., My Camry"
                           />
                         </div>
                         <div className="space-y-1">
                           <label className="text-xs font-bold text-slate-400 uppercase">Make</label>
                           <select
-                            value={newVehicle.species}
+                            value={newVehicle.make}
                             onChange={e => setNewPet({ ...newVehicle, make: e.target.value })}
                             className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none"
                           >
-                            <option value="dog">Dog</option>
-                            <option value="cat">Cat</option>
+                            <option value="toyota">Toyota</option>
+                            <option value="ford">Ford</option>
+                            <option value="honda">Honda</option>
+                            <option value="chevrolet">Chevrolet</option>
+                            <option value="tesla">Tesla</option>
+                            <option value="bmw">BMW</option>
+                            <option value="mercedes">Mercedes-Benz</option>
+                            <option value="nissan">Nissan</option>
+                            <option value="hyundai">Hyundai</option>
+                            <option value="subaru">Subaru</option>
+                            <option value="jeep">Jeep</option>
                             <option value="other">Other</option>
                           </select>
                         </div>
                         <div className="space-y-1">
                           <label className="text-xs font-bold text-slate-400 uppercase">Model</label>
                           <input
-                            value={newVehicle.breed}
+                            value={newVehicle.model}
                             onChange={e => setNewPet({ ...newVehicle, model: e.target.value })}
                             className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none"
-                            placeholder="e.g., Golden Retriever"
+                            placeholder="e.g., Camry"
                           />
                         </div>
                         <div className="space-y-1">
                           <label className="text-xs font-bold text-slate-400 uppercase">Year</label>
                           <input
-                            value={newVehicle.age}
+                            value={newVehicle.year}
                             onChange={e => setNewPet({ ...newVehicle, year: e.target.value })}
                             className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none"
-                            placeholder="e.g., 3 years"
+                            placeholder="e.g., 2020"
                           />
                         </div>
                         <div className="md:col-span-2 space-y-1">
@@ -3081,30 +3109,30 @@ export default function App() {
                           </div>
                         </div>
                         <div className="md:col-span-2 space-y-1">
-                          <label className="text-xs font-bold text-slate-400 uppercase">Engineary Information</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase">Engine Information</label>
                           <textarea
-                            value={newVehicle.diet}
+                            value={newVehicle.engine}
                             onChange={e => setNewPet({ ...newVehicle, engine: e.target.value })}
                             className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none h-20 resize-none"
-                            placeholder="e.g., Grain-free kibble, twice a day..."
+                            placeholder="e.g., 2.5L 4-Cylinder, V6, Electric..."
                           />
                         </div>
                         <div className="md:col-span-2 space-y-1">
-                          <label className="text-xs font-bold text-slate-400 uppercase">Vaccination Records</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase">Transmission</label>
                           <textarea
-                            value={newVehicle.vaccinations}
+                            value={newVehicle.transmission}
                             onChange={e => setNewPet({ ...newVehicle, transmission: e.target.value })}
                             className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none h-20 resize-none"
-                            placeholder="e.g., Rabies (2025), DHPP (2024)..."
+                            placeholder="e.g., 8-speed automatic, 6-speed manual..."
                           />
                         </div>
                         <div className="md:col-span-2 space-y-1">
                           <label className="text-xs font-bold text-slate-400 uppercase">Mileage / Notes</label>
                           <textarea
-                            value={newVehicle.personality}
+                            value={newVehicle.mileage}
                             onChange={e => setNewPet({ ...newVehicle, mileage: e.target.value })}
                             className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none h-20 resize-none"
-                            placeholder="e.g., Very energetic, afraid of thunder..."
+                            placeholder="e.g., 45,000 miles. Has minor oil leak, tire pressure is low..."
                           />
                         </div>
                         <div className="md:col-span-2 flex justify-end gap-3 mt-2">
@@ -3149,13 +3177,13 @@ export default function App() {
                               setEditingPetId(vehicle.id);
                               setNewPet({
                                 name: vehicle.name,
-                                make: vehicle.species,
-                                model: vehicle.breed || '',
-                                year: vehicle.age || '',
-                                mileage: vehicle.personality || '',
+                                make: vehicle.make || vehicle.species || 'other',
+                                model: vehicle.model || vehicle.breed || '',
+                                year: vehicle.year || vehicle.age || '',
+                                mileage: vehicle.mileage || vehicle.personality || '',
                                 photoUrl: vehicle.photoUrl || '',
-                                engine: vehicle.diet || '',
-                                transmission: vehicle.vaccinations || ''
+                                engine: vehicle.engine || vehicle.diet || '',
+                                transmission: vehicle.transmission || vehicle.vaccinations || ''
                               });
                               setIsAddingPet(true);
                               setVehicleImageFile(null);
@@ -3188,37 +3216,37 @@ export default function App() {
                             />
                           ) : (
                             <div className="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center">
-                              {vehicle.species === 'dog' ? <Car className="w-6 h-6 text-orange-400" /> : <Wrench className="w-6 h-6 text-orange-400" />}
+                              <Car className="w-6 h-6 text-orange-400" />
                             </div>
                           )}
                           <div>
                             <h4 className="font-black font-serif text-orange-400">{vehicle.name}</h4>
-                            <p className="text-xs text-slate-400 capitalize">{vehicle.species} • {vehicle.breed || 'Unknown Model'}</p>
+                            <p className="text-xs text-slate-400 capitalize">{(vehicle.make || vehicle.species || 'vehicle')} • {vehicle.model || vehicle.breed || 'Unknown Model'}</p>
                           </div>
                         </div>
                         <div className="space-y-3">
                           <div>
                             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Year</p>
-                            <p className="text-sm text-slate-300">{vehicle.age || 'Not specified'}</p>
+                            <p className="text-sm text-slate-300">{vehicle.year || vehicle.age || 'Not specified'}</p>
                           </div>
                           <div>
                             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Mileage</p>
-                            <p className="text-sm text-slate-300 line-clamp-1">{vehicle.personality || 'No notes added.'}</p>
+                            <p className="text-sm text-slate-300 line-clamp-1">{vehicle.mileage || vehicle.personality || 'No notes added.'}</p>
                           </div>
-                          {vehicle.diet && (
+                          {(vehicle.engine || vehicle.diet) && (
                             <div>
                               <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                                <Utensils className="w-2 h-2" /> Engine
+                                <Activity className="w-2 h-2" /> Engine
                               </p>
-                              <p className="text-sm text-slate-300 line-clamp-1">{vehicle.diet}</p>
+                              <p className="text-sm text-slate-300 line-clamp-1">{vehicle.engine || vehicle.diet}</p>
                             </div>
                           )}
-                          {vehicle.vaccinations && (
+                          {(vehicle.transmission || vehicle.vaccinations) && (
                             <div>
                               <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                                <Syringe className="w-2 h-2" /> Transmission
+                                <Wrench className="w-2 h-2" /> Transmission
                               </p>
-                              <p className="text-sm text-slate-300 line-clamp-1">{vehicle.vaccinations}</p>
+                              <p className="text-sm text-slate-300 line-clamp-1">{vehicle.transmission || vehicle.vaccinations}</p>
                             </div>
                           )}
                         </div>
@@ -3476,7 +3504,7 @@ export default function App() {
                       Pro Membership Active
                     </h4>
                     <p className="text-sm text-orange-300">
-                      You have unlimited access to all AI Behaviorist features.
+                      You have unlimited access to all AI Mechanic features.
                     </p>
                   </div>
                 )}
@@ -3769,7 +3797,7 @@ export default function App() {
                         >
                           <option value="">General Analysis (No Vehicle Profile)</option>
                           {vehicles.map(vehicle => (
-                            <option key={vehicle.id} value={vehicle.id}>{vehicle.name} ({vehicle.species})</option>
+                            <option key={vehicle.id} value={vehicle.id}>{vehicle.name} ({vehicle.make || vehicle.species})</option>
                           ))}
                         </select>
                         {vehicles.length === 0 && (
@@ -3778,11 +3806,11 @@ export default function App() {
                       </div>
 
                       <div className="text-left">
-                        <label className="block text-sm font-semibold text-slate-300 mb-1">Specific Question ("e.g., am I training my dog to sit correctly?)</label>
+                        <label className="block text-sm font-semibold text-slate-300 mb-1">Specific Question (e.g., "is my engine ticking normal?")</label>
                         <textarea
                           value={userQuestion}
                           onChange={(e) => setUserQuestion(e.target.value)}
-                          placeholder="e.g., Why does my dog bark when the doorbell rings?"
+                          placeholder="e.g., Why is there a high-pitched squeal when I press the brakes?"
                           className="w-full px-4 py-3 rounded-xl border border-slate-800 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all resize-none h-24 text-sm"
                         />
                       </div>
@@ -3851,7 +3879,7 @@ export default function App() {
                 <button
                   onClick={() => {
                     if (deleteConfirmation.type === 'vehicle') {
-                      handleDeletePet(deleteConfirmation.id);
+                      handleDeleteVehicle(deleteConfirmation.id);
                     } else if (deleteConfirmation.type === 'analysis') {
                       handleDeleteAnalysis(deleteConfirmation.id);
                     } else if (deleteConfirmation.type === 'reminder') {
@@ -4026,8 +4054,8 @@ export default function App() {
                 </div>
 
                 <div>
-                  <h4 className="font-black font-serif text-orange-400 mb-1">2. Medical Disclaimer</h4>
-                  <p>AutoDiagnostic provides AI-driven behavioral analysis for educational and training purposes only. It is NOT a substitute for professional veterinary or trainer's advice, diagnosis, or treatment. Always consult a qualified veterinarian for medical concerns.</p>
+                  <h4 className="font-black font-serif text-orange-400 mb-1">2. Safety and Professional Disclaimer</h4>
+                  <p>AutoDiagnostic provides AI-driven mechanical analysis for educational and informational purposes only. It is NOT a substitute for professional mechanic's advice, diagnosis, or repair. Always consult a certified automotive mechanic for safety-critical vehicle concerns.</p>
                 </div>
 
                 <div>
