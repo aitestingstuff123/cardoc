@@ -545,7 +545,7 @@ export default function App() {
   const [isUploadingVehicleImage, setIsUploadingPetImage] = useState(false);
   const [newVehicle, setNewPet] = useState({
     name: '',
-    make: 'toyota',
+    make: '',
     model: '',
     year: '',
     mileage: '',
@@ -3159,7 +3159,7 @@ export default function App() {
                         setVehicleImageFile(null);
                         setNewPet({
                           name: '',
-                          make: 'dog',
+                          make: '',
                           model: '',
                           year: '',
                           mileage: '',
@@ -3191,24 +3191,12 @@ export default function App() {
                         </div>
                         <div className="space-y-1">
                           <label className="text-xs font-bold text-slate-400 uppercase">{t('make')}</label>
-                          <select
+                          <input
                             value={newVehicle.make}
                             onChange={e => setNewPet({ ...newVehicle, make: e.target.value })}
                             className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none"
-                          >
-                            <option value="toyota">Toyota</option>
-                            <option value="ford">Ford</option>
-                            <option value="honda">Honda</option>
-                            <option value="chevrolet">Chevrolet</option>
-                            <option value="tesla">Tesla</option>
-                            <option value="bmw">BMW</option>
-                            <option value="mercedes">Mercedes-Benz</option>
-                            <option value="nissan">Nissan</option>
-                            <option value="hyundai">Hyundai</option>
-                            <option value="subaru">Subaru</option>
-                            <option value="jeep">Jeep</option>
-                            <option value="other">Other</option>
-                          </select>
+                            placeholder="e.g., Toyota"
+                          />
                         </div>
                         <div className="space-y-1">
                           <label className="text-xs font-bold text-slate-400 uppercase">{t('model')}</label>
@@ -3644,16 +3632,16 @@ export default function App() {
               className="max-w-2xl mx-auto space-y-8"
             >
               <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
-                <h3 className="text-2xl font-black font-serif text-orange-400 mb-6">Account Settings</h3>
+                <h3 className="text-2xl font-black font-serif text-orange-400 mb-6">{t('account_settings')}</h3>
 
                 {userData?.subscriptionTier === 'pro' && (
                   <div className="mb-8 p-6 bg-orange-500/10 rounded-2xl border border-orange-500/20">
                     <h4 className="text-lg font-bold text-indigo-900 mb-2 flex items-center gap-2">
                       <Zap className="w-5 h-5" />
-                      Pro Membership Active
+                      {t('pro_membership_active')}
                     </h4>
                     <p className="text-sm text-orange-300">
-                      You have unlimited access to all AI Mechanic features.
+                      {t('pro_membership_active_desc')}
                     </p>
                   </div>
                 )}
@@ -3661,7 +3649,7 @@ export default function App() {
                 <div className="space-y-8">
                   {/* Profile Section */}
                   <section className="space-y-4">
-                    <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider">Profile Information</h4>
+                    <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider">{t('profile_information')}</h4>
 
                     <div className="flex items-center gap-6 mb-6">
                       <div className="relative group">
@@ -3693,29 +3681,29 @@ export default function App() {
                         </label>
                       </div>
                       <div>
-                        <p className="font-black font-serif text-orange-400">Profile Picture</p>
-                        <p className="text-xs text-slate-400">Click the image to upload a new one.</p>
+                        <p className="font-black font-serif text-orange-400">{t('profile_picture_label')}</p>
+                        <p className="text-xs text-slate-400">{t('profile_picture_desc')}</p>
                       </div>
                     </div>
 
                     <form onSubmit={handleUpdateProfile} className="space-y-4">
                       <div className="space-y-1">
-                        <label className="text-xs font-bold text-slate-400 uppercase">Display Name</label>
+                        <label className="text-xs font-bold text-slate-400 uppercase">{t('display_name')}</label>
                         <input
                           value={settingsName}
                           onChange={(e) => setSettingsName(e.target.value)}
                           className="w-full px-4 py-3 rounded-xl border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none transition-all"
-                          placeholder="Your full name"
+                          placeholder={t('display_name_placeholder')}
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-xs font-bold text-slate-400 uppercase">Email Address</label>
+                        <label className="text-xs font-bold text-slate-400 uppercase">{t('email_address')}</label>
                         <input
                           disabled
                           value={user?.email || ''}
                           className="w-full px-4 py-3 rounded-xl border border-slate-800 bg-slate-950 text-slate-500 outline-none cursor-not-allowed"
                         />
-                        <p className="text-[10px] text-slate-500 italic">Email cannot be changed currently.</p>
+                        <p className="text-[10px] text-slate-500 italic">{t('email_change_disabled')}</p>
                       </div>
                       <button
                         type="submit"
@@ -3723,7 +3711,7 @@ export default function App() {
                         className="px-6 py-3 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 transition-all disabled:opacity-50 flex items-center gap-2"
                       >
                         {isUpdatingProfile && <Loader2 className="w-4 h-4 animate-spin" />}
-                        Update Profile
+                        {t('update_profile')}
                       </button>
                     </form>
                   </section>
@@ -3735,30 +3723,17 @@ export default function App() {
                     <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider">{t('language_preference')}</h4>
                     <div className="p-6 rounded-3xl border border-slate-800 bg-slate-900 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
                       <label className="block text-xs font-bold text-slate-400 uppercase mb-3">{t('select_language')}</label>
-                      <div className="grid grid-cols-2 gap-4">
+                      <select
+                        value={locale}
+                        onChange={(e) => setLocale(e.target.value as any)}
+                        className="w-full px-4 py-3 rounded-xl border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none text-black bg-white text-sm font-medium"
+                      >
                         {SUPPORTED_LANGUAGES.map((lang) => (
-                          <button
-                            key={lang.code}
-                            type="button"
-                            onClick={() => setLocale(lang.code)}
-                            className={`flex items-center justify-between p-4 rounded-2xl border transition-all text-left ${
-                              locale === lang.code
-                                ? 'bg-orange-500/10 border-orange-500 text-orange-400 font-bold'
-                                : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200'
-                            }`}
-                          >
-                            <span className="flex items-center gap-3">
-                              <span className="text-2xl">{lang.flag}</span>
-                              <span className="text-sm">{lang.label}</span>
-                            </span>
-                            {locale === lang.code && (
-                              <div className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center">
-                                <CheckCircle2 className="w-4 h-4 text-white" />
-                              </div>
-                            )}
-                          </button>
+                          <option key={lang.code} value={lang.code} className="text-black bg-white">
+                            {lang.flag} &nbsp; {lang.label}
+                          </option>
                         ))}
-                      </div>
+                      </select>
                     </div>
                   </section>
 
@@ -3767,7 +3742,7 @@ export default function App() {
                   {/* Subscription Section */}
                   <section className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider">Subscription Plan</h4>
+                      <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider">{t('subscription_plan')}</h4>
                       <div className="flex items-center gap-2">
                         {isSandbox && (
                           <span className="bg-orange-500/20 text-orange-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">
@@ -3776,7 +3751,7 @@ export default function App() {
                         )}
                         <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${userData?.subscriptionTier === 'pro' ? 'bg-orange-500/20 text-orange-400' : 'bg-slate-800 text-slate-400'
                           }`}>
-                          {userData?.subscriptionTier === 'pro' ? 'Pro' : 'Free'} Tier
+                          {userData?.subscriptionTier === 'pro' ? t('pro_tier_badge') : t('free_tier_badge')}
                         </span>
                       </div>
                     </div>
@@ -3785,20 +3760,20 @@ export default function App() {
                       <div className="flex items-start justify-between gap-6">
                         <div className="space-y-2">
                           <p className="font-black font-serif text-orange-400">
-                            {userData?.subscriptionTier === 'pro' ? 'AutoDiagnostic Pro' : 'AutoDiagnostic Free'}
+                            {userData?.subscriptionTier === 'pro' ? t('pro_tier') : t('free_tier')}
                           </p>
                           <p className="text-sm text-slate-400 leading-relaxed">
                             {userData?.subscriptionTier === 'pro'
-                              ? 'You have unlimited access to vehicle analyses and expert mechanic follow-up chats.'
-                              : `You have used ${userData?.analysesCount || 0}/3 free analyses. Upgrade for unlimited access.`}
+                              ? t('pro_benefit')
+                              : t('free_benefit', { count: userData?.analysesCount || 0 })}
                           </p>
                         </div>
                         {userData?.subscriptionTier !== 'pro' ? (
                           <button
-                            onClick={() => setShowLimitModal({ type: 'upgrade', messyear: "Unlock unlimited analyses and expert chat with AutoDiagnostic Pro!" })}
+                            onClick={() => setShowLimitModal({ type: 'upgrade', messyear: t('unlock_pro_desc') })}
                             className="shrink-0 px-6 py-3 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20"
                           >
-                            Upgrade to Pro
+                            {t('upgrade_button')}
                           </button>
                         ) : (
                           <button
@@ -3807,7 +3782,7 @@ export default function App() {
                             className="shrink-0 px-6 py-3 bg-slate-900 border border-slate-800 text-slate-400 font-bold rounded-xl hover:bg-slate-950 transition-all flex items-center gap-2"
                           >
                             {isRestoring && <Loader2 className="w-4 h-4 animate-spin" />}
-                            Restore Purchases
+                            {t('restore_purchases')}
                           </button>
                         )}
                       </div>
@@ -3816,19 +3791,19 @@ export default function App() {
                         <div className="mt-6 pt-6 border-t border-slate-50 grid grid-cols-2 gap-4">
                           <div className="flex items-center gap-2 text-xs text-slate-400">
                             <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                            3 Analyses Total
+                            {t('analyses_total')}
                           </div>
                           <div className="flex items-center gap-2 text-xs text-slate-400">
                             <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                            2 Chats per Analysis
+                            {t('chats_per_analysis')}
                           </div>
                         </div>
                       )}
 
                       <div className="mt-4 flex flex-wrap items-center gap-4 text-[10px] text-slate-500">
-                        <button onClick={() => setShowTermsModal(true)} className="hover:text-orange-400 underline">Terms of Use (EULA)</button>
-                        <button onClick={() => setShowPrivacyModal(true)} className="hover:text-orange-400 underline">Privacy Policy</button>
-                        <button onClick={() => setShowFairUseModal(true)} className="hover:text-orange-400 underline">Fair Use Policy</button>
+                        <button onClick={() => setShowTermsModal(true)} className="hover:text-orange-400 underline">{t('terms_of_use')}</button>
+                        <button onClick={() => setShowPrivacyModal(true)} className="hover:text-orange-400 underline">{t('privacy_policy')}</button>
+                        <button onClick={() => setShowFairUseModal(true)} className="hover:text-orange-400 underline">{t('fair_use_policy')}</button>
                       </div>
                     </div>
                   </section>
@@ -3837,10 +3812,10 @@ export default function App() {
 
                   {/* Referral Section */}
                   <section className="space-y-4">
-                    <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider">Referral Program</h4>
+                    <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider">{t('referral_program')}</h4>
                     <div className="bg-slate-800 p-6 rounded-3xl border border-amber-100 space-y-4">
                       <div>
-                        <p className="text-sm font-bold text-amber-900 mb-1">Your Referral Code</p>
+                        <p className="text-sm font-bold text-amber-900 mb-1">{t('your_referral_code')}</p>
                         <div className="flex items-center gap-2">
                           <code className="bg-slate-900 px-4 py-2 rounded-xl border border-orange-500/50 font-mono font-bold text-orange-400 text-lg">
                             {userData?.referralCode || '------'}
@@ -3848,7 +3823,7 @@ export default function App() {
                           <button
                             onClick={() => {
                               navigator.clipboard.writeText(userData?.referralCode || '');
-                              setNotification({ messyear: "Referral code copied!", type: 'success' });
+                              setNotification({ messyear: t('referral_copied'), type: 'success' });
                             }}
                             className="p-2 text-orange-400 hover:bg-slate-900 rounded-lg transition-all"
                           >
@@ -3856,18 +3831,18 @@ export default function App() {
                           </button>
                         </div>
                         <p className="text-xs text-amber-700 mt-2">
-                          Share this code with friends! They get <span className="font-bold">+2 bonus analyses</span>, and you get <span className="font-bold">+5 bonus analyses</span> when they join.
+                          {t('referral_share_desc')}<span className="font-bold">{t('referral_bonus_them')}</span>{t('referral_share_mid')}<span className="font-bold">{t('referral_bonus_you')}</span>{t('referral_share_end')}
                         </p>
                       </div>
 
                       {!userData?.referredBy && (
                         <div className="pt-4 border-t border-orange-500/50">
-                          <p className="text-sm font-bold text-amber-900 mb-2">Have a referral code?</p>
+                          <p className="text-sm font-bold text-amber-900 mb-2">{t('have_referral_code')}</p>
                           <form onSubmit={handleReferralSubmit} className="flex gap-2">
                             <input
                               value={referralInput}
                               onChange={(e) => setReferralInput(e.target.value)}
-                              placeholder="ENTER CODE"
+                              placeholder={t('enter_code')}
                               className="flex-1 px-4 py-2 rounded-xl border border-orange-500/50 focus:ring-2 focus:ring-amber-500 outline-none uppercase font-mono"
                             />
                             <button
@@ -3875,7 +3850,7 @@ export default function App() {
                               disabled={isSubmittingReferral || !referralInput.trim()}
                               className="px-6 py-2 bg-amber-600 text-white font-bold rounded-xl hover:bg-amber-700 transition-all disabled:opacity-50"
                             >
-                              {isSubmittingReferral ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Apply'}
+                              {isSubmittingReferral ? <Loader2 className="w-4 h-4 animate-spin" /> : t('apply')}
                             </button>
                           </form>
                         </div>
@@ -3887,12 +3862,12 @@ export default function App() {
 
                   {/* Security Section */}
                   <section className="space-y-4">
-                    <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider">Security</h4>
+                    <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider">{t('security')}</h4>
                     <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800">
                       <div className="flex items-center justify-between gap-4">
                         <div>
-                          <p className="font-black font-serif text-orange-400">Reset Password</p>
-                          <p className="text-sm text-slate-400">We'll send a password reset link to your email address.</p>
+                          <p className="font-black font-serif text-orange-400">{t('reset_password')}</p>
+                          <p className="text-sm text-slate-400">{t('reset_password_desc')}</p>
                         </div>
                         <button
                           onClick={handlePasswordReset}
@@ -3900,7 +3875,7 @@ export default function App() {
                           className="px-4 py-2 bg-slate-900 border border-slate-800 text-slate-300 font-bold rounded-xl hover:bg-slate-950 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.4)] disabled:opacity-50 flex items-center gap-2"
                         >
                           {isSendingReset && <Loader2 className="w-4 h-4 animate-spin" />}
-                          Send Link
+                          {t('send_link')}
                         </button>
                       </div>
                     </div>
@@ -3910,19 +3885,20 @@ export default function App() {
 
                   {/* Danger Zone */}
                   <section className="space-y-4">
-                    <h4 className="text-sm font-bold text-red-400 uppercase tracking-wider">Danger Zone</h4>
+                    <h4 className="text-sm font-bold text-red-400 uppercase tracking-wider">{t('danger_zone')}</h4>
                     <button
                       onClick={logout}
                       className="w-full px-6 py-4 bg-red-50 text-red-600 font-bold rounded-2xl hover:bg-red-100 transition-all flex items-center justify-center gap-2"
                     >
                       <LogOut className="w-5 h-5" />
-                      Sign Out of All Devices
+                      {t('sign_out_all_devices')}
                     </button>
                   </section>
 
                   <div className="pt-8 text-center border-t border-slate-800 mt-8">
                     <p className="text-sm text-slate-400">
-                      Need help? Contact us at: <a href="mailto:xyz@gmail.com" className="text-orange-400 hover:underline font-bold">xyz@gmail.com</a>
+                      {t('need_help')} <a href="mailto:xyz@gmail.com" className="text-orange-400 hover:underline font-bold">xyz@gmail.com</a>
+
                     </p>
                   </div>
                 </div>
