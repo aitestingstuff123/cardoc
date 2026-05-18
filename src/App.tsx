@@ -489,6 +489,17 @@ export default function App() {
     return text;
   };
 
+  const getUploadStatusText = (status: string) => {
+    if (!status) return t('analyzing_vehicle');
+    if (status === 'Preparing media...') return t('preparing_media');
+    if (status === 'Uploading media file...') return t('uploading_media_file');
+    if (status === 'AI Mechanic is analyzing...') return t('ai_mechanic_analyzing');
+    if (status === 'Finalizing report...') return t('finalizing_report');
+    if (status === 'Complete!') return t('complete');
+    if (status === 'Opening secure checkout...') return t('opening_checkout');
+    return status;
+  };
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -3945,8 +3956,8 @@ export default function App() {
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <h3 className="text-xl font-black font-serif text-orange-400">{uploadStatus || 'Analyzing Vehicle...'}</h3>
-                      <p className="text-slate-400">Please wait while we process your request.</p>
+                      <h3 className="text-xl font-black font-serif text-orange-400">{getUploadStatusText(uploadStatus)}</h3>
+                      <p className="text-slate-400">{t('please_wait')}</p>
                     </div>
                   </div>
                 ) : (
@@ -3955,34 +3966,34 @@ export default function App() {
                       <Upload className="w-10 h-10 text-orange-400" />
                     </div>
                     <div className="space-y-2">
-                      <h3 className="text-xl font-black font-serif text-orange-400">Upload Vehicle Media</h3>
-                      <p className="text-slate-400">Select a video or audio clip of your vehicle's engine sound, dashboard lights, or mechanical symptoms for analysis.</p>
+                      <h3 className="text-xl font-black font-serif text-orange-400">{t('upload_vehicle_media')}</h3>
+                      <p className="text-slate-400">{t('upload_subtitle')}</p>
                     </div>
 
                     <div className="max-w-md mx-auto space-y-4">
                       <div className="text-left">
-                        <label className="block text-sm font-semibold text-slate-300 mb-1">Select Vehicle</label>
+                        <label className="block text-sm font-semibold text-slate-300 mb-1">{t('select_vehicle')}</label>
                         <select
                           value={selectedVehicleId}
                           onChange={(e) => setSelectedPetId(e.target.value)}
                           className="w-full px-4 py-3 rounded-xl border border-slate-800 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all text-sm"
                         >
-                          <option value="">General Analysis (No Vehicle Profile)</option>
+                          <option value="">{t('general_analysis')}</option>
                           {vehicles.map(vehicle => (
                             <option key={vehicle.id} value={vehicle.id}>{vehicle.name} ({vehicle.make || vehicle.species})</option>
                           ))}
                         </select>
                         {vehicles.length === 0 && (
-                          <p className="text-xs text-orange-400 mt-1">Tip: Add a vehicle profile first for more accurate results!</p>
+                          <p className="text-xs text-orange-400 mt-1">{t('no_vehicles_tip')}</p>
                         )}
                       </div>
 
                       <div className="text-left">
-                        <label className="block text-sm font-semibold text-slate-300 mb-1">Specific Question (e.g., "is my engine ticking normal?")</label>
+                        <label className="block text-sm font-semibold text-slate-300 mb-1">{t('specific_question_label')}</label>
                         <textarea
                           value={userQuestion}
                           onChange={(e) => setUserQuestion(e.target.value)}
-                          placeholder="e.g., Why is there a high-pitched squeal when I press the brakes?"
+                          placeholder={t('squeal_placeholder')}
                           className="w-full px-4 py-3 rounded-xl border border-slate-800 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all resize-none h-24 text-sm"
                         />
                       </div>
@@ -4005,17 +4016,17 @@ export default function App() {
                         >
                           {paywallCooldown ? (
                             <div className="flex items-center gap-2">
-                              <Clock className="w-5 h-5" />
-                              <span>Limit Reached</span>
+                               <Clock className="w-5 h-5" />
+                               <span>{t('limit_reached')}</span>
                             </div>
                           ) : (
-                            'Analyze Vehicle'
+                            t('analyze_vehicle_button')
                           )}
                         </button>
                       </div>
                     </div>
 
-                    <p className="text-xs text-slate-500">Supported formats: MP4, MOV, MP3, WAV (Max 50MB)</p>
+                    <p className="text-xs text-slate-500">{t('supported_formats')}</p>
                   </div>
                 )}
               </div>
