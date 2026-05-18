@@ -1141,8 +1141,31 @@ export default function App() {
     console.log("[API] File details:", file.name, file.size, file.type);
 
     try {
-      setUploadStatus('Processing analysis...');
-      setUploadProgress(40);
+      setUploadStatus('Uploading media file...');
+      setUploadProgress(20);
+
+      // 1. Upload original file from frontend directly to Firebase Storage first.
+      // This ensures we always have a fully working fallback media URL with a secure download token
+      // in case the local development server doesn't have Google Application Default Credentials.
+      const storagePath = `analyses/${user.uid}/${Date.now()}_${file.name}`;
+      const storageRef = ref(storage, storagePath);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      const frontendMediaUrl = await new Promise<string>((resolve, reject) => {
+        uploadTask.on('state_changed', 
+          (snapshot) => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 20 + 20;
+            setUploadProgress(progress);
+          }, 
+          reject, 
+          () => getDownloadURL(uploadTask.snapshot.ref).then(resolve).catch(reject)
+        );
+      });
+
+      console.log("[Frontend Upload] Successfully uploaded original media. URL:", frontendMediaUrl);
+
+      setUploadStatus('AI Mechanic is analyzing...');
+      setUploadProgress(50);
 
       let mediaUrl: string;
       let result: any;
@@ -1165,7 +1188,8 @@ export default function App() {
       }
 
       const data = JSON.parse(responseText);
-      mediaUrl = data.mediaUrl;
+      // Fallback to our secure, authenticated direct frontend upload URL if the backend's upload failed
+      mediaUrl = data.mediaUrl || frontendMediaUrl;
       result = data.geminiResult;
       setRoutingInfo({
         modelToUse: data.modelToUse,
