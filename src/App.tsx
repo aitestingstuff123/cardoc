@@ -219,7 +219,7 @@ const SubscriptionPage = ({ message, onUpgrade, onRestore, onClose, isSandbox, o
           Unlock AutoDiagnostic Pro
         </h3>
         <p className="text-slate-400 mb-8 leading-relaxed">
-          {message || "Get unlimited access to behavioral analyses, expert chats, and advanced training tools."}
+          {message || "Get unlimited access to diagnostic analyses, expert mechanic chats, and advanced maintenance plans."}
         </p>
 
         <div className="space-y-4 mb-8">
@@ -317,7 +317,7 @@ const ConsistencyChart = ({ activityLog }: { activityLog: any[] }) => {
   if (data.length === 0) {
     return (
       <div className="h-48 flex items-center justify-center bg-slate-950 rounded-2xl border border-dashed border-slate-800">
-        <p className="text-slate-500 text-sm">Start training to see your progress!</p>
+        <p className="text-slate-500 text-sm">Start your maintenance plans to see your progress!</p>
       </div>
     );
   }
@@ -423,8 +423,8 @@ const StreakHeader = ({ streak, activityLog }: { streak: number, activityLog: an
         </div>
         <p className="text-sm text-slate-400 mt-1">
           {hasUploadedToday
-            ? "Great job! You've completed your training for today."
-            : "Keep the momentum going! Upload a video to maintain your streak."}
+            ? "Great job! You've completed your maintenance tasks for today."
+            : "Keep the momentum going! Upload a video or audio clip to maintain your streak."}
         </p>
       </div>
     </div>
@@ -689,7 +689,7 @@ export default function App() {
         if (!isPro && dailyCount >= freeLimit && (userData?.bonusAnalyses || 0) <= 0) {
           setShowLimitModal({
             type: 'analysis',
-            messyear: `Ready to learn more? Upgrade to Pro or watch a quick ad to continue analyzing your vehicle's behavior.`
+            messyear: `Ready to learn more? Upgrade to Pro or watch a quick ad to continue analyzing your vehicle.`
           });
         }
       }, 10000); // Re-show after 10 seconds
@@ -1338,7 +1338,7 @@ export default function App() {
         parts: [{ text: m.content }]
       }));
 
-      const vehicleContext = selectedAnalysis.vehicleId ? `Analyzing behavior for ${selectedAnalysis.petName}.` : '';
+      const vehicleContext = selectedAnalysis.vehicleId ? `Analyzing diagnostic issues for ${selectedAnalysis.petName}.` : '';
       const analysisContext = `Original Analysis Result: ${JSON.stringify(selectedAnalysis.result)}`;
 
       const chatResponse = await fetch(`${API_BASE_URL}/api/chat`, {
@@ -1712,7 +1712,7 @@ export default function App() {
     try {
       await deleteDoc(doc(db, 'challenges', challengeId));
       console.log(`[Firestore] Challenge deleted successfully: ${challengeId}`);
-      setNotification({ messyear: 'Training challenge deleted successfully', type: 'success' });
+      setNotification({ messyear: 'Maintenance plan deleted successfully', type: 'success' });
       if (selectedChallenge?.id === challengeId) {
         setSelectedChallenge(null);
       }
@@ -1943,7 +1943,7 @@ export default function App() {
 
     const shareData = {
       title: `AutoDiagnostic Analysis: ${analysis.petName || 'My Vehicle'}`,
-      text: `Check out this behavioral analysis for ${analysis.petName || 'my vehicle'}! Emotional State: ${analysis.result?.emotionalState || 'Unknown'}.`,
+      text: `Check out this diagnostic analysis for ${analysis.petName || 'my vehicle'}! Overall Condition: ${analysis.result?.overallCondition || 'Unknown'}.`,
       url: window.location.href,
     };
 
@@ -1953,7 +1953,7 @@ export default function App() {
           title: shareData.title,
           text: shareData.text,
           url: shareData.url,
-          dialogTitle: 'Share Behavioral Analysis',
+          dialogTitle: 'Share Diagnostic Analysis',
         });
       } else if (navigator.share) {
         await navigator.share(shareData);
@@ -1975,8 +1975,8 @@ export default function App() {
       : `completed ${progress}/7 days of the "${challenge.title}" challenge!`;
 
     const shareData = {
-      title: `AutoDiagnostic Training: ${challenge.petName || 'My Vehicle'}`,
-      text: `My vehicle ${challenge.petName || 'my vehicle'} has ${statusText} Check out AutoDiagnostic for custom vehicle training!`,
+      title: `AutoDiagnostic Maintenance: ${challenge.petName || 'My Vehicle'}`,
+      text: `My vehicle ${challenge.petName || 'my vehicle'} has ${statusText} Check out AutoDiagnostic for custom vehicle maintenance plans!`,
       url: window.location.href,
     };
 
@@ -2047,7 +2047,7 @@ export default function App() {
           <div className="space-y-2">
             <h1 className="text-4xl font-black font-serif tracking-tight text-orange-400">AutoDiagnostic</h1>
             <p className="text-[10px] tracking-[0.3em] uppercase text-orange-600 mt-2 font-bold">Vehicle Analysis</p>
-            <p className="text-slate-400 text-lg">Professional AI behavior analysis for your beloved vehicles.</p>
+            <p className="text-slate-400 text-lg">Professional AI diagnostic analysis for your vehicles.</p>
           </div>
 
           {authMode === 'google' ? (
@@ -2215,8 +2215,8 @@ export default function App() {
                   </div>
 
                   <div>
-                    <h4 className="font-black font-serif text-orange-400 mb-1">2. Medical Disclaimer</h4>
-                    <p>AutoDiagnostic provides AI-driven behavioral analysis for educational and training purposes only. It is NOT a substitute for professional veterinary or trainer's advice, diagnosis, or treatment. Always consult a qualified veterinarian for medical concerns.</p>
+                    <h4 className="font-black font-serif text-orange-400 mb-1">2. Mechanical Disclaimer</h4>
+                    <p>AutoDiagnostic provides AI-driven vehicle diagnostics for educational and informational purposes only. It is NOT a substitute for professional ASE-certified mechanic's advice, diagnosis, or repair. Always consult a qualified mechanic or automotive repair shop for safety and mechanical concerns.</p>
                   </div>
 
                   <div>
@@ -2263,12 +2263,12 @@ export default function App() {
 
                   <div>
                     <h4 className="font-black font-serif text-orange-400 mb-1">1. Information We Collect</h4>
-                    <p>We collect information you provide directly to us, including your email address, vehicle profiles (name, breed, age), and the media (video/audio) you upload for analysis.</p>
+                    <p>We collect information you provide directly to us, including your email address, vehicle profiles (name, make, model, year), and the media (video/audio) you upload for analysis.</p>
                   </div>
 
                   <div>
                     <h4 className="font-black font-serif text-orange-400 mb-1">2. How We Use Your Information</h4>
-                    <p>Your media is processed using advanced AI models to provide behavioral insights. We do not use your personal videos to train public AI models. Your data is used strictly to deliver and improve your personal experience within the app.</p>
+                    <p>Your media is processed using advanced AI models to provide vehicle diagnostic insights. We do not use your personal videos to train public AI models. Your data is used strictly to deliver and improve your personal experience within the app.</p>
                   </div>
 
                   <div>
@@ -2790,7 +2790,7 @@ export default function App() {
                     <div className="relative z-10">
                       <h3 className="text-2xl lg:text-3xl font-black font-serif mb-2">Maintenance Plans</h3>
                       <p className="text-indigo-100 max-w-md text-sm lg:text-base">
-                        Custom 7-day plans generated from your behavioral analyses to help you and your vehicle reach your goals.
+                        Custom 7-day plans generated from your vehicle analyses to help you keep your vehicle in top condition.
                       </p>
                     </div>
                     <Flame className="absolute -right-8 -bottom-8 w-48 lg:w-64 h-48 lg:h-64 text-white/10 rotate-12" />
@@ -2858,9 +2858,9 @@ export default function App() {
                         <div className="w-16 h-16 bg-slate-950 rounded-2xl flex items-center justify-center mx-auto mb-4">
                           <Flame className="w-8 h-8 text-slate-300" />
                         </div>
-                        <h4 className="text-lg font-black font-serif text-orange-400 mb-1">No challenges yet</h4>
+                        <h4 className="text-lg font-black font-serif text-orange-400 mb-1">No plans yet</h4>
                         <p className="text-slate-400 text-sm max-w-xs mx-auto">
-                          Upload a video for analysis to receive your first custom 7-day training challenge!
+                          Upload a video or audio clip for analysis to receive your first custom 7-day maintenance plan!
                         </p>
                       </div>
                     )}
@@ -2891,8 +2891,8 @@ export default function App() {
                   <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
                     <div className="flex justify-between items-center mb-8">
                       <div>
-                        <h3 className="text-xl font-black font-serif text-orange-400">Training Consistency</h3>
-                        <p className="text-sm text-slate-400">Cumulative training sessions over time</p>
+                        <h3 className="text-xl font-black font-serif text-orange-400">Maintenance Consistency</h3>
+                        <p className="text-sm text-slate-400">Cumulative maintenance sessions completed over time</p>
                       </div>
                       <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-widest">
                         <div className="w-3 h-3 rounded-full bg-slate-8000"></div>
@@ -3044,7 +3044,7 @@ export default function App() {
                       )}
                       <div>
                         <h3 className="text-xl font-black font-serif text-orange-400">{selectedVehicleForAnalyses.name}'s History</h3>
-                        <p className="text-sm text-slate-400">All behavioral analyses for {selectedVehicleForAnalyses.name}</p>
+                        <p className="text-sm text-slate-400">All diagnostic analyses for {selectedVehicleForAnalyses.name}</p>
                       </div>
                     </div>
                   </div>
@@ -3721,7 +3721,7 @@ export default function App() {
                           </p>
                           <p className="text-sm text-slate-400 leading-relaxed">
                             {userData?.subscriptionTier === 'pro'
-                              ? 'You have unlimited access to behavioral analyses and expert follow-up chats.'
+                              ? 'You have unlimited access to vehicle analyses and expert mechanic follow-up chats.'
                               : `You have used ${userData?.analysesCount || 0}/3 free analyses. Upgrade for unlimited access.`}
                           </p>
                         </div>
@@ -3888,7 +3888,7 @@ export default function App() {
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <h3 className="text-xl font-black font-serif text-orange-400">{uploadStatus || 'Analyzing Behavior...'}</h3>
+                      <h3 className="text-xl font-black font-serif text-orange-400">{uploadStatus || 'Analyzing Vehicle...'}</h3>
                       <p className="text-slate-400">Please wait while we process your request.</p>
                     </div>
                   </div>
@@ -3899,7 +3899,7 @@ export default function App() {
                     </div>
                     <div className="space-y-2">
                       <h3 className="text-xl font-black font-serif text-orange-400">Upload Vehicle Media</h3>
-                      <p className="text-slate-400">Select a video or audio clip of your vehicle's behavior for analysis.</p>
+                      <p className="text-slate-400">Select a video or audio clip of your vehicle's engine sound, dashboard lights, or mechanical symptoms for analysis.</p>
                     </div>
 
                     <div className="max-w-md mx-auto space-y-4">
@@ -3932,7 +3932,7 @@ export default function App() {
 
                       <div className="block">
                         <input
-                          id="behavior-file-input"
+                          id="vehicle-file-input"
                           type="file"
                           className="hidden"
                           accept="video/*,audio/*"
@@ -3952,7 +3952,7 @@ export default function App() {
                               <span>Limit Reached</span>
                             </div>
                           ) : (
-                            'Analyze Behavior'
+                            'Analyze Vehicle'
                           )}
                         </button>
                       </div>
@@ -4118,7 +4118,7 @@ export default function App() {
 
                 <div>
                   <h4 className="font-black font-serif text-orange-400 mb-1">Personal Use</h4>
-                  <p>Analysis is intended for vehicles owned by the subscriber. Commercial use (e.g., professional training facilities or shelters) requires a Business License.</p>
+                  <p>Analysis is intended for vehicles owned by the subscriber. Commercial use (e.g., professional commercial fleets or repair shops) requires a Business License.</p>
                 </div>
 
                 <div>
@@ -4284,7 +4284,7 @@ export default function App() {
                 <button
                   onClick={() => {
                     setShowUploadTypeModal(false);
-                    const fileInput = document.getElementById('behavior-file-input');
+                    const fileInput = document.getElementById('vehicle-file-input');
                     if (fileInput) (fileInput as HTMLInputElement).click();
                   }}
                   className="w-full flex items-center gap-4 p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-orange-500/50 hover:bg-slate-900 transition-all text-left"
