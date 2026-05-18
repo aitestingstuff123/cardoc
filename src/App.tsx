@@ -2498,7 +2498,7 @@ export default function App() {
                         onClick={() => setSelectedAnalysis(null)}
                         className="bg-slate-800 text-slate-100 px-6 py-2 rounded-xl font-bold hover:bg-slate-700 transition-all"
                       >
-                        Try Another Video
+                        {t('try_another_video')}
                       </button>
                     </div>
                   )}
@@ -2532,12 +2532,12 @@ export default function App() {
                       <div className="absolute top-0 right-0 p-4 opacity-10">
                         <MessageSquare className="w-24 h-24" />
                       </div>
-                      <h3 className="text-sm font-bold uppercase tracking-wider opacity-80 mb-2">Your Initial Question</h3>
+                      <h3 className="text-sm font-bold uppercase tracking-wider opacity-80 mb-2">{t('your_initial_question')}</h3>
                       <p className="text-2xl font-medium mb-8 leading-tight">"{selectedAnalysis.userQuestion}"</p>
                       <div className="bg-slate-900/10 backdrop-blur-md p-6 rounded-2xl border border-white/20">
-                        <h4 className="text-xs font-bold uppercase tracking-wider opacity-80 mb-3">AI Mechanic Answer</h4>
+                        <h4 className="text-xs font-bold uppercase tracking-wider opacity-80 mb-3">{t('ai_mechanic_answer')}</h4>
                         <p className="text-white/90 leading-relaxed text-lg">
-                          {selectedAnalysis.result?.userQuestionAnswer || "No specific answer provided."}
+                          {selectedAnalysis.result?.userQuestionAnswer || t('no_answer_provided')}
                         </p>
                       </div>
                     </div>
@@ -2548,7 +2548,7 @@ export default function App() {
                     <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
                       <h3 className="text-xl font-black font-serif text-orange-400 mb-6 flex items-center gap-3">
                         <Activity className="w-6 h-6 text-orange-400" />
-                        Detailed Observations
+                        {t('detailed_observations')}
                       </h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {selectedAnalysis.result?.observations && selectedAnalysis.result.observations.length > 0 ? (
@@ -2559,7 +2559,7 @@ export default function App() {
                             </div>
                           ))
                         ) : (
-                          <p className="text-slate-400 italic col-span-full">No detailed observations recorded for this analysis.</p>
+                          <p className="text-slate-400 italic col-span-full">{t('no_observations_recorded')}</p>
                         )}
                       </div>
                     </div>
@@ -2570,7 +2570,7 @@ export default function App() {
                     <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
                       <h3 className="text-xl font-black font-serif text-orange-400 mb-6 flex items-center gap-3">
                         <CheckCircle2 className="w-6 h-6 text-emerald-600" />
-                        Recommended Action Steps
+                        {t('recommended_action_steps')}
                       </h3>
                       <div className="space-y-4">
                         {selectedAnalysis.result?.actionSteps && selectedAnalysis.result.actionSteps.length > 0 ? (
@@ -2583,7 +2583,7 @@ export default function App() {
                             </div>
                           ))
                         ) : (
-                          <p className="text-slate-400 italic">No specific action steps required at this time.</p>
+                          <p className="text-slate-400 italic">{t('no_action_steps_required')}</p>
                         )}
                       </div>
                     </div>
@@ -2599,7 +2599,7 @@ export default function App() {
                   {/* Overall Condition Card */}
                   {selectedAnalysis.result?.isVehicleOrPart !== false && (
                     <div className="bg-gradient-to-br from-indigo-600 to-purple-700 p-8 rounded-3xl text-white shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-orange-500/20">
-                      <h3 className="text-xs font-bold uppercase tracking-widest opacity-70 mb-2">Overall Vehicle Condition</h3>
+                      <h3 className="text-xs font-bold uppercase tracking-widest opacity-70 mb-2">{t('overall_vehicle_condition')}</h3>
                       <p className="text-4xl font-black font-serif tracking-tight">
                         {selectedAnalysis.result?.overallCondition || selectedAnalysis.result?.emotionalState || 'Unknown'}
                       </p>
@@ -2613,14 +2613,14 @@ export default function App() {
                         <MessageSquare className="w-4 h-4 lg:w-5 lg:h-5 text-white" />
                       </div>
                       <div>
-                        <h3 className="font-black font-serif text-orange-400 text-sm lg:text-base">Follow-up Chat</h3>
-                        <p className="text-[10px] lg:text-xs text-slate-400">Ask more about this diagnosis</p>
+                        <h3 className="font-black font-serif text-orange-400 text-sm lg:text-base">{t('follow_up_chat')}</h3>
+                        <p className="text-[10px] lg:text-xs text-slate-400">{t('ask_more_diagnosis')}</p>
                       </div>
                     </div>
 
                     <div className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-4 bg-slate-950/30">
                       <div className="bg-orange-500/10 p-3 lg:p-4 rounded-2xl rounded-tl-none text-xs lg:text-sm text-slate-100 border border-orange-500/20">
-                        Hello! I'm your AI Mechanic. Based on the analysis above, do you have any specific questions about your vehicle's diagnostics?
+                        {t('ai_mechanic_welcome')}
                       </div>
                       {chatMessages.map((msg) => (
                         <div
@@ -2648,7 +2648,7 @@ export default function App() {
                       <input
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
-                        placeholder="Type a follow-up question..."
+                        placeholder={t('type_question_placeholder')}
                         className="flex-1 px-3 lg:px-4 py-2 rounded-xl border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none text-xs lg:text-sm"
                       />
                       <button
@@ -2668,19 +2668,19 @@ export default function App() {
                         <FileText className="w-5 h-5 lg:w-6 lg:h-6 text-indigo-400" />
                       </div>
                       <div>
-                        <h4 className="text-[10px] lg:text-xs font-bold text-slate-500 uppercase tracking-widest">Report ID</h4>
+                        <h4 className="text-[10px] lg:text-xs font-bold text-slate-500 uppercase tracking-widest">{t('report_id')}</h4>
                         <p className="text-slate-200 font-mono text-[10px] lg:text-xs">{selectedAnalysis.id}</p>
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4 lg:gap-6">
                       <div>
-                        <h4 className="text-[10px] lg:text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Date</h4>
+                        <h4 className="text-[10px] lg:text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">{t('date')}</h4>
                         <p className="text-slate-200 font-medium text-sm lg:text-base">
                           {new Date(selectedAnalysis.createdAt?.seconds * 1000).toLocaleDateString()}
                         </p>
                       </div>
                       <div>
-                        <h4 className="text-[10px] lg:text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Media</h4>
+                        <h4 className="text-[10px] lg:text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">{t('media')}</h4>
                         <p className="text-slate-200 font-medium capitalize text-sm lg:text-base">{selectedAnalysis.mediaType}</p>
                       </div>
                     </div>
@@ -2810,9 +2810,9 @@ export default function App() {
                 <div className="space-y-8">
                   <div className="bg-orange-500 p-6 lg:p-8 rounded-[32px] text-white relative overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-orange-500/20">
                     <div className="relative z-10">
-                      <h3 className="text-2xl lg:text-3xl font-black font-serif mb-2">Maintenance Plans</h3>
+                      <h3 className="text-2xl lg:text-3xl font-black font-serif mb-2">{t('maintenance_plans')}</h3>
                       <p className="text-indigo-100 max-w-md text-sm lg:text-base">
-                        Custom 7-day plans generated from your vehicle analyses to help you keep your vehicle in top condition.
+                        {t('plans_subtitle')}
                       </p>
                     </div>
                     <Flame className="absolute -right-8 -bottom-8 w-48 lg:w-64 h-48 lg:h-64 text-white/10 rotate-12" />
@@ -2880,9 +2880,9 @@ export default function App() {
                         <div className="w-16 h-16 bg-slate-950 rounded-2xl flex items-center justify-center mx-auto mb-4">
                           <Flame className="w-8 h-8 text-slate-300" />
                         </div>
-                        <h4 className="text-lg font-black font-serif text-orange-400 mb-1">No plans yet</h4>
+                        <h4 className="text-lg font-black font-serif text-orange-400 mb-1">{t('no_plans_yet')}</h4>
                         <p className="text-slate-400 text-sm max-w-xs mx-auto">
-                          Upload a video or audio clip for analysis to receive your first custom 7-day maintenance plan!
+                          {t('no_plans_desc')}
                         </p>
                       </div>
                     )}
@@ -2913,12 +2913,12 @@ export default function App() {
                   <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
                     <div className="flex justify-between items-center mb-8">
                       <div>
-                        <h3 className="text-xl font-black font-serif text-orange-400">Maintenance Consistency</h3>
-                        <p className="text-sm text-slate-400">Cumulative maintenance sessions completed over time</p>
+                        <h3 className="text-xl font-black font-serif text-orange-400">{t('maintenance_consistency')}</h3>
+                        <p className="text-sm text-slate-400">{t('cumulative_sessions')}</p>
                       </div>
                       <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-widest">
                         <div className="w-3 h-3 rounded-full bg-slate-8000"></div>
-                        Sessions
+                        {t('sessions_value')}
                       </div>
                     </div>
                     <ConsistencyChart activityLog={userStats?.activity_log || []} />
@@ -2926,8 +2926,8 @@ export default function App() {
 
                   <div className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
                     <div className="p-6 border-b border-slate-800 flex justify-between items-center">
-                      <h3 className="font-black font-serif text-orange-400">Recent Analyses</h3>
-                      <button onClick={() => setActiveTab('history')} className="text-orange-400 text-sm font-medium hover:underline">View All</button>
+                      <h3 className="font-black font-serif text-orange-400">{t('active_analyses_history')}</h3>
+                      <button onClick={() => setActiveTab('history')} className="text-orange-400 text-sm font-medium hover:underline">{t('view_all')}</button>
                     </div>
                     <div className="divide-y divide-slate-50">
                       {analyses.slice(0, 5).map((analysis, idx) => (
@@ -2974,8 +2974,8 @@ export default function App() {
                           <div className="w-16 h-16 bg-slate-950 rounded-full flex items-center justify-center mx-auto mb-4">
                             <FileText className="w-8 h-8 text-slate-300" />
                           </div>
-                          <p className="text-slate-400 font-medium">No analyses yet.</p>
-                          <p className="text-xs text-slate-500 mt-1">Start by uploading a video of your vehicle!</p>
+                          <p className="text-slate-400 font-medium">{t('no_analyses_yet')}</p>
+                          <p className="text-xs text-slate-500 mt-1">{t('no_analyses_desc')}</p>
                         </motion.div>
                       )}
                     </div>
@@ -2985,8 +2985,8 @@ export default function App() {
                 <div className="space-y-8">
                   <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
                     <div className="flex justify-between items-center mb-6">
-                      <h3 className="text-lg font-black font-serif text-orange-400">Upcoming Care</h3>
-                      <button onClick={() => setActiveTab('reminders')} className="text-orange-400 text-xs font-bold uppercase tracking-widest hover:underline">View All</button>
+                      <h3 className="text-lg font-black font-serif text-orange-400">{t('upcoming_care')}</h3>
+                      <button onClick={() => setActiveTab('reminders')} className="text-orange-400 text-xs font-bold uppercase tracking-widest hover:underline">{t('view_all')}</button>
                     </div>
                     <div className="space-y-4">
                       {reminders.filter(r => !r.completed).slice(0, 4).map((reminder, idx) => (
@@ -3018,17 +3018,16 @@ export default function App() {
                           className="py-8 text-center"
                         >
                           <Calendar className="w-8 h-8 text-slate-200 mx-auto mb-2" />
-                          <p className="text-xs text-slate-500 font-medium">All caught up!</p>
-                          <p className="text-[10px] text-slate-300">No upcoming tasks for today.</p>
+                          <p className="text-xs text-slate-500 font-medium">{t('all_caught_up')}</p>
                         </motion.div>
                       )}
                     </div>
                   </div>
 
                   <div className="bg-amber-600 p-8 rounded-3xl text-white shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-amber-100">
-                    <h3 className="text-lg font-bold mb-2">Trainer Status</h3>
+                    <h3 className="text-lg font-bold mb-2">{t('pro_status')}</h3>
                     <p className="text-amber-100 text-sm leading-relaxed">
-                      Complete 30 sessions and unlock your vehicle's potential!
+                      {t('pro_desc')}
                     </p>
                   </div>
                 </div>
@@ -3065,8 +3064,8 @@ export default function App() {
                         </div>
                       )}
                       <div>
-                        <h3 className="text-xl font-black font-serif text-orange-400">{selectedVehicleForAnalyses.name}'s History</h3>
-                        <p className="text-sm text-slate-400">All diagnostic analyses for {selectedVehicleForAnalyses.name}</p>
+                        <h3 className="text-xl font-black font-serif text-orange-400">{t('history_for', { name: selectedVehicleForAnalyses.name })}</h3>
+                        <p className="text-sm text-slate-400">{t('analyses_sub_for', { name: selectedVehicleForAnalyses.name })}</p>
                       </div>
                     </div>
                   </div>
@@ -3126,12 +3125,12 @@ export default function App() {
                           <div className="w-16 h-16 bg-slate-950 rounded-full flex items-center justify-center mx-auto mb-4">
                             <FileText className="w-8 h-8 text-slate-300" />
                           </div>
-                          <p className="text-slate-400">No analyses found for {selectedVehicleForAnalyses.name}.</p>
+                          <p className="text-slate-400">{t('no_analyses_for', { name: selectedVehicleForAnalyses.name })}</p>
                           <button
                             onClick={() => setActiveTab('upload')}
                             className="mt-4 text-orange-400 font-medium hover:underline"
                           >
-                            Upload a video for {selectedVehicleForAnalyses.name}
+                            {t('upload_for', { name: selectedVehicleForAnalyses.name })}
                           </button>
                         </div>
                       )}
@@ -3141,7 +3140,7 @@ export default function App() {
               ) : (
                 <>
                   <div className="flex justify-between items-center">
-                    <h3 className="text-xl font-black font-serif text-orange-400">My Vehicle Profiles</h3>
+                    <h3 className="text-xl font-black font-serif text-orange-400">{t('my_vehicle_profiles')}</h3>
                     <button
                       onClick={() => {
                         setIsAddingPet(true);
@@ -3161,16 +3160,16 @@ export default function App() {
                       className="bg-orange-500 text-white px-4 py-2 rounded-xl font-medium hover:bg-orange-600 transition-all flex items-center gap-2"
                     >
                       <Plus className="w-4 h-4" />
-                      Add Vehicle
+                      {t('add_vehicle')}
                     </button>
                   </div>
 
                   {isAddingVehicle && (
                     <div className="bg-slate-900 p-6 rounded-2xl border border-orange-500/20 shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-indigo-50 animate-in fade-in slide-in-from-top-4 duration-300">
-                      <h4 className="text-lg font-black font-serif text-orange-400 mb-4">{editingVehicleId ? 'Edit Vehicle Profile' : 'Add New Vehicle'}</h4>
+                      <h4 className="text-lg font-black font-serif text-orange-400 mb-4">{editingVehicleId ? t('edit_vehicle_profile') : t('add_new_vehicle')}</h4>
                       <form onSubmit={handleSaveVehicle} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-1">
-                          <label className="text-xs font-bold text-slate-400 uppercase">Vehicle Name</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase">{t('vehicle_name')}</label>
                           <input
                             required
                             value={newVehicle.name}
@@ -3180,7 +3179,7 @@ export default function App() {
                           />
                         </div>
                         <div className="space-y-1">
-                          <label className="text-xs font-bold text-slate-400 uppercase">Make</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase">{t('make')}</label>
                           <select
                             value={newVehicle.make}
                             onChange={e => setNewPet({ ...newVehicle, make: e.target.value })}
@@ -3201,7 +3200,7 @@ export default function App() {
                           </select>
                         </div>
                         <div className="space-y-1">
-                          <label className="text-xs font-bold text-slate-400 uppercase">Model</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase">{t('model')}</label>
                           <input
                             value={newVehicle.model}
                             onChange={e => setNewPet({ ...newVehicle, model: e.target.value })}
@@ -3210,7 +3209,7 @@ export default function App() {
                           />
                         </div>
                         <div className="space-y-1">
-                          <label className="text-xs font-bold text-slate-400 uppercase">Year</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase">{t('year')}</label>
                           <input
                             value={newVehicle.year}
                             onChange={e => setNewPet({ ...newVehicle, year: e.target.value })}
@@ -3219,7 +3218,7 @@ export default function App() {
                           />
                         </div>
                         <div className="md:col-span-2 space-y-1">
-                          <label className="text-xs font-bold text-slate-400 uppercase">Profile Picture</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase">{t('profile_picture')}</label>
                           <div className="flex items-center gap-4">
                             <label className="flex-1">
                               <input
@@ -3230,7 +3229,7 @@ export default function App() {
                               />
                               <div className="w-full px-4 py-2 rounded-lg border border-dashed border-slate-300 hover:border-indigo-400 hover:bg-orange-500/10 transition-all cursor-pointer flex items-center justify-center gap-2 text-sm text-slate-400">
                                 <Upload className="w-4 h-4" />
-                                {vehicleImageFile ? vehicleImageFile.name : 'Choose Image'}
+                                {vehicleImageFile ? vehicleImageFile.name : t('choose_image')}
                               </div>
                             </label>
                             {(vehicleImageFile || newVehicle.photoUrl) && (
@@ -3246,7 +3245,7 @@ export default function App() {
                           </div>
                         </div>
                         <div className="md:col-span-2 space-y-1">
-                          <label className="text-xs font-bold text-slate-400 uppercase">Engine Information</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase">{t('engine_information')}</label>
                           <textarea
                             value={newVehicle.engine}
                             onChange={e => setNewPet({ ...newVehicle, engine: e.target.value })}
@@ -3255,7 +3254,7 @@ export default function App() {
                           />
                         </div>
                         <div className="md:col-span-2 space-y-1">
-                          <label className="text-xs font-bold text-slate-400 uppercase">Transmission</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase">{t('transmission_label')}</label>
                           <textarea
                             value={newVehicle.transmission}
                             onChange={e => setNewPet({ ...newVehicle, transmission: e.target.value })}
@@ -3264,7 +3263,7 @@ export default function App() {
                           />
                         </div>
                         <div className="md:col-span-2 space-y-1">
-                          <label className="text-xs font-bold text-slate-400 uppercase">Mileage / Notes</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase">{t('mileage_notes')}</label>
                           <textarea
                             value={newVehicle.mileage}
                             onChange={e => setNewPet({ ...newVehicle, mileage: e.target.value })}
@@ -3281,7 +3280,7 @@ export default function App() {
                             }}
                             className="px-4 py-2 text-slate-400 font-medium hover:bg-slate-950 rounded-lg transition-colors"
                           >
-                            Cancel
+                            {t('cancel')}
                           </button>
                           <button
                             type="submit"
@@ -3291,9 +3290,9 @@ export default function App() {
                             {isUploadingVehicleImage ? (
                               <>
                                 <Loader2 className="w-4 h-4 animate-spin" />
-                                Saving...
+                                {t('saving')}
                               </>
-                            ) : (editingVehicleId ? 'Update Vehicle' : 'Save Vehicle')}
+                            ) : (editingVehicleId ? t('update_vehicle') : t('save_vehicle'))}
                           </button>
                         </div>
                       </form>
@@ -3363,17 +3362,17 @@ export default function App() {
                         </div>
                         <div className="space-y-3">
                           <div>
-                            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Year</p>
+                            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{t('year')}</p>
                             <p className="text-sm text-slate-300">{vehicle.year || vehicle.age || 'Not specified'}</p>
                           </div>
                           <div>
-                            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Mileage</p>
+                            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{t('mileage')}</p>
                             <p className="text-sm text-slate-300 line-clamp-1">{vehicle.mileage || vehicle.personality || 'No notes added.'}</p>
                           </div>
                           {(vehicle.engine || vehicle.diet) && (
                             <div>
                               <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                                <Activity className="w-2 h-2" /> Engine
+                                <Activity className="w-2 h-2" /> {t('engine')}
                               </p>
                               <p className="text-sm text-slate-300 line-clamp-1">{vehicle.engine || vehicle.diet}</p>
                             </div>
@@ -3381,14 +3380,14 @@ export default function App() {
                           {(vehicle.transmission || vehicle.vaccinations) && (
                             <div>
                               <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                                <Wrench className="w-2 h-2" /> Transmission
+                                <Wrench className="w-2 h-2" /> {t('transmission')}
                               </p>
                               <p className="text-sm text-slate-300 line-clamp-1">{vehicle.transmission || vehicle.vaccinations}</p>
                             </div>
                           )}
                         </div>
                         <div className="mt-4 pt-4 border-t border-slate-50 flex justify-between items-center">
-                          <span className="text-xs font-medium text-orange-400">View History</span>
+                          <span className="text-xs font-medium text-orange-400">{t('view_history')}</span>
                           <ChevronRight className="w-4 h-4 text-indigo-400" />
                         </div>
                       </div>
@@ -3396,7 +3395,8 @@ export default function App() {
                     {vehicles.length === 0 && !isAddingVehicle && (
                       <div className="md:col-span-3 py-20 text-center bg-slate-900 rounded-3xl border-2 border-dashed border-slate-800">
                         <Car className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-                        <p className="text-slate-400">No vehicle profiles yet. Add your first vehicle to get started!</p>
+                        <p className="text-slate-400 font-medium">{t('no_vehicles_yet')}</p>
+                        <p className="text-xs text-slate-500 mt-1">{t('no_vehicles_desc')}</p>
                       </div>
                     )}
                   </div>
@@ -3468,60 +3468,60 @@ export default function App() {
               className="space-y-8"
             >
               <div className="flex justify-between items-center">
-                <h3 className="text-xl font-black font-serif text-orange-400">Care Reminders</h3>
+                <h3 className="text-xl font-black font-serif text-orange-400">{t('care_reminders')}</h3>
                 <button
                   onClick={() => setIsAddingReminder(true)}
                   className="bg-orange-500 text-white px-4 py-2 rounded-xl font-medium hover:bg-orange-600 transition-all flex items-center gap-2"
                 >
                   <Plus className="w-4 h-4" />
-                  Add Reminder
+                  {t('add_reminder')}
                 </button>
               </div>
 
               {isAddingReminder && (
                 <div className="bg-slate-900 p-6 rounded-2xl border border-orange-500/20 shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-indigo-50 animate-in fade-in slide-in-from-top-4 duration-300">
-                  <h4 className="text-lg font-black font-serif text-orange-400 mb-4">{editingReminderId ? 'Edit Reminder' : 'New Reminder'}</h4>
+                  <h4 className="text-lg font-black font-serif text-orange-400 mb-4">{editingReminderId ? t('edit_reminder') : t('new_reminder')}</h4>
                   <form onSubmit={handleSaveReminder} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-slate-400 uppercase">Vehicle</label>
+                      <label className="text-xs font-bold text-slate-400 uppercase">{t('vehicle')}</label>
                       <select
                         required
                         value={newReminder.vehicleId}
                         onChange={e => setNewReminder({ ...newReminder, vehicleId: e.target.value })}
                         className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none"
                       >
-                        <option value="">Select Vehicle</option>
+                        <option value="">{t('select_vehicle')}</option>
                         {vehicles.map(vehicle => (
                           <option key={vehicle.id} value={vehicle.id}>{vehicle.name}</option>
                         ))}
                       </select>
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-slate-400 uppercase">Type</label>
+                      <label className="text-xs font-bold text-slate-400 uppercase">{t('type')}</label>
                       <select
                         value={newReminder.type}
                         onChange={e => setNewReminder({ ...newReminder, type: e.target.value })}
                         className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none"
                       >
-                        <option value="vaccination">Vaccination</option>
-                        <option value="medication">Medication</option>
-                        <option value="food">Food</option>
-                        <option value="grooming">Grooming</option>
-                        <option value="other">Other</option>
+                        <option value="vaccination">{t('type_oil_change')}</option>
+                        <option value="medication">{t('type_brakes')}</option>
+                        <option value="food">{t('type_tire_rotation')}</option>
+                        <option value="grooming">{t('type_inspection')}</option>
+                        <option value="other">{t('type_other')}</option>
                       </select>
                     </div>
                     <div className="md:col-span-2 space-y-1">
-                      <label className="text-xs font-bold text-slate-400 uppercase">Reminder Title</label>
+                      <label className="text-xs font-bold text-slate-400 uppercase">{t('reminder_title')}</label>
                       <input
                         required
                         value={newReminder.title}
                         onChange={e => setNewReminder({ ...newReminder, title: e.target.value })}
                         className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none"
-                        placeholder="e.g., Annual Rabies Shot"
+                        placeholder="e.g., Oil Change"
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-slate-400 uppercase">Due Date</label>
+                      <label className="text-xs font-bold text-slate-400 uppercase">{t('due_date')}</label>
                       <input
                         required
                         type="date"
@@ -3539,13 +3539,13 @@ export default function App() {
                         }}
                         className="px-4 py-2 text-slate-400 font-medium hover:bg-slate-950 rounded-lg transition-colors"
                       >
-                        Cancel
+                        {t('cancel')}
                       </button>
                       <button
                         type="submit"
                         className="px-6 py-2 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors"
                       >
-                        {editingReminderId ? 'Update Reminder' : 'Save Reminder'}
+                        {editingReminderId ? t('update_reminder') : t('save_reminder')}
                       </button>
                     </div>
                   </form>
@@ -3610,7 +3610,7 @@ export default function App() {
                             : 'bg-orange-500/10 text-orange-400 hover:bg-orange-500 hover:text-white'
                           }`}
                       >
-                        {reminder.completed ? 'Completed' : 'Mark Done'}
+                        {reminder.completed ? t('completed') : t('mark_done')}
                       </button>
                     </div>
                   </div>
@@ -3618,7 +3618,8 @@ export default function App() {
                 {reminders.length === 0 && !isAddingReminder && (
                   <div className="md:col-span-3 py-20 text-center bg-slate-900 rounded-3xl border-2 border-dashed border-slate-800">
                     <Bell className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-                    <p className="text-slate-400">No care reminders yet. Stay on top of your vehicle's health!</p>
+                    <p className="text-slate-400 font-medium">{t('no_reminders_yet')}</p>
+                    <p className="text-xs text-slate-500 mt-1">{t('no_reminders_desc')}</p>
                   </div>
                 )}
               </div>
