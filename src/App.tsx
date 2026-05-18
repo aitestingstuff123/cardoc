@@ -44,7 +44,9 @@ import {
   Share2,
   Menu,
   X,
-  Camera
+  Camera,
+  Mic,
+  Square
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useAuth } from './lib/AuthContext';
@@ -486,6 +488,7 @@ export default function App() {
   // Upload/Recording state
   const [showUploadTypeModal, setShowUploadTypeModal] = useState(false);
   const [isRecordingVideo, setIsRecordingVideo] = useState(false);
+  const [isRecordingAudio, setIsRecordingAudio] = useState(false);
   const [isCameraPreview, setIsCameraPreview] = useState(false);
   const [recordingTimeLeft, setRecordingTimeLeft] = useState(30);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -700,12 +703,16 @@ export default function App() {
     // Listen for analyses
     const qAnalyses = query(
       collection(db, 'analyses'),
-      where('userId', '==', user.uid),
-      orderBy('createdAt', 'desc')
+      where('userId', '==', user.uid)
     );
 
     const unsubscribeAnalyses = onSnapshot(qAnalyses, (snapshot) => {
-      const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() as any }));
+      docs.sort((a: any, b: any) => {
+        const timeA = a.createdAt?.seconds || 0;
+        const timeB = b.createdAt?.seconds || 0;
+        return timeB - timeA;
+      });
       setAnalyses(docs);
     }, (error) => {
       handleFirestoreError(error, OperationType.LIST, 'analyses');
@@ -714,12 +721,16 @@ export default function App() {
     // Listen for vehicles
     const qVehicles = query(
       collection(db, 'vehicles'),
-      where('userId', '==', user.uid),
-      orderBy('createdAt', 'desc')
+      where('userId', '==', user.uid)
     );
 
     const unsubscribeVehicles = onSnapshot(qVehicles, (snapshot) => {
-      const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() as any }));
+      docs.sort((a: any, b: any) => {
+        const timeA = a.createdAt?.seconds || 0;
+        const timeB = b.createdAt?.seconds || 0;
+        return timeB - timeA;
+      });
       setVehicles(docs);
     }, (error) => {
       handleFirestoreError(error, OperationType.LIST, 'vehicles');
@@ -728,12 +739,16 @@ export default function App() {
     // Listen for reminders
     const qReminders = query(
       collection(db, 'reminders'),
-      where('userId', '==', user.uid),
-      orderBy('dueDate', 'asc')
+      where('userId', '==', user.uid)
     );
 
     const unsubscribeReminders = onSnapshot(qReminders, (snapshot) => {
-      const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() as any }));
+      docs.sort((a: any, b: any) => {
+        const dateA = a.dueDate ? new Date(a.dueDate).getTime() : 0;
+        const dateB = b.dueDate ? new Date(b.dueDate).getTime() : 0;
+        return dateA - dateB;
+      });
       setReminders(docs);
     }, (error) => {
       handleFirestoreError(error, OperationType.LIST, 'reminders');
@@ -742,12 +757,16 @@ export default function App() {
     // Listen for challenges
     const qChallenges = query(
       collection(db, 'challenges'),
-      where('userId', '==', user.uid),
-      orderBy('createdAt', 'desc')
+      where('userId', '==', user.uid)
     );
 
     const unsubscribeChallenges = onSnapshot(qChallenges, (snapshot) => {
-      const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() as any }));
+      docs.sort((a: any, b: any) => {
+        const timeA = a.createdAt?.seconds || 0;
+        const timeB = b.createdAt?.seconds || 0;
+        return timeB - timeA;
+      });
       setChallenges(docs);
     }, (error) => {
       handleFirestoreError(error, OperationType.LIST, 'challenges');
@@ -804,15 +823,19 @@ export default function App() {
   // Recording logic
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (isRecordingVideo && recordingTimeLeft > 0) {
+    if ((isRecordingVideo || isRecordingAudio) && recordingTimeLeft > 0) {
       timer = setTimeout(() => {
         setRecordingTimeLeft(prev => prev - 1);
       }, 1000);
-    } else if (isRecordingVideo && recordingTimeLeft === 0) {
-      stopRecording();
+    } else if ((isRecordingVideo || isRecordingAudio) && recordingTimeLeft === 0) {
+      if (isRecordingVideo) {
+        stopRecording();
+      } else {
+        stopAudioRecording();
+      }
     }
     return () => clearTimeout(timer);
-  }, [isRecordingVideo, recordingTimeLeft]);
+  }, [isRecordingVideo, isRecordingAudio, recordingTimeLeft]);
 
   const startCameraPreview = async () => {
     try {
@@ -935,6 +958,74 @@ export default function App() {
   const cancelRecording = () => {
     isCancelledRef.current = true;
     stopRecording();
+  };
+
+  const startAudioRecording = async () => {
+    try {
+      isCancelledRef.current = false;
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      chunksRef.current = [];
+      
+      mediaRecorder.onstop = () => {
+        setIsStopping(false);
+        if (isCancelledRef.current) {
+          console.log("[Audio Recording] Cancelled.");
+          return;
+        }
+
+        const recordedMimeType = mediaRecorder.mimeType;
+        const fallbackMimeType = 'audio/mpeg';
+        const finalMimeType = recordedMimeType || fallbackMimeType;
+        
+        const extension = finalMimeType.includes('mp3') ? 'mp3' : (finalMimeType.includes('wav') ? 'wav' : 'm4a');
+        const blob = new Blob(chunksRef.current, { type: finalMimeType });
+
+        if (blob.size === 0) {
+          setNotification({ message: 'Recording failed: No data captured.', type: 'error' });
+          setIsRecordingAudio(false);
+          return;
+        }
+
+        const file = new File([blob], `audio_recording_${Date.now()}.${extension}`, { type: finalMimeType });
+        processUploadFile(file);
+
+        // Stop microphone tracks
+        stream.getTracks().forEach(track => track.stop());
+
+        setTimeout(() => {
+          setIsRecordingAudio(false);
+        }, 800);
+      };
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          chunksRef.current.push(e.data);
+        }
+      };
+
+      mediaRecorder.start();
+      setIsRecordingAudio(true);
+      setRecordingTimeLeft(30);
+    } catch (err) {
+      console.error("Failed to start audio recording:", err);
+      setNotification({ message: 'Microphone access failed or denied.', type: 'error' });
+    }
+  };
+
+  const stopAudioRecording = () => {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+      setIsStopping(true);
+      mediaRecorderRef.current.stop();
+    } else {
+      setIsRecordingAudio(false);
+    }
+  };
+
+  const cancelAudioRecording = () => {
+    isCancelledRef.current = true;
+    stopAudioRecording();
   };
 
   const toggleCamera = async () => {
@@ -4178,7 +4269,7 @@ export default function App() {
                     <Upload className="w-6 h-6 text-orange-400" />
                   </div>
                   <div>
-                    <p className="font-bold text-slate-100">Upload Video</p>
+                    <p className="font-bold text-slate-100">Upload Video/Audio</p>
                     <p className="text-xs text-slate-400">Choose from your library</p>
                   </div>
                 </button>
@@ -4196,6 +4287,22 @@ export default function App() {
                   <div>
                     <p className="font-bold text-slate-100">Record Video</p>
                     <p className="text-xs text-slate-400">Record right now (max 30s)</p>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => {
+                    setShowUploadTypeModal(false);
+                    startAudioRecording();
+                  }}
+                  className="w-full flex items-center gap-4 p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-orange-500/50 hover:bg-slate-900 transition-all text-left"
+                >
+                  <div className="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Mic className="w-6 h-6 text-orange-400" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-slate-100">Record Audio</p>
+                    <p className="text-xs text-slate-400">Record engine sounds (max 30s)</p>
                   </div>
                 </button>
               </div>
@@ -4277,6 +4384,73 @@ export default function App() {
                     <div className="w-16 h-16 bg-red-500 rounded-full border-4 border-white" />
                   </button>
                 )}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Audio Recording Modal */}
+      <AnimatePresence>
+        {isRecordingAudio && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[110] bg-slate-950/95 backdrop-blur-md flex flex-col justify-center items-center p-6"
+          >
+            <div className="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-8 flex flex-col items-center shadow-2xl">
+              {/* Close Button */}
+              <button 
+                onClick={cancelAudioRecording}
+                className="absolute top-6 right-6 p-2 text-slate-500 hover:text-slate-200 hover:bg-slate-800 rounded-full transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              <div className="w-24 h-24 bg-orange-500/10 rounded-full flex items-center justify-center mb-6 animate-pulse">
+                <Mic className="w-12 h-12 text-orange-500" />
+              </div>
+
+              <h3 className="text-xl font-black font-serif text-slate-100 mb-2">Recording Engine Sound</h3>
+              <p className="text-sm text-slate-400 mb-8 text-center">Please hold the device near the sound source.</p>
+
+              {/* Progress counter */}
+              <div className="relative w-24 h-24 mb-10">
+                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                  <circle className="text-slate-800 stroke-current" strokeWidth="6" cx="50" cy="50" r="40" fill="transparent" />
+                  <circle
+                    className="text-orange-500 stroke-current transition-all duration-1000 ease-linear"
+                    strokeWidth="6"
+                    strokeDasharray={251.2}
+                    strokeDashoffset={251.2 - (251.2 * (recordingTimeLeft / 30))}
+                    strokeLinecap="round"
+                    cx="50" cy="50" r="40" fill="transparent"
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-white font-bold text-2xl">{recordingTimeLeft}s</span>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <button
+                  onClick={stopAudioRecording}
+                  disabled={isStopping}
+                  className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg transition-colors flex items-center gap-2 disabled:opacity-50"
+                >
+                  {isStopping ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Square className="w-4 h-4" />
+                      Stop & Analyze
+                    </>
+                  )}
+                </button>
               </div>
             </div>
           </motion.div>
