@@ -24,8 +24,8 @@ service cloud.firestore {
     // Document ID: {challengeId}
     // Fields:
     //   - userId: string (required)
-    //   - petId: string
-    //   - petName: string
+    //   - vehicleId: string
+    //   - vehicleName: string
     //   - analysisId: string
     //   - title: string (required)
     //   - description: string
@@ -38,8 +38,8 @@ service cloud.firestore {
     // Document ID: {analysisId}
     // Fields:
     //   - userId: string (required)
-    //   - petId: string
-    //   - petName: string
+    //   - vehicleId: string
+    //   - vehicleName: string
     //   - mediaUrl: string
     //   - mediaType: string ('video' | 'audio')
     //   - status: string ('pending' | 'processing' | 'completed' | 'failed')
@@ -47,15 +47,15 @@ service cloud.firestore {
     //   - result: map
     //   - createdAt: timestamp
     //
-    // Collection: pets
-    // Document ID: {petId}
+    // Collection: vehicles
+    // Document ID: {vehicleId}
     // Fields:
     //   - userId: string (required)
     //   - name: string (required)
-    //   - species: string (required, 'dog' | 'cat' | 'other')
-    //   - breed: string
-    //   - age: string
-    //   - personality: string
+    //   - make: string (required)
+    //   - model: string
+    //   - year: string
+    //   - mileage: string
     //   - createdAt: timestamp
     //
     // Collection: analyses/{analysisId}/messages
@@ -128,11 +128,11 @@ service cloud.firestore {
              data.createdAt is timestamp;
     }
 
-    function isValidPet(data) {
-      return data.keys().hasAll(['userId', 'name', 'species']) &&
+    function isValidVehicle(data) {
+      return data.keys().hasAll(['userId', 'name', 'make']) &&
              data.userId is string &&
              data.name is string &&
-             data.species in ['dog', 'cat', 'other'];
+             data.make is string;
     }
 
     function isValidMessage(data) {
@@ -172,7 +172,7 @@ service cloud.firestore {
       }
     }
 
-    match /pets/{petId} {
+    match /vehicles/{vehicleId} {
       allow read, write: if isAuthenticated() && (
         (request.method == 'create' && request.resource.data.userId == request.auth.uid) ||
         (resource != null && resource.data.userId == request.auth.uid) ||

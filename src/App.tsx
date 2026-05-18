@@ -13,8 +13,8 @@ import {
 } from 'recharts';
 import {
   Upload,
-  Dog,
-  Cat,
+  Car,
+  Wrench,
   Activity,
   History,
   LogOut,
@@ -77,26 +77,26 @@ const resolveMediaUrl = (url: string) => {
   return url;
 };
 
-const TrainingChallengeCard = ({ challenge, onCompleteDay }: { challenge: any, onCompleteDay?: (day: number) => void }) => {
+const MaintenancePlanCard = ({ challenge, onCompleteDay }: { challenge: any, onCompleteDay?: (day: number) => void }) => {
   if (!challenge) return null;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-zinc-900 p-4 lg:p-8 rounded-3xl border border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
+      className="bg-slate-900 p-4 lg:p-8 rounded-3xl border border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
     >
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-zinc-800 rounded-2xl flex items-center justify-center">
-          <Flame className="w-5 h-5 lg:w-6 lg:h-6 text-gold-400" />
+        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-slate-800 rounded-2xl flex items-center justify-center">
+          <Flame className="w-5 h-5 lg:w-6 lg:h-6 text-orange-400" />
         </div>
         <div>
-          <h3 className="text-lg lg:text-xl font-black font-serif text-gold-400">{challenge.title}</h3>
-          <p className="text-xs lg:text-sm text-zinc-400">7-Day Training Challenge</p>
+          <h3 className="text-lg lg:text-xl font-black font-serif text-orange-400">{challenge.title}</h3>
+          <p className="text-xs lg:text-sm text-slate-400">7-Day Maintenance Plan</p>
         </div>
       </div>
 
-      <p className="text-sm lg:text-base text-zinc-400 mb-8 leading-relaxed">{challenge.description}</p>
+      <p className="text-sm lg:text-base text-slate-400 mb-8 leading-relaxed">{challenge.description}</p>
 
       <div className="space-y-4">
         {challenge.days?.map((day: any, idx: number) => {
@@ -108,12 +108,12 @@ const TrainingChallengeCard = ({ challenge, onCompleteDay }: { challenge: any, o
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: idx * 0.1 }}
               className={`p-4 lg:p-6 rounded-2xl border transition-all ${isCompleted
-                  ? 'bg-zinc-800 border-emerald-100'
-                  : 'bg-zinc-950 border-zinc-800 hover:border-gold-500/50'
+                  ? 'bg-slate-800 border-emerald-100'
+                  : 'bg-slate-950 border-slate-800 hover:border-orange-500/50'
                 }`}
             >
               <div className="flex items-center justify-between mb-3">
-                <span className={`text-[10px] lg:text-xs font-bold uppercase tracking-widest ${isCompleted ? 'text-emerald-600' : 'text-zinc-500'}`}>
+                <span className={`text-[10px] lg:text-xs font-bold uppercase tracking-widest ${isCompleted ? 'text-emerald-600' : 'text-slate-500'}`}>
                   Day {day.day}
                 </span>
                 {isCompleted && (
@@ -126,17 +126,17 @@ const TrainingChallengeCard = ({ challenge, onCompleteDay }: { challenge: any, o
                   </motion.div>
                 )}
               </div>
-              <p className={`font-bold text-base lg:text-lg mb-1 ${isCompleted ? 'text-emerald-900' : 'text-zinc-100'}`}>
+              <p className={`font-bold text-base lg:text-lg mb-1 ${isCompleted ? 'text-emerald-900' : 'text-slate-100'}`}>
                 {day.exercise}
               </p>
-              <p className={`text-xs lg:text-sm ${isCompleted ? 'text-emerald-700' : 'text-zinc-400'}`}>
+              <p className={`text-xs lg:text-sm ${isCompleted ? 'text-emerald-700' : 'text-slate-400'}`}>
                 <span className="font-semibold">Goal:</span> {day.goal}
               </p>
 
               {!isCompleted && onCompleteDay && (
                 <button
                   onClick={() => onCompleteDay(day.day)}
-                  className="mt-4 w-full py-2 bg-zinc-900 border border-zinc-800 text-zinc-400 rounded-xl text-sm font-bold hover:bg-zinc-950 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.4)] active:scale-95"
+                  className="mt-4 w-full py-2 bg-slate-900 border border-slate-800 text-slate-400 rounded-xl text-sm font-bold hover:bg-slate-950 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.4)] active:scale-95"
                 >
                   Mark as Completed
                 </button>
@@ -149,7 +149,7 @@ const TrainingChallengeCard = ({ challenge, onCompleteDay }: { challenge: any, o
   );
 };
 
-const SubscriptionPage = ({ message, onUpgrade, onRestore, onClose, isSandbox, onWatchAd, isWatchingAd, type, onShowTerms, onShowPrivacy }: { message: string, onUpgrade: (pkg?: any) => void, onRestore: () => void, onClose: () => void, isSandbox?: boolean, onWatchAd?: () => void, isWatchingAd?: boolean, type?: 'analysis' | 'chat' | 'upgrade', onShowTerms: () => void, onShowPrivacy: () => void }) => {
+const SubscriptionPage = ({ message, onUpgrade, onRestore, onClose, isSandbox, onWatchAd, isWatchingAd, type, onShowTerms, onShowPrivacy }: { messyear: string, onUpgrade: (pkg?: any) => void, onRestore: () => void, onClose: () => void, isSandbox?: boolean, onWatchAd?: () => void, isWatchingAd?: boolean, type?: 'analysis' | 'chat' | 'upgrade', onShowTerms: () => void, onShowPrivacy: () => void }) => {
   const [packages, setPackages] = useState<any[]>([]);
   const [isLoadingPackages, setIsLoadingPackages] = useState(true);
 
@@ -180,7 +180,7 @@ const SubscriptionPage = ({ message, onUpgrade, onRestore, onClose, isSandbox, o
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: "100%" }}
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className="bg-zinc-900 rounded-t-[32px] lg:rounded-[32px] p-8 max-w-md w-full shadow-2xl border border-zinc-800 overflow-hidden"
+        className="bg-slate-900 rounded-t-[32px] lg:rounded-[32px] p-8 max-w-md w-full shadow-2xl border border-slate-800 overflow-hidden"
       >
         <div className="flex justify-center mb-4 lg:hidden">
           <div className="w-12 h-1.5 bg-slate-200 rounded-full" />
@@ -188,41 +188,41 @@ const SubscriptionPage = ({ message, onUpgrade, onRestore, onClose, isSandbox, o
 
         <div className="flex justify-between items-start mb-6">
           <div className="flex items-center gap-3">
-            <div className="w-16 h-16 bg-gold-500/10 rounded-2xl flex items-center justify-center">
-              <Zap className="w-8 h-8 text-gold-400" />
+            <div className="w-16 h-16 bg-orange-500/10 rounded-2xl flex items-center justify-center">
+              <Zap className="w-8 h-8 text-orange-400" />
             </div>
             {isSandbox && (
-              <span className="bg-gold-500/20 text-gold-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">
+              <span className="bg-orange-500/20 text-orange-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">
                 Sandbox Mode
               </span>
             )}
           </div>
-          <button onClick={onClose} className="p-2 text-zinc-500 hover:bg-zinc-950 rounded-full transition-all">
+          <button onClick={onClose} className="p-2 text-slate-500 hover:bg-slate-950 rounded-full transition-all">
             <X className="w-6 h-6" />
           </button>
         </div>
 
-        <h3 className="text-2xl font-black font-serif text-gold-400 mb-3">
-          Unlock Pawsitive Behavior Pro
+        <h3 className="text-2xl font-black font-serif text-orange-400 mb-3">
+          Unlock AutoDiagnostic Pro
         </h3>
-        <p className="text-zinc-400 mb-8 leading-relaxed">
+        <p className="text-slate-400 mb-8 leading-relaxed">
           {message || "Get unlimited access to behavioral analyses, expert chats, and advanced training tools."}
         </p>
 
         <div className="space-y-4 mb-8">
-          <div className="flex items-center gap-3 text-sm text-zinc-400">
+          <div className="flex items-center gap-3 text-sm text-slate-400">
             <div className="w-5 h-5 bg-emerald-500/20 rounded-full flex items-center justify-center shrink-0">
               <CheckCircle2 className="w-3 h-3 text-emerald-600" />
             </div>
             Unlimited Video Analyses
           </div>
-          <div className="flex items-center gap-3 text-sm text-zinc-400">
+          <div className="flex items-center gap-3 text-sm text-slate-400">
             <div className="w-5 h-5 bg-emerald-500/20 rounded-full flex items-center justify-center shrink-0">
               <CheckCircle2 className="w-3 h-3 text-emerald-600" />
             </div>
             Unlimited Expert Chat Follow-ups
           </div>
-          <div className="flex items-center gap-3 text-sm text-zinc-400">
+          <div className="flex items-center gap-3 text-sm text-slate-400">
             <div className="w-5 h-5 bg-emerald-500/20 rounded-full flex items-center justify-center shrink-0">
               <CheckCircle2 className="w-3 h-3 text-emerald-600" />
             </div>
@@ -233,14 +233,14 @@ const SubscriptionPage = ({ message, onUpgrade, onRestore, onClose, isSandbox, o
         <div className="space-y-3">
           {isLoadingPackages ? (
             <div className="flex justify-center py-4">
-              <Loader2 className="w-6 h-6 animate-spin text-gold-500" />
+              <Loader2 className="w-6 h-6 animate-spin text-orange-500" />
             </div>
           ) : packages.length > 0 ? (
             packages.map((pkg) => (
               <button
                 key={pkg.identifier}
                 onClick={() => onUpgrade(pkg)}
-                className="w-full py-4 mb-3 bg-gold-500 text-white font-bold rounded-2xl hover:bg-gold-600 transition-all shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-gold-500/20 flex flex-col items-center justify-center gap-1"
+                className="w-full py-4 mb-3 bg-orange-500 text-white font-bold rounded-2xl hover:bg-orange-600 transition-all shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-orange-500/20 flex flex-col items-center justify-center gap-1"
               >
                 <span>{pkg.packageType === 'ANNUAL' ? 'Yearly Pro' : 'Monthly Pro'}</span>
                 <span className="text-xs font-normal opacity-90">{pkg.product.priceString} {pkg.packageType === 'ANNUAL' ? '/ year' : '/ month'}</span>
@@ -249,7 +249,7 @@ const SubscriptionPage = ({ message, onUpgrade, onRestore, onClose, isSandbox, o
           ) : (
             <button
               onClick={() => onUpgrade()}
-              className="w-full py-4 bg-gold-500 text-white font-bold rounded-2xl hover:bg-gold-600 transition-all shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-gold-500/20 flex items-center justify-center gap-2"
+              className="w-full py-4 bg-orange-500 text-white font-bold rounded-2xl hover:bg-orange-600 transition-all shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-orange-500/20 flex items-center justify-center gap-2"
             >
               Subscribe for $9.99/mo
             </button>
@@ -259,7 +259,7 @@ const SubscriptionPage = ({ message, onUpgrade, onRestore, onClose, isSandbox, o
             <button
               onClick={onWatchAd}
               disabled={isWatchingAd}
-              className="w-full py-3 bg-zinc-800 text-zinc-300 font-bold rounded-2xl hover:bg-zinc-700 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full py-3 bg-slate-800 text-slate-300 font-bold rounded-2xl hover:bg-slate-700 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
             >
               {isWatchingAd ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
@@ -272,15 +272,15 @@ const SubscriptionPage = ({ message, onUpgrade, onRestore, onClose, isSandbox, o
 
           <button
             onClick={onRestore}
-            className="w-full py-3 text-zinc-400 font-bold hover:bg-zinc-950 rounded-2xl transition-all text-sm"
+            className="w-full py-3 text-slate-400 font-bold hover:bg-slate-950 rounded-2xl transition-all text-sm"
           >
             Restore Purchases
           </button>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-zinc-800 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[10px] text-zinc-500 font-medium">
-          <button onClick={onShowTerms} className="hover:text-gold-400 underline">Terms of Use (EULA)</button>
-          <button onClick={onShowPrivacy} className="hover:text-gold-400 underline">Privacy Policy</button>
+        <div className="mt-8 pt-6 border-t border-slate-800 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[10px] text-slate-500 font-medium">
+          <button onClick={onShowTerms} className="hover:text-orange-400 underline">Terms of Use (EULA)</button>
+          <button onClick={onShowPrivacy} className="hover:text-orange-400 underline">Privacy Policy</button>
         </div>
       </motion.div>
     </div>
@@ -303,8 +303,8 @@ const ConsistencyChart = ({ activityLog }: { activityLog: any[] }) => {
 
   if (data.length === 0) {
     return (
-      <div className="h-48 flex items-center justify-center bg-zinc-950 rounded-2xl border border-dashed border-zinc-800">
-        <p className="text-zinc-500 text-sm">Start training to see your progress!</p>
+      <div className="h-48 flex items-center justify-center bg-slate-950 rounded-2xl border border-dashed border-slate-800">
+        <p className="text-slate-500 text-sm">Start training to see your progress!</p>
       </div>
     );
   }
@@ -336,9 +336,9 @@ const ConsistencyChart = ({ activityLog }: { activityLog: any[] }) => {
             content={({ active, payload }) => {
               if (active && payload && payload.length) {
                 return (
-                  <div className="bg-zinc-900 p-3 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.6)] border border-zinc-800">
-                    <p className="text-xs font-bold text-zinc-500 uppercase mb-1">{payload[0].payload.date}</p>
-                    <p className="text-sm font-bold text-gold-400">Total Sessions: {payload[0].value}</p>
+                  <div className="bg-slate-900 p-3 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.6)] border border-slate-800">
+                    <p className="text-xs font-bold text-slate-500 uppercase mb-1">{payload[0].payload.date}</p>
+                    <p className="text-sm font-bold text-orange-400">Total Sessions: {payload[0].value}</p>
                   </div>
                 );
               }
@@ -372,12 +372,12 @@ const StreakHeader = ({ streak, activityLog }: { streak: number, activityLog: an
   const hasUploadedToday = activityLog.some(ts => new Date(ts.toMillis()).toDateString() === today);
 
   return (
-    <div className="flex flex-col sm:flex-row items-center gap-4 lg:gap-6 bg-zinc-900 p-4 lg:p-6 rounded-3xl border border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)] mb-8">
+    <div className="flex flex-col sm:flex-row items-center gap-4 lg:gap-6 bg-slate-900 p-4 lg:p-6 rounded-3xl border border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)] mb-8">
       <div className="relative w-16 h-16 lg:w-20 lg:h-20">
         <svg className="w-full h-full" viewBox="0 0 100 100">
           <circle className="text-slate-100 stroke-current" strokeWidth="8" cx="50" cy="50" r="40" fill="transparent" />
           <motion.circle
-            className="text-gold-500 stroke-current"
+            className="text-orange-500 stroke-current"
             strokeWidth="8"
             strokeDasharray={251.2}
             initial={{ strokeDashoffset: 251.2 }}
@@ -395,20 +395,20 @@ const StreakHeader = ({ streak, activityLog }: { streak: number, activityLog: an
             } : {}}
             transition={{ repeat: Infinity, duration: 2 }}
           >
-            <Flame className={`w-6 h-6 lg:w-8 lg:h-8 ${hasUploadedToday ? 'text-gold-500' : 'text-slate-300'}`} />
+            <Flame className={`w-6 h-6 lg:w-8 lg:h-8 ${hasUploadedToday ? 'text-orange-500' : 'text-slate-300'}`} />
           </motion.div>
         </div>
       </div>
       <div className="text-center sm:text-left">
         <div className="flex flex-col sm:flex-row items-center gap-2">
-          <h2 className="text-2xl lg:text-3xl font-black font-serif text-zinc-100">🔥 {streak} Day Streak</h2>
+          <h2 className="text-2xl lg:text-3xl font-black font-serif text-slate-100">🔥 {streak} Day Streak</h2>
           {hasUploadedToday && (
-            <span className="bg-gold-500/20 text-gold-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">
+            <span className="bg-orange-500/20 text-orange-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">
               Daily Goal Met
             </span>
           )}
         </div>
-        <p className="text-sm text-zinc-400 mt-1">
+        <p className="text-sm text-slate-400 mt-1">
           {hasUploadedToday
             ? "Great job! You've completed your training for today."
             : "Keep the momentum going! Upload a video to maintain your streak."}
@@ -455,21 +455,21 @@ import { Camera as CapCamera } from '@capacitor/camera';
 
 export default function App() {
   const { user, userData, loading, isAdmin, setUserData } = useAuth();
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'upload' | 'history' | 'pets' | 'settings' | 'reminders' | 'challenges'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'upload' | 'history' | 'vehicles' | 'settings' | 'reminders' | 'challenges'>('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadStatus, setUploadStatus] = useState('');
   const [userQuestion, setUserQuestion] = useState('');
-  const [selectedPetId, setSelectedPetId] = useState<string>('');
-  const [selectedPetForAnalyses, setSelectedPetForAnalyses] = useState<any | null>(null);
+  const [selectedVehicleId, setSelectedPetId] = useState<string>('');
+  const [selectedVehicleForAnalyses, setSelectedPetForAnalyses] = useState<any | null>(null);
   const [analyses, setAnalyses] = useState<any[]>([]);
-  const [pets, setPets] = useState<any[]>([]);
+  const [vehicles, setVehicles] = useState<any[]>([]);
   const [selectedAnalysis, setSelectedAnalysis] = useState<any>(null);
   const [chatMessages, setChatMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [isSendingMessage, setIsSendingMessage] = useState(false);
-  const [showLimitModal, setShowLimitModal] = useState<{ type: 'analysis' | 'chat' | 'upgrade', message: string } | null>(null);
+  const [showLimitModal, setShowLimitModal] = useState<{ type: 'analysis' | 'chat' | 'upgrade', messyear: string } | null>(null);
   const [paywallCooldown, setPaywallCooldown] = useState(false);
 
   // Upload/Recording state
@@ -493,20 +493,20 @@ export default function App() {
   const [referralInput, setReferralInput] = useState('');
   const [isSubmittingReferral, setIsSubmittingReferral] = useState(false);
 
-  // Pet management state
-  const [isAddingPet, setIsAddingPet] = useState(false);
-  const [editingPetId, setEditingPetId] = useState<string | null>(null);
-  const [petImageFile, setPetImageFile] = useState<File | null>(null);
-  const [isUploadingPetImage, setIsUploadingPetImage] = useState(false);
-  const [newPet, setNewPet] = useState({
+  // Vehicle management state
+  const [isAddingVehicle, setIsAddingPet] = useState(false);
+  const [editingVehicleId, setEditingPetId] = useState<string | null>(null);
+  const [vehicleImageFile, setVehicleImageFile] = useState<File | null>(null);
+  const [isUploadingVehicleImage, setIsUploadingPetImage] = useState(false);
+  const [newVehicle, setNewPet] = useState({
     name: '',
-    species: 'dog',
-    breed: '',
-    age: '',
-    personality: '',
+    make: 'dog',
+    model: '',
+    year: '',
+    mileage: '',
     photoUrl: '',
-    diet: '',
-    vaccinations: ''
+    engine: '',
+    transmission: ''
   });
 
   // Auth states
@@ -519,13 +519,13 @@ export default function App() {
 
   // Confirmation state
   const [deleteConfirmation, setDeleteConfirmation] = useState<{
-    type: 'pet' | 'analysis' | 'reminder' | 'challenge';
+    type: 'vehicle' | 'analysis' | 'reminder' | 'challenge';
     id: string;
     name: string;
   } | null>(null);
 
   const [notification, setNotification] = useState<{
-    message: string;
+    messyear: string;
     type: 'success' | 'error';
   } | null>(null);
   const [isRestoring, setIsRestoring] = useState(false);
@@ -552,7 +552,7 @@ export default function App() {
   const [isAddingReminder, setIsAddingReminder] = useState(false);
   const [editingReminderId, setEditingReminderId] = useState<string | null>(null);
   const [newReminder, setNewReminder] = useState({
-    petId: '',
+    vehicleId: '',
     title: '',
     type: 'vaccination',
     dueDate: '',
@@ -675,7 +675,7 @@ export default function App() {
         if (!isPro && dailyCount >= freeLimit && (userData?.bonusAnalyses || 0) <= 0) {
           setShowLimitModal({
             type: 'analysis',
-            message: `Ready to learn more? Upgrade to Pro or watch a quick ad to continue analyzing your pet's behavior.`
+            messyear: `Ready to learn more? Upgrade to Pro or watch a quick ad to continue analyzing your vehicle's behavior.`
           });
         }
       }, 10000); // Re-show after 10 seconds
@@ -700,18 +700,18 @@ export default function App() {
       handleFirestoreError(error, OperationType.LIST, 'analyses');
     });
 
-    // Listen for pets
-    const qPets = query(
-      collection(db, 'pets'),
+    // Listen for vehicles
+    const qVehicles = query(
+      collection(db, 'vehicles'),
       where('userId', '==', user.uid),
       orderBy('createdAt', 'desc')
     );
 
-    const unsubscribePets = onSnapshot(qPets, (snapshot) => {
+    const unsubscribeVehicles = onSnapshot(qVehicles, (snapshot) => {
       const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setPets(docs);
+      setVehicles(docs);
     }, (error) => {
-      handleFirestoreError(error, OperationType.LIST, 'pets');
+      handleFirestoreError(error, OperationType.LIST, 'vehicles');
     });
 
     // Listen for reminders
@@ -811,7 +811,7 @@ export default function App() {
         if (permissions.camera !== 'granted') {
           const result = await CapCamera.requestPermissions({ permissions: ['camera'] });
           if (result.camera !== 'granted') {
-            setNotification({ message: 'Camera permission is required to record video.', type: 'error' });
+            setNotification({ messyear: 'Camera permission is required to record video.', type: 'error' });
             return;
           }
         }
@@ -832,7 +832,7 @@ export default function App() {
       }, 50);
     } catch (err) {
       console.error("Failed to start camera preview:", err);
-      setNotification({ message: 'Could not access camera/microphone.', type: 'error' });
+      setNotification({ messyear: 'Could not access camera/microphone.', type: 'error' });
     }
   };
 
@@ -866,7 +866,7 @@ export default function App() {
         console.log("[Recording] Blob created. Size:", blob.size, "Type:", blob.type);
 
         if (blob.size === 0) {
-          setNotification({ message: 'Recording failed: No data captured.', type: 'error' });
+          setNotification({ messyear: 'Recording failed: No data captured.', type: 'error' });
           setIsRecordingVideo(false);
           return;
         }
@@ -900,7 +900,7 @@ export default function App() {
       setRecordingTimeLeft(30);
     } catch (err) {
       console.error("Failed to start recording:", err);
-      setNotification({ message: 'Recording failed to start.', type: 'error' });
+      setNotification({ messyear: 'Recording failed to start.', type: 'error' });
     }
   };
 
@@ -972,7 +972,7 @@ export default function App() {
       console.log("[Camera] Successfully switched to", newMode);
     } catch (err) {
       console.error("Failed to flip camera:", err);
-      setNotification({ message: 'Failed to switch camera.', type: 'error' });
+      setNotification({ messyear: 'Failed to switch camera.', type: 'error' });
       // If flip fails, we might be left with no stream. Let's try to recover default.
       setIsCameraPreview(false);
     }
@@ -987,7 +987,7 @@ export default function App() {
     if (!isPro && dailyCount >= freeLimit && (userData.bonusAnalyses || 0) <= 0) {
       setShowLimitModal({
         type: 'analysis',
-        message: `You've reached today's free limit of ${freeLimit} analyses. It resets at midnight Eastern Time, or upgrade to Pro for unlimited access!`
+        messyear: `You've reached today's free limit of ${freeLimit} analyses. It resets at midnight Eastern Time, or upgrade to Pro for unlimited access!`
       });
       return;
     }
@@ -1017,20 +1017,20 @@ export default function App() {
     setUploadProgress(10);
     setUploadStatus('Preparing media...');
 
-    const selectedPet = pets.find(p => p.id === selectedPetId);
-    const petContext = selectedPet ? `
-      Pet Context:
-      - Name: ${selectedPet.name}
-      - Species: ${selectedPet.species}
-      - Breed: ${selectedPet.breed || 'Unknown'}
-      - Age: ${selectedPet.age || 'Unknown'}
-      - Personality: ${selectedPet.personality || 'Unknown'}
+    const selectedVehicle = vehicles.find(p => p.id === selectedVehicleId);
+    const vehicleContext = selectedVehicle ? `
+      Vehicle Context:
+      - Name: ${selectedVehicle.name}
+      - Make: ${selectedVehicle.species}
+      - Model: ${selectedVehicle.breed || 'Unknown'}
+      - Year: ${selectedVehicle.age || 'Unknown'}
+      - Mileage: ${selectedVehicle.personality || 'Unknown'}
     ` : '';
 
     const formData = new FormData();
     formData.append('media', file);
     formData.append('userId', user.uid);
-    formData.append('petContext', petContext);
+    formData.append('vehicleContext', vehicleContext);
     if (userQuestion.trim()) {
       formData.append('userQuestion', userQuestion.trim());
     }
@@ -1079,8 +1079,8 @@ export default function App() {
       try {
         const analysisRef = await addDoc(collection(db, 'analyses'), {
           userId: user.uid,
-          petId: selectedPetId || null,
-          petName: selectedPet?.name || 'My Pet',
+          vehicleId: selectedVehicleId || null,
+          petName: selectedVehicle?.name || 'My Vehicle',
           mediaUrl,
           mediaType: file.type.startsWith('video') ? 'video' : 'audio',
           status: 'completed',
@@ -1090,15 +1090,15 @@ export default function App() {
         });
 
         // If a training challenge was generated, save it separately for the Challenges tab
-        if (result.trainingChallenge) {
+        if (result.maintenancePlan) {
           await addDoc(collection(db, 'challenges'), {
             userId: user.uid,
-            petId: selectedPetId || null,
-            petName: selectedPet?.name || 'My Pet',
+            vehicleId: selectedVehicleId || null,
+            petName: selectedVehicle?.name || 'My Vehicle',
             analysisId: analysisRef.id,
-            title: result.trainingChallenge.title,
-            description: result.trainingChallenge.description,
-            days: result.trainingChallenge.days,
+            title: result.maintenancePlan.title,
+            description: result.maintenancePlan.description,
+            days: result.maintenancePlan.days,
             completedDays: [], // Track progress
             status: 'active',
             createdAt: Timestamp.now()
@@ -1156,7 +1156,7 @@ export default function App() {
       }, 500);
     } catch (error: any) {
       console.error("Upload failed:", error);
-      setNotification({ message: error.message || "Upload failed. Please try again.", type: 'error' });
+      setNotification({ messyear: error.message || "Upload failed. Please try again.", type: 'error' });
       setIsUploading(false);
     }
   };
@@ -1184,7 +1184,7 @@ export default function App() {
         } else {
           setShowLimitModal({
             type: 'chat',
-            message: `Free tier users are limited to ${freeLimit} follow-up question(s) per analysis. Upgrade to Pro or watch an ad for +1 chat!`
+            messyear: `Free tier users are limited to ${freeLimit} follow-up question(s) per analysis. Upgrade to Pro or watch an ad for +1 chat!`
           });
           return;
         }
@@ -1212,7 +1212,7 @@ export default function App() {
         parts: [{ text: m.content }]
       }));
 
-      const petContext = selectedAnalysis.petId ? `Analyzing behavior for ${selectedAnalysis.petName}.` : '';
+      const vehicleContext = selectedAnalysis.vehicleId ? `Analyzing behavior for ${selectedAnalysis.petName}.` : '';
       const analysisContext = `Original Analysis Result: ${JSON.stringify(selectedAnalysis.result)}`;
 
       const chatResponse = await fetch(`${API_BASE_URL}/api/chat`, {
@@ -1221,7 +1221,7 @@ export default function App() {
         body: JSON.stringify({
           history,
           messageContent,
-          petContext,
+          vehicleContext,
           analysisContext
         })
       });
@@ -1271,7 +1271,7 @@ export default function App() {
       }
 
       if (packageToBuy) {
-        const { customerInfo } = await Purchases.purchasePackage({ aPackage: packageToBuy });
+        const { customerInfo } = await Purchases.purchasePackage({ aPackyear: packageToBuy });
 
         console.log("[RevenueCat] Purchase completed. CustomerInfo:", customerInfo);
 
@@ -1308,7 +1308,7 @@ export default function App() {
           }
 
           setNotification({
-            message: `Welcome to ${entitlementName}! Your account has been upgraded.`,
+            messyear: `Welcome to ${entitlementName}! Your account has been upgraded.`,
             type: 'success'
           });
 
@@ -1327,7 +1327,7 @@ export default function App() {
         } else {
           console.warn("[RevenueCat] Purchase successful but no active entitlement found in customerInfo.");
           setNotification({
-            message: "Purchase successful! Your account will be updated shortly.",
+            messyear: "Purchase successful! Your account will be updated shortly.",
             type: "success"
           });
           // We still close the modal because the purchase was technically successful
@@ -1340,7 +1340,7 @@ export default function App() {
       if (!error.userCancelled) {
         console.error("[RevenueCat] Purchase error:", error);
         setNotification({
-          message: error.message || 'Failed to initiate purchase. Please try again.',
+          messyear: error.message || 'Failed to initiate purchase. Please try again.',
           type: 'error'
         });
       }
@@ -1391,7 +1391,7 @@ export default function App() {
           console.error("[RevenueCat] Restore sync network error:", syncErr);
         }
 
-        setNotification({ message: `Purchases restored! You are now ${entitlementName}.`, type: 'success' });
+        setNotification({ messyear: `Purchases restored! You are now ${entitlementName}.`, type: 'success' });
 
         // Optimistic update to clear paywall immediately
         if (userData) {
@@ -1400,11 +1400,11 @@ export default function App() {
 
         setShowLimitModal(null);
       } else {
-        setNotification({ message: 'No active subscription found to restore.', type: 'error' });
+        setNotification({ messyear: 'No active subscription found to restore.', type: 'error' });
       }
     } catch (error: any) {
       console.error("[RevenueCat] Restore error:", error);
-      setNotification({ message: 'Failed to restore purchases.', type: 'error' });
+      setNotification({ messyear: 'Failed to restore purchases.', type: 'error' });
     } finally {
       setIsRestoring(false);
     }
@@ -1424,7 +1424,7 @@ export default function App() {
       const currentDailyCount = (today > lastAdDay) ? 0 : (userData.dailyAdAnalysesCount || 0);
 
       if (currentDailyCount >= 3) {
-        setNotification({ message: 'Daily limit for free analysis ads reached (3/3). Reset at midnight.', type: 'error' });
+        setNotification({ messyear: 'Daily limit for free analysis ads reached (3/3). Reset at midnight.', type: 'error' });
         return;
       }
     }
@@ -1451,17 +1451,17 @@ export default function App() {
                   dailyAdAnalysesCount: currentDailyCount + 1,
                   lastAdAnalysisDate: now
                 });
-                setNotification({ message: `Reward earned! +1 Analysis granted (${currentDailyCount + 1}/3 today).`, type: 'success' });
+                setNotification({ messyear: `Reward earned! +1 Analysis granted (${currentDailyCount + 1}/3 today).`, type: 'success' });
               } else if (type === 'chat') {
                 await updateDoc(userRef, {
                   bonusChats: (userData.bonusChats || 0) + 1
                 });
-                setNotification({ message: 'Reward earned! +1 Chat granted.', type: 'success' });
+                setNotification({ messyear: 'Reward earned! +1 Chat granted.', type: 'success' });
               }
               setShowLimitModal(null);
             } catch (error) {
               console.error("Failed to grant reward:", error);
-              setNotification({ message: 'Failed to grant reward. Please try again.', type: 'error' });
+              setNotification({ messyear: 'Failed to grant reward. Please try again.', type: 'error' });
             }
           },
           onAdClosed: () => {
@@ -1469,80 +1469,80 @@ export default function App() {
           },
           onAdFailedToLoad: (err) => {
             setIsWatchingAd(false);
-            setNotification({ message: 'Failed to load ad. Please try again later.', type: 'error' });
+            setNotification({ messyear: 'Failed to load ad. Please try again later.', type: 'error' });
           }
         });
       },
       onAdFailedToLoad: (err) => {
         setIsWatchingAd(false);
-        setNotification({ message: 'Ad failed to load. Please try again.', type: 'error' });
+        setNotification({ messyear: 'Ad failed to load. Please try again.', type: 'error' });
       },
       onUserEarnedReward: () => { } // Handled in showAd
     });
   };
 
-  const handleSavePet = async (e: React.FormEvent) => {
+  const handleSaveVehicle = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newPet.name || !user) return;
+    if (!newVehicle.name || !user) return;
 
     try {
-      let photoUrl = newPet.photoUrl;
-      if (petImageFile) {
+      let photoUrl = newVehicle.photoUrl;
+      if (vehicleImageFile) {
         setIsUploadingPetImage(true);
-        const fileName = `pets/${user.uid}/${Date.now()}_${petImageFile.name}`;
+        const fileName = `vehicles/${user.uid}/${Date.now()}_${vehicleImageFile.name}`;
         const storageRef = ref(storage, fileName);
-        const uploadTask = await uploadBytesResumable(storageRef, petImageFile);
+        const uploadTask = await uploadBytesResumable(storageRef, vehicleImageFile);
         photoUrl = await getDownloadURL(uploadTask.ref);
       }
 
-      if (editingPetId) {
-        await updateDoc(doc(db, 'pets', editingPetId), {
-          ...newPet,
+      if (editingVehicleId) {
+        await updateDoc(doc(db, 'vehicles', editingVehicleId), {
+          ...newVehicle,
           photoUrl,
           updatedAt: Timestamp.now()
         });
-        setNotification({ message: 'Pet profile updated successfully!', type: 'success' });
+        setNotification({ messyear: 'Vehicle profile updated successfully!', type: 'success' });
       } else {
-        await addDoc(collection(db, 'pets'), {
+        await addDoc(collection(db, 'vehicles'), {
           userId: user.uid,
-          ...newPet,
+          ...newVehicle,
           photoUrl,
           createdAt: Timestamp.now()
         });
-        setNotification({ message: 'Pet profile added successfully!', type: 'success' });
+        setNotification({ messyear: 'Vehicle profile added successfully!', type: 'success' });
       }
 
       setIsAddingPet(false);
       setEditingPetId(null);
-      setPetImageFile(null);
+      setVehicleImageFile(null);
       setNewPet({
         name: '',
-        species: 'dog',
-        breed: '',
-        age: '',
-        personality: '',
+        make: 'dog',
+        model: '',
+        year: '',
+        mileage: '',
         photoUrl: '',
-        diet: '',
-        vaccinations: ''
+        engine: '',
+        transmission: ''
       });
     } catch (error) {
-      console.error("Failed to save pet:", error);
-      setNotification({ message: `Failed to ${editingPetId ? 'update' : 'add'} pet profile`, type: 'error' });
+      console.error("Failed to save vehicle:", error);
+      setNotification({ messyear: `Failed to ${editingVehicleId ? 'update' : 'add'} vehicle profile`, type: 'error' });
     } finally {
       setIsUploadingPetImage(false);
     }
   };
 
-  const handleDeletePet = async (petId: string) => {
-    console.log(`[Firestore] Attempting to delete pet: ${petId}`);
+  const handleDeleteVehicle = async (vehicleId: string) => {
+    console.log(`[Firestore] Attempting to delete vehicle: ${vehicleId}`);
     try {
-      await deleteDoc(doc(db, 'pets', petId));
-      console.log(`[Firestore] Pet deleted successfully: ${petId}`);
-      setNotification({ message: 'Pet profile deleted successfully', type: 'success' });
+      await deleteDoc(doc(db, 'vehicles', vehicleId));
+      console.log(`[Firestore] Vehicle deleted successfully: ${vehicleId}`);
+      setNotification({ messyear: 'Vehicle profile deleted successfully', type: 'success' });
     } catch (error) {
-      console.error("Failed to delete pet:", error);
-      setNotification({ message: 'Failed to delete pet profile. Please check your permissions.', type: 'error' });
-      handleFirestoreError(error, OperationType.DELETE, `pets/${petId}`);
+      console.error("Failed to delete vehicle:", error);
+      setNotification({ messyear: 'Failed to delete vehicle profile. Please check your permissions.', type: 'error' });
+      handleFirestoreError(error, OperationType.DELETE, `vehicles/${vehicleId}`);
     } finally {
       setDeleteConfirmation(null);
     }
@@ -1553,13 +1553,13 @@ export default function App() {
     try {
       await deleteDoc(doc(db, 'analyses', analysisId));
       console.log(`[Firestore] Analysis deleted successfully: ${analysisId}`);
-      setNotification({ message: 'Analysis deleted successfully', type: 'success' });
+      setNotification({ messyear: 'Analysis deleted successfully', type: 'success' });
       if (selectedAnalysis?.id === analysisId) {
         setSelectedAnalysis(null);
       }
     } catch (error) {
       console.error("Failed to delete analysis:", error);
-      setNotification({ message: 'Failed to delete analysis. Please check your permissions.', type: 'error' });
+      setNotification({ messyear: 'Failed to delete analysis. Please check your permissions.', type: 'error' });
       handleFirestoreError(error, OperationType.DELETE, `analyses/${analysisId}`);
     } finally {
       setDeleteConfirmation(null);
@@ -1571,10 +1571,10 @@ export default function App() {
     try {
       await deleteDoc(doc(db, 'reminders', reminderId));
       console.log(`[Firestore] Reminder deleted successfully: ${reminderId}`);
-      setNotification({ message: 'Reminder deleted successfully', type: 'success' });
+      setNotification({ messyear: 'Reminder deleted successfully', type: 'success' });
     } catch (error) {
       console.error("Failed to delete reminder:", error);
-      setNotification({ message: 'Failed to delete reminder. Please check your permissions.', type: 'error' });
+      setNotification({ messyear: 'Failed to delete reminder. Please check your permissions.', type: 'error' });
       handleFirestoreError(error, OperationType.DELETE, `reminders/${reminderId}`);
     } finally {
       setDeleteConfirmation(null);
@@ -1586,13 +1586,13 @@ export default function App() {
     try {
       await deleteDoc(doc(db, 'challenges', challengeId));
       console.log(`[Firestore] Challenge deleted successfully: ${challengeId}`);
-      setNotification({ message: 'Training challenge deleted successfully', type: 'success' });
+      setNotification({ messyear: 'Training challenge deleted successfully', type: 'success' });
       if (selectedChallenge?.id === challengeId) {
         setSelectedChallenge(null);
       }
     } catch (error) {
       console.error("Failed to delete challenge:", error);
-      setNotification({ message: 'Failed to delete challenge. Please check your permissions.', type: 'error' });
+      setNotification({ messyear: 'Failed to delete challenge. Please check your permissions.', type: 'error' });
       handleFirestoreError(error, OperationType.DELETE, `challenges/${challengeId}`);
     } finally {
       setDeleteConfirmation(null);
@@ -1632,7 +1632,7 @@ export default function App() {
           return;
         }
         await sendPasswordResetEmail(auth, email);
-        setNotification({ message: 'Success! Please check your inbox (and spam folder) for the reset link.', type: 'success' });
+        setNotification({ messyear: 'Success! Please check your inbox (and spam folder) for the reset link.', type: 'success' });
         setAuthMode('login');
       } else {
         await signInWithEmailAndPassword(auth, email, password);
@@ -1648,9 +1648,9 @@ export default function App() {
     setIsUpdatingProfile(true);
     try {
       await updateProfile(user, { displayName: settingsName.trim() });
-      setNotification({ message: 'Profile updated successfully!', type: 'success' });
+      setNotification({ messyear: 'Profile updated successfully!', type: 'success' });
     } catch (error: any) {
-      setNotification({ message: error.message || 'Failed to update profile', type: 'error' });
+      setNotification({ messyear: error.message || 'Failed to update profile', type: 'error' });
     } finally {
       setIsUpdatingProfile(false);
     }
@@ -1669,7 +1669,7 @@ export default function App() {
         () => { },
         (error) => {
           console.error("Profile picture upload failed:", error);
-          setNotification({ message: 'Failed to upload image', type: 'error' });
+          setNotification({ messyear: 'Failed to upload image', type: 'error' });
           setIsUploadingProfilePic(false);
         },
         async () => {
@@ -1680,13 +1680,13 @@ export default function App() {
           // In many cases, Firebase Auth doesn't trigger a re-render for profile updates alone,
           // so we might need to manually trigger it if we had a local user state, but we use useAuth.
           // We'll just show a success message.
-          setNotification({ message: 'Profile picture updated!', type: 'success' });
+          setNotification({ messyear: 'Profile picture updated!', type: 'success' });
           setIsUploadingProfilePic(false);
         }
       );
     } catch (error) {
       console.error("Error initiating upload:", error);
-      setNotification({ message: 'Failed to start upload', type: 'error' });
+      setNotification({ messyear: 'Failed to start upload', type: 'error' });
       setIsUploadingProfilePic(false);
     }
   };
@@ -1696,9 +1696,9 @@ export default function App() {
     setIsSendingReset(true);
     try {
       await sendPasswordResetEmail(auth, user.email);
-      setNotification({ message: 'Password reset email sent!', type: 'success' });
+      setNotification({ messyear: 'Password reset email sent!', type: 'success' });
     } catch (error: any) {
-      setNotification({ message: error.message || 'Failed to send reset email', type: 'error' });
+      setNotification({ messyear: error.message || 'Failed to send reset email', type: 'error' });
     } finally {
       setIsSendingReset(false);
     }
@@ -1706,32 +1706,32 @@ export default function App() {
 
   const handleSaveReminder = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user || !newReminder.petId || !newReminder.title || !newReminder.dueDate) return;
+    if (!user || !newReminder.vehicleId || !newReminder.title || !newReminder.dueDate) return;
 
-    const selectedPet = pets.find(p => p.id === newReminder.petId);
+    const selectedVehicle = vehicles.find(p => p.id === newReminder.vehicleId);
 
     try {
       if (editingReminderId) {
         await updateDoc(doc(db, 'reminders', editingReminderId), {
-          petName: selectedPet?.name || 'Pet',
+          petName: selectedVehicle?.name || 'Vehicle',
           ...newReminder,
           updatedAt: Timestamp.now()
         });
-        setNotification({ message: 'Reminder updated successfully!', type: 'success' });
+        setNotification({ messyear: 'Reminder updated successfully!', type: 'success' });
       } else {
         await addDoc(collection(db, 'reminders'), {
           userId: user.uid,
-          petName: selectedPet?.name || 'Pet',
+          petName: selectedVehicle?.name || 'Vehicle',
           ...newReminder,
           createdAt: Timestamp.now()
         });
-        setNotification({ message: 'Reminder added successfully!', type: 'success' });
+        setNotification({ messyear: 'Reminder added successfully!', type: 'success' });
       }
 
       setIsAddingReminder(false);
       setEditingReminderId(null);
       setNewReminder({
-        petId: '',
+        vehicleId: '',
         title: '',
         type: 'vaccination',
         dueDate: '',
@@ -1739,7 +1739,7 @@ export default function App() {
       });
     } catch (error) {
       console.error("Failed to save reminder:", error);
-      setNotification({ message: `Failed to ${editingReminderId ? 'update' : 'add'} reminder`, type: 'error' });
+      setNotification({ messyear: `Failed to ${editingReminderId ? 'update' : 'add'} reminder`, type: 'error' });
     }
   };
 
@@ -1766,7 +1766,7 @@ export default function App() {
     e.preventDefault();
     if (!referralInput.trim() || !user || !userData || isSubmittingReferral) return;
     if (userData.referredBy) {
-      setNotification({ message: "You have already used a referral code.", type: 'error' });
+      setNotification({ messyear: "You have already used a referral code.", type: 'error' });
       return;
     }
 
@@ -1777,7 +1777,7 @@ export default function App() {
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
-        setNotification({ message: "Invalid referral code.", type: 'error' });
+        setNotification({ messyear: "Invalid referral code.", type: 'error' });
         setIsSubmittingReferral(false);
         return;
       }
@@ -1786,7 +1786,7 @@ export default function App() {
       const referrerId = referrerDoc.id;
 
       if (referrerId === user.uid) {
-        setNotification({ message: "You cannot refer yourself!", type: 'error' });
+        setNotification({ messyear: "You cannot refer yourself!", type: 'error' });
         setIsSubmittingReferral(false);
         return;
       }
@@ -1802,11 +1802,11 @@ export default function App() {
         referredBy: referrerId
       });
 
-      setNotification({ message: "Referral code applied! You received +2 bonus analyses.", type: 'success' });
+      setNotification({ messyear: "Referral code applied! You received +2 bonus analyses.", type: 'success' });
       setReferralInput('');
     } catch (error) {
       console.error("Referral error:", error);
-      setNotification({ message: "Failed to apply referral code.", type: 'error' });
+      setNotification({ messyear: "Failed to apply referral code.", type: 'error' });
     } finally {
       setIsSubmittingReferral(false);
     }
@@ -1816,8 +1816,8 @@ export default function App() {
     if (!analysis) return;
 
     const shareData = {
-      title: `Pawsitive Behavior Analysis: ${analysis.petName || 'My Pet'}`,
-      text: `Check out this behavioral analysis for ${analysis.petName || 'my pet'}! Emotional State: ${analysis.result?.emotionalState || 'Unknown'}.`,
+      title: `AutoDiagnostic Analysis: ${analysis.petName || 'My Vehicle'}`,
+      text: `Check out this behavioral analysis for ${analysis.petName || 'my vehicle'}! Emotional State: ${analysis.result?.emotionalState || 'Unknown'}.`,
       url: window.location.href,
     };
 
@@ -1833,7 +1833,7 @@ export default function App() {
         await navigator.share(shareData);
       } else {
         await navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
-        setNotification({ message: "Analysis summary copied to clipboard!", type: 'success' });
+        setNotification({ messyear: "Analysis summary copied to clipboard!", type: 'success' });
       }
     } catch (error) {
       console.error("Error sharing:", error);
@@ -1849,8 +1849,8 @@ export default function App() {
       : `completed ${progress}/7 days of the "${challenge.title}" challenge!`;
 
     const shareData = {
-      title: `Pawsitive Behavior Training: ${challenge.petName || 'My Pet'}`,
-      text: `My pet ${challenge.petName || 'my pet'} has ${statusText} Check out Pawsitive Behavior for custom pet training!`,
+      title: `AutoDiagnostic Training: ${challenge.petName || 'My Vehicle'}`,
+      text: `My vehicle ${challenge.petName || 'my vehicle'} has ${statusText} Check out AutoDiagnostic for custom vehicle training!`,
       url: window.location.href,
     };
 
@@ -1866,7 +1866,7 @@ export default function App() {
         await navigator.share(shareData);
       } else {
         await navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
-        setNotification({ message: "Challenge progress copied to clipboard!", type: 'success' });
+        setNotification({ messyear: "Challenge progress copied to clipboard!", type: 'success' });
       }
     } catch (error) {
       console.error("Error sharing challenge:", error);
@@ -1875,9 +1875,9 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-zinc-950 relative overflow-hidden">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950 relative overflow-hidden">
         {/* Ambient glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold-500/5 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-orange-500/5 rounded-full blur-[100px] pointer-events-none" />
 
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -1885,19 +1885,19 @@ export default function App() {
           transition={{ duration: 1, ease: "easeOut" }}
           className="flex flex-col items-center gap-6 relative z-10"
         >
-          <div className="w-24 h-24 bg-gold-500 rounded-[2.5rem] flex items-center justify-center shadow-[0_20px_50px_rgba(212,175,55,0.15)] border border-gold-400/20">
-            <Dog className="w-12 h-12 text-white" />
+          <div className="w-24 h-24 bg-orange-500 rounded-[2.5rem] flex items-center justify-center shadow-[0_20px_50px_rgba(212,175,55,0.15)] border border-orange-400/20">
+            <Car className="w-12 h-12 text-white" />
           </div>
 
           <div className="text-center">
-            <h1 className="text-3xl font-black font-serif tracking-[0.2em] text-gold-400 uppercase">Pawsitive Behavior</h1>
-            <p className="text-[10px] tracking-[0.5em] uppercase text-gold-600/70 mt-3 font-bold">Pet Analysis</p>
+            <h1 className="text-3xl font-black font-serif tracking-[0.2em] text-orange-400 uppercase">AutoDiagnostic</h1>
+            <p className="text-[10px] tracking-[0.5em] uppercase text-orange-600/70 mt-3 font-bold">Vehicle Analysis</p>
           </div>
 
           <div className="mt-12 flex items-center gap-3">
-            <div className="w-1.5 h-1.5 bg-gold-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
-            <div className="w-1.5 h-1.5 bg-gold-500 rounded-full animate-bounce [animation-delay:-0.15s]" />
-            <div className="w-1.5 h-1.5 bg-gold-500 rounded-full animate-bounce" />
+            <div className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
+            <div className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-bounce [animation-delay:-0.15s]" />
+            <div className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-bounce" />
           </div>
         </motion.div>
       </div>
@@ -1906,22 +1906,22 @@ export default function App() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4 relative overflow-hidden">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="max-w-md w-full text-center space-y-8"
         >
           <div className="flex justify-center">
-            <div className="w-20 h-20 bg-gold-500 rounded-3xl flex items-center justify-center shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-indigo-200">
-              <Dog className="w-12 h-12 text-white" />
+            <div className="w-20 h-20 bg-orange-500 rounded-3xl flex items-center justify-center shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-indigo-200">
+              <Car className="w-12 h-12 text-white" />
             </div>
           </div>
 
           <div className="space-y-2">
-            <h1 className="text-4xl font-black font-serif tracking-tight text-gold-400">Pawsitive Behavior</h1>
-            <p className="text-[10px] tracking-[0.3em] uppercase text-gold-600 mt-2 font-bold">Pet Analysis</p>
-            <p className="text-zinc-400 text-lg">Professional AI behavior analysis for your beloved pets.</p>
+            <h1 className="text-4xl font-black font-serif tracking-tight text-orange-400">AutoDiagnostic</h1>
+            <p className="text-[10px] tracking-[0.3em] uppercase text-orange-600 mt-2 font-bold">Vehicle Analysis</p>
+            <p className="text-slate-400 text-lg">Professional AI behavior analysis for your beloved vehicles.</p>
           </div>
 
           {authMode === 'google' ? (
@@ -1929,10 +1929,10 @@ export default function App() {
               <button
                 onClick={handleGoogleSignIn}
                 disabled={isLoggingIn}
-                className={`w-full flex items-center justify-center gap-3 bg-zinc-900 border border-zinc-800 text-zinc-300 px-6 py-4 rounded-2xl font-medium transition-all shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)] active:scale-[0.98] ${isLoggingIn ? 'opacity-50 cursor-not-allowed' : 'hover:bg-zinc-950'}`}
+                className={`w-full flex items-center justify-center gap-3 bg-slate-900 border border-slate-800 text-slate-300 px-6 py-4 rounded-2xl font-medium transition-all shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)] active:scale-[0.98] ${isLoggingIn ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-950'}`}
               >
                 {isLoggingIn ? (
-                  <div className="w-5 h-5 border-2 border-gold-500 border-t-transparent rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
                 ) : (
                   <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/layout/google.svg" className="w-5 h-5" alt="Google" />
                 )}
@@ -1940,22 +1940,22 @@ export default function App() {
               </button>
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t border-zinc-800"></span>
+                  <span className="w-full border-t border-slate-800"></span>
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-zinc-900 px-2 text-zinc-500">Or continue with</span>
+                  <span className="bg-slate-900 px-2 text-slate-500">Or continue with</span>
                 </div>
               </div>
               <button
                 onClick={() => setAuthMode('login')}
-                className="w-full flex items-center justify-center gap-3 bg-zinc-800 border border-zinc-700 text-zinc-100 px-6 py-4 rounded-2xl font-medium hover:bg-zinc-700 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.4)] active:scale-[0.98]"
+                className="w-full flex items-center justify-center gap-3 bg-slate-800 border border-slate-700 text-slate-100 px-6 py-4 rounded-2xl font-medium hover:bg-slate-700 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.4)] active:scale-[0.98]"
               >
                 Sign in with Email
               </button>
               <button
                 type="button"
                 onClick={() => setAuthMode('forgot')}
-                className="text-xs font-bold text-gold-500 hover:text-gold-400 uppercase tracking-widest pt-2"
+                className="text-xs font-bold text-orange-500 hover:text-orange-400 uppercase tracking-widest pt-2"
               >
                 Forgot Password?
               </button>
@@ -1964,37 +1964,37 @@ export default function App() {
             <form onSubmit={handleEmailAuth} className="space-y-4 text-left">
               {authMode === 'signup' && (
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-zinc-400 uppercase">Full Name</label>
+                  <label className="text-xs font-bold text-slate-400 uppercase">Full Name</label>
                   <input
                     required
                     type="text"
                     value={displayName}
                     onChange={e => setDisplayName(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-zinc-100 placeholder-zinc-600 focus:ring-2 focus:ring-gold-500 outline-none"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-800 bg-slate-950 text-slate-100 placeholder-slate-600 focus:ring-2 focus:ring-orange-500 outline-none"
                     placeholder="John Doe"
                   />
                 </div>
               )}
               <div className="space-y-1">
-                <label className="text-xs font-bold text-zinc-400 uppercase">Email Address</label>
+                <label className="text-xs font-bold text-slate-400 uppercase">Email Address</label>
                 <input
                   required
                   type="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-zinc-100 placeholder-zinc-600 focus:ring-2 focus:ring-gold-500 outline-none"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-800 bg-slate-950 text-slate-100 placeholder-slate-600 focus:ring-2 focus:ring-orange-500 outline-none"
                   placeholder="name@example.com"
                 />
               </div>
               {authMode !== 'forgot' && (
                 <div className="space-y-1">
                   <div className="flex justify-between items-center">
-                    <label className="text-xs font-bold text-zinc-400 uppercase">Password</label>
+                    <label className="text-xs font-bold text-slate-400 uppercase">Password</label>
                     {authMode === 'login' && (
                       <button
                         type="button"
                         onClick={() => setAuthMode('forgot')}
-                        className="text-sm font-black text-gold-400 hover:text-gold-300 transition-colors uppercase tracking-widest underline decoration-2 underline-offset-4"
+                        className="text-sm font-black text-orange-400 hover:text-orange-300 transition-colors uppercase tracking-widest underline decoration-2 underline-offset-4"
                       >
                         Forgot Password?
                       </button>
@@ -2005,7 +2005,7 @@ export default function App() {
                     type="password"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-zinc-100 placeholder-zinc-600 focus:ring-2 focus:ring-gold-500 outline-none"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-800 bg-slate-950 text-slate-100 placeholder-slate-600 focus:ring-2 focus:ring-orange-500 outline-none"
                     placeholder="••••••••"
                   />
                 </div>
@@ -2026,7 +2026,7 @@ export default function App() {
 
               <button
                 type="submit"
-                className="w-full bg-gold-500 text-white px-6 py-4 rounded-2xl font-bold hover:bg-gold-600 transition-all shadow-lg shadow-gold-500/20 active:scale-[0.98]"
+                className="w-full bg-orange-500 text-white px-6 py-4 rounded-2xl font-bold hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20 active:scale-[0.98]"
               >
                 {authMode === 'login' ? 'Sign In' : authMode === 'signup' ? 'Create Account' : 'Send Reset Link'}
               </button>
@@ -2035,22 +2035,22 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => setAuthMode(authMode === 'signup' ? 'login' : 'signup')}
-                  className="text-gold-400 text-sm font-medium hover:underline"
+                  className="text-orange-400 text-sm font-medium hover:underline"
                 >
                   {authMode === 'signup' ? "Already have an account? Sign in" : "Don't have an account? Sign up"}
                 </button>
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t border-zinc-800"></span>
+                    <span className="w-full border-t border-slate-800"></span>
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-zinc-900 px-2 text-zinc-500">Or</span>
+                    <span className="bg-slate-900 px-2 text-slate-500">Or</span>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => setAuthMode('google')}
-                  className="text-zinc-400 text-sm font-medium hover:underline"
+                  className="text-slate-400 text-sm font-medium hover:underline"
                 >
                   Back to Google Sign In
                 </button>
@@ -2058,8 +2058,8 @@ export default function App() {
             </form>
           )}
 
-          <p className="text-xs text-zinc-500">
-            By signing in, you agree to our <button type="button" onClick={() => setShowTermsModal(true)} className="hover:text-gold-400 underline">Terms of Service</button> and <button type="button" onClick={() => setShowPrivacyModal(true)} className="hover:text-gold-400 underline">Privacy Policy</button>.
+          <p className="text-xs text-slate-500">
+            By signing in, you agree to our <button type="button" onClick={() => setShowTermsModal(true)} className="hover:text-orange-400 underline">Terms of Service</button> and <button type="button" onClick={() => setShowPrivacyModal(true)} className="hover:text-orange-400 underline">Privacy Policy</button>.
           </p>
         </motion.div>
 
@@ -2071,42 +2071,42 @@ export default function App() {
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="bg-zinc-900 rounded-3xl p-8 max-w-2xl w-full shadow-2xl border border-zinc-800 max-h-[90vh] overflow-y-auto"
+                className="bg-slate-900 rounded-3xl p-8 max-w-2xl w-full shadow-2xl border border-slate-800 max-h-[90vh] overflow-y-auto"
               >
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-black font-serif text-gold-400">Terms of Use (EULA)</h2>
-                  <button onClick={() => setShowTermsModal(false)} className="p-2 text-zinc-500 hover:bg-zinc-800 rounded-full transition-colors">
+                  <h2 className="text-2xl font-black font-serif text-orange-400">Terms of Use (EULA)</h2>
+                  <button onClick={() => setShowTermsModal(false)} className="p-2 text-slate-500 hover:bg-slate-800 rounded-full transition-colors">
                     <X className="w-6 h-6" />
                   </button>
                 </div>
 
-                <div className="space-y-6 text-zinc-400 text-sm leading-relaxed">
+                <div className="space-y-6 text-slate-400 text-sm leading-relaxed">
                   <p className="italic">Last Updated: April 2026</p>
 
                   <div>
-                    <h4 className="font-black font-serif text-gold-400 mb-1">1. Acceptance of Terms</h4>
-                    <p>By accessing and using Pawsitive Behavior, you agree to be bound by these Terms of Use. If you do not agree, please do not use the application.</p>
+                    <h4 className="font-black font-serif text-orange-400 mb-1">1. Acceptance of Terms</h4>
+                    <p>By accessing and using AutoDiagnostic, you agree to be bound by these Terms of Use. If you do not agree, please do not use the application.</p>
                   </div>
 
                   <div>
-                    <h4 className="font-black font-serif text-gold-400 mb-1">2. Medical Disclaimer</h4>
-                    <p>Pawsitive Behavior provides AI-driven behavioral analysis for educational and training purposes only. It is NOT a substitute for professional veterinary or trainer's advice, diagnosis, or treatment. Always consult a qualified veterinarian for medical concerns.</p>
+                    <h4 className="font-black font-serif text-orange-400 mb-1">2. Medical Disclaimer</h4>
+                    <p>AutoDiagnostic provides AI-driven behavioral analysis for educational and training purposes only. It is NOT a substitute for professional veterinary or trainer's advice, diagnosis, or treatment. Always consult a qualified veterinarian for medical concerns.</p>
                   </div>
 
                   <div>
-                    <h4 className="font-black font-serif text-gold-400 mb-1">3. User Content</h4>
-                    <p>You retain ownership of the videos and audio you upload. By uploading, you grant Pawsitive Behavior a license to process this media solely for the purpose of providing the analysis service.</p>
+                    <h4 className="font-black font-serif text-orange-400 mb-1">3. User Content</h4>
+                    <p>You retain ownership of the videos and audio you upload. By uploading, you grant AutoDiagnostic a license to process this media solely for the purpose of providing the analysis service.</p>
                   </div>
 
                   <div>
-                    <h4 className="font-black font-serif text-gold-400 mb-1">4. Subscriptions and Billing</h4>
+                    <h4 className="font-black font-serif text-orange-400 mb-1">4. Subscriptions and Billing</h4>
                     <p>Premium features require a subscription. Payments are processed securely through your device's app store (Apple App Store or Google Play). Subscriptions automatically renew unless canceled at least 24 hours before the end of the current period.</p>
                   </div>
                 </div>
 
                 <button
                   onClick={() => setShowTermsModal(false)}
-                  className="w-full mt-8 py-4 bg-zinc-800 text-zinc-100 font-bold rounded-2xl hover:bg-zinc-700 transition-all"
+                  className="w-full mt-8 py-4 bg-slate-800 text-slate-100 font-bold rounded-2xl hover:bg-slate-700 transition-all"
                 >
                   Close
                 </button>
@@ -2123,42 +2123,42 @@ export default function App() {
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="bg-zinc-900 rounded-3xl p-8 max-w-2xl w-full shadow-2xl border border-zinc-800 max-h-[90vh] overflow-y-auto"
+                className="bg-slate-900 rounded-3xl p-8 max-w-2xl w-full shadow-2xl border border-slate-800 max-h-[90vh] overflow-y-auto"
               >
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-black font-serif text-gold-400">Privacy Policy</h2>
-                  <button onClick={() => setShowPrivacyModal(false)} className="p-2 text-zinc-500 hover:bg-zinc-800 rounded-full transition-colors">
+                  <h2 className="text-2xl font-black font-serif text-orange-400">Privacy Policy</h2>
+                  <button onClick={() => setShowPrivacyModal(false)} className="p-2 text-slate-500 hover:bg-slate-800 rounded-full transition-colors">
                     <X className="w-6 h-6" />
                   </button>
                 </div>
 
-                <div className="space-y-6 text-zinc-400 text-sm leading-relaxed">
+                <div className="space-y-6 text-slate-400 text-sm leading-relaxed">
                   <p className="italic">Last Updated: April 2026</p>
 
                   <div>
-                    <h4 className="font-black font-serif text-gold-400 mb-1">1. Information We Collect</h4>
-                    <p>We collect information you provide directly to us, including your email address, pet profiles (name, breed, age), and the media (video/audio) you upload for analysis.</p>
+                    <h4 className="font-black font-serif text-orange-400 mb-1">1. Information We Collect</h4>
+                    <p>We collect information you provide directly to us, including your email address, vehicle profiles (name, breed, age), and the media (video/audio) you upload for analysis.</p>
                   </div>
 
                   <div>
-                    <h4 className="font-black font-serif text-gold-400 mb-1">2. How We Use Your Information</h4>
+                    <h4 className="font-black font-serif text-orange-400 mb-1">2. How We Use Your Information</h4>
                     <p>Your media is processed using advanced AI models to provide behavioral insights. We do not use your personal videos to train public AI models. Your data is used strictly to deliver and improve your personal experience within the app.</p>
                   </div>
 
                   <div>
-                    <h4 className="font-black font-serif text-gold-400 mb-1">3. Data Storage and Security</h4>
+                    <h4 className="font-black font-serif text-orange-400 mb-1">3. Data Storage and Security</h4>
                     <p>Your data is securely stored using industry-standard cloud infrastructure. We implement robust security measures to protect your personal information from unauthorized access.</p>
                   </div>
 
                   <div>
-                    <h4 className="font-black font-serif text-gold-400 mb-1">4. Data Deletion</h4>
-                    <p>You can delete your pet profiles, analyses, or your entire account at any time from within the app. Deleting an item permanently removes it from our active servers.</p>
+                    <h4 className="font-black font-serif text-orange-400 mb-1">4. Data Deletion</h4>
+                    <p>You can delete your vehicle profiles, analyses, or your entire account at any time from within the app. Deleting an item permanently removes it from our active servers.</p>
                   </div>
                 </div>
 
                 <button
                   onClick={() => setShowPrivacyModal(false)}
-                  className="w-full mt-8 py-4 bg-zinc-800 text-zinc-100 font-bold rounded-2xl hover:bg-zinc-700 transition-all"
+                  className="w-full mt-8 py-4 bg-slate-800 text-slate-100 font-bold rounded-2xl hover:bg-slate-700 transition-all"
                 >
                   Close
                 </button>
@@ -2171,21 +2171,21 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-slate-950 flex flex-col lg:flex-row">
       {/* Mobile Header */}
-      <header className="lg:hidden bg-zinc-900 border-b border-zinc-800 p-4 flex items-center justify-between sticky top-0 z-50">
+      <header className="lg:hidden bg-slate-900 border-b border-slate-800 p-4 flex items-center justify-between sticky top-0 z-50">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gold-500 rounded-lg flex items-center justify-center">
-            <Dog className="w-5 h-5 text-white" />
+          <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+            <Car className="w-5 h-5 text-white" />
           </div>
           <div className="flex flex-col">
-            <span className="font-black font-serif text-xl text-gold-400 leading-none">Pawsitive Behavior</span>
-            <span className="text-[8px] tracking-[0.2em] uppercase text-gold-600 font-bold">Pet Analysis</span>
+            <span className="font-black font-serif text-xl text-orange-400 leading-none">AutoDiagnostic</span>
+            <span className="text-[8px] tracking-[0.2em] uppercase text-orange-600 font-bold">Vehicle Analysis</span>
           </div>
         </div>
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="p-2 text-zinc-400 hover:bg-zinc-950 rounded-lg"
+          className="p-2 text-slate-400 hover:bg-slate-950 rounded-lg"
         >
           {isSidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
@@ -2194,17 +2194,17 @@ export default function App() {
       {/* Sidebar */}
       <aside className={`
         fixed inset-0 z-40 lg:relative lg:z-0
-        w-full lg:w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col
+        w-full lg:w-64 bg-slate-900 border-r border-slate-800 flex flex-col
         transition-transform duration-300 ease-in-out
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         <div className="p-6 hidden lg:flex items-center gap-3">
-          <div className="w-10 h-10 bg-gold-500 rounded-xl flex items-center justify-center">
-            <Dog className="w-6 h-6 text-white" />
+          <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center">
+            <Car className="w-6 h-6 text-white" />
           </div>
           <div className="flex flex-col">
-            <span className="font-black font-serif text-2xl text-gold-400 leading-none">Pawsitive Behavior</span>
-            <span className="text-[9px] tracking-[0.2em] uppercase text-gold-600 font-bold mt-1">Pet Analysis</span>
+            <span className="font-black font-serif text-2xl text-orange-400 leading-none">AutoDiagnostic</span>
+            <span className="text-[9px] tracking-[0.2em] uppercase text-orange-600 font-bold mt-1">Vehicle Analysis</span>
           </div>
         </div>
 
@@ -2228,10 +2228,10 @@ export default function App() {
             label="History"
           />
           <NavItem
-            active={activeTab === 'pets'}
-            onClick={() => { setActiveTab('pets'); setSelectedAnalysis(null); setIsSidebarOpen(false); }}
-            icon={<Dog className="w-5 h-5" />}
-            label="My Pets"
+            active={activeTab === 'vehicles'}
+            onClick={() => { setActiveTab('vehicles'); setSelectedAnalysis(null); setIsSidebarOpen(false); }}
+            icon={<Car className="w-5 h-5" />}
+            label="My Vehicles"
           />
           <NavItem
             active={activeTab === 'reminders'}
@@ -2243,7 +2243,7 @@ export default function App() {
             active={activeTab === 'challenges'}
             onClick={() => { setActiveTab('challenges'); setSelectedAnalysis(null); setIsSidebarOpen(false); }}
             icon={<Flame className="w-5 h-5" />}
-            label="Training Challenges"
+            label="Maintenance Plans"
           />
           <NavItem
             active={activeTab === 'settings'}
@@ -2253,23 +2253,23 @@ export default function App() {
           />
         </nav>
 
-        <div className="p-4 border-t border-zinc-800">
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-zinc-950 mb-4">
+        <div className="p-4 border-t border-slate-800">
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-950 mb-4">
             {user.photoURL ? (
               <img src={user.photoURL} className="w-10 h-10 rounded-full border-2 border-white shadow-[0_4px_20px_rgba(0,0,0,0.4)]" alt="" />
             ) : (
-              <div className="w-10 h-10 rounded-full bg-gold-500/20 flex items-center justify-center border-2 border-white shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
-                <UserIcon className="w-5 h-5 text-gold-400" />
+              <div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center border-2 border-white shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                <UserIcon className="w-5 h-5 text-orange-400" />
               </div>
             )}
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-zinc-100 truncate">{user.displayName || 'User'}</p>
-              <p className="text-xs text-zinc-400 truncate">{user.email}</p>
+              <p className="text-sm font-semibold text-slate-100 truncate">{user.displayName || 'User'}</p>
+              <p className="text-xs text-slate-400 truncate">{user.email}</p>
             </div>
           </div>
           <button
             onClick={logout}
-            className="w-full flex items-center gap-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 p-2 rounded-lg transition-colors text-sm font-medium"
+            className="w-full flex items-center gap-2 text-slate-400 hover:text-red-600 hover:bg-red-50 p-2 rounded-lg transition-colors text-sm font-medium"
           >
             <LogOut className="w-4 h-4" />
             Sign Out
@@ -2281,24 +2281,24 @@ export default function App() {
       <main className="flex-1 overflow-y-auto p-4 lg:p-8">
         <header className="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <h2 className="text-2xl lg:text-3xl font-black font-serif text-gold-400">
+            <h2 className="text-2xl lg:text-3xl font-black font-serif text-orange-400">
               {selectedAnalysis ? 'Analysis Report' :
                 activeTab === 'dashboard' ? 'Dashboard' :
                   activeTab === 'upload' ? 'New Analysis' :
                     activeTab === 'settings' ? 'Settings' :
                       activeTab === 'reminders' ? 'Reminders' :
-                        activeTab === 'challenges' ? 'Training Challenges' :
+                        activeTab === 'challenges' ? 'Maintenance Plans' :
                           'Report History'}
             </h2>
-            <p className="text-zinc-400 mt-1 text-sm lg:text-base">
-              {selectedAnalysis ? `Report for ${selectedAnalysis.petName || 'My Pet'}` : `Welcome back, ${(user.displayName || 'User').split(' ')[0]}`}
+            <p className="text-slate-400 mt-1 text-sm lg:text-base">
+              {selectedAnalysis ? `Report for ${selectedAnalysis.petName || 'My Vehicle'}` : `Welcome back, ${(user.displayName || 'User').split(' ')[0]}`}
             </p>
           </div>
           <div className="flex items-center gap-3">
             {activeTab === 'dashboard' && !selectedAnalysis && (
               <button
                 onClick={() => setActiveTab('upload')}
-                className="w-full sm:w-auto bg-gold-500 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-gold-600 transition-all shadow-lg shadow-gold-500/20 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto bg-orange-500 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2"
               >
                 <Upload className="w-4 h-4" />
                 New Analysis
@@ -2308,14 +2308,14 @@ export default function App() {
               <div className="flex items-center gap-2 w-full sm:w-auto">
                 <button
                   onClick={() => handleShareAnalysis(selectedAnalysis)}
-                  className="flex-1 sm:flex-none bg-zinc-900 text-zinc-400 border border-zinc-800 px-4 py-2.5 rounded-xl font-medium hover:bg-zinc-950 transition-all flex items-center justify-center gap-2"
+                  className="flex-1 sm:flex-none bg-slate-900 text-slate-400 border border-slate-800 px-4 py-2.5 rounded-xl font-medium hover:bg-slate-950 transition-all flex items-center justify-center gap-2"
                 >
                   <Share2 className="w-4 h-4" />
                   Share
                 </button>
                 <button
                   onClick={() => setSelectedAnalysis(null)}
-                  className="flex-1 sm:flex-none text-zinc-400 hover:text-zinc-100 font-medium flex items-center justify-center gap-2 px-4 py-2.5"
+                  className="flex-1 sm:flex-none text-slate-400 hover:text-slate-100 font-medium flex items-center justify-center gap-2 px-4 py-2.5"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   Back
@@ -2336,19 +2336,19 @@ export default function App() {
             >
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-8">
-                  {/* Non-Pet Warning */}
-                  {selectedAnalysis.result?.isDogOrCat === false && (
+                  {/* Non-Vehicle Warning */}
+                  {selectedAnalysis.result?.isVehicleOrPart === false && (
                     <div className="bg-red-500/10 border border-red-500/50 p-8 rounded-3xl text-center space-y-4">
                       <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto">
                         <AlertCircle className="w-8 h-8 text-red-500" />
                       </div>
                       <h3 className="text-xl font-black font-serif text-red-500">Analysis Limited</h3>
-                      <p className="text-zinc-400 leading-relaxed">
+                      <p className="text-slate-400 leading-relaxed">
                         {selectedAnalysis.result?.userQuestionAnswer || "Our AI behaviorist only specializes in canine (dog) and feline (cat) behavior. This media does not appear to contain a dog or a cat."}
                       </p>
                       <button 
                         onClick={() => setSelectedAnalysis(null)}
-                        className="bg-zinc-800 text-zinc-100 px-6 py-2 rounded-xl font-bold hover:bg-zinc-700 transition-all"
+                        className="bg-slate-800 text-slate-100 px-6 py-2 rounded-xl font-bold hover:bg-slate-700 transition-all"
                       >
                         Try Another Video
                       </button>
@@ -2379,14 +2379,14 @@ export default function App() {
                   )}
 
                   {/* User Question & Answer */}
-                  {selectedAnalysis.result?.isDogOrCat !== false && selectedAnalysis.userQuestion && (
-                    <div className="bg-gold-500 p-8 rounded-3xl text-white shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-gold-500/20 relative overflow-hidden">
+                  {selectedAnalysis.result?.isVehicleOrPart !== false && selectedAnalysis.userQuestion && (
+                    <div className="bg-orange-500 p-8 rounded-3xl text-white shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-orange-500/20 relative overflow-hidden">
                       <div className="absolute top-0 right-0 p-4 opacity-10">
                         <MessageSquare className="w-24 h-24" />
                       </div>
                       <h3 className="text-sm font-bold uppercase tracking-wider opacity-80 mb-2">Your Initial Question</h3>
                       <p className="text-2xl font-medium mb-8 leading-tight">"{selectedAnalysis.userQuestion}"</p>
-                      <div className="bg-zinc-900/10 backdrop-blur-md p-6 rounded-2xl border border-white/20">
+                      <div className="bg-slate-900/10 backdrop-blur-md p-6 rounded-2xl border border-white/20">
                         <h4 className="text-xs font-bold uppercase tracking-wider opacity-80 mb-3">AI Behaviorist Answer</h4>
                         <p className="text-white/90 leading-relaxed text-lg">
                           {selectedAnalysis.result?.userQuestionAnswer || "No specific answer provided."}
@@ -2396,53 +2396,53 @@ export default function App() {
                   )}
 
                   {/* Observations */}
-                  {selectedAnalysis.result?.isDogOrCat !== false && (
-                    <div className="bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
-                      <h3 className="text-xl font-black font-serif text-gold-400 mb-6 flex items-center gap-3">
-                        <Activity className="w-6 h-6 text-gold-400" />
+                  {selectedAnalysis.result?.isVehicleOrPart !== false && (
+                    <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                      <h3 className="text-xl font-black font-serif text-orange-400 mb-6 flex items-center gap-3">
+                        <Activity className="w-6 h-6 text-orange-400" />
                         Detailed Observations
                       </h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {selectedAnalysis.result?.observations?.map((obs: any, i: number) => (
-                          <div key={i} className="p-5 bg-zinc-950 rounded-2xl border border-zinc-800 hover:border-indigo-200 transition-colors">
-                            <p className="font-bold text-gold-400 text-xs uppercase tracking-widest mb-2">{obs.event}</p>
-                            <p className="text-zinc-300 leading-relaxed">{obs.meaning}</p>
+                          <div key={i} className="p-5 bg-slate-950 rounded-2xl border border-slate-800 hover:border-indigo-200 transition-colors">
+                            <p className="font-bold text-orange-400 text-xs uppercase tracking-widest mb-2">{obs.event}</p>
+                            <p className="text-slate-300 leading-relaxed">{obs.meaning}</p>
                           </div>
-                        )) || <p className="text-zinc-400 italic">No detailed observations recorded.</p>}
+                        )) || <p className="text-slate-400 italic">No detailed observations recorded.</p>}
                       </div>
                     </div>
                   )}
 
                   {/* Action Steps */}
-                  {selectedAnalysis.result?.isDogOrCat !== false && (
-                    <div className="bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
-                      <h3 className="text-xl font-black font-serif text-gold-400 mb-6 flex items-center gap-3">
+                  {selectedAnalysis.result?.isVehicleOrPart !== false && (
+                    <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                      <h3 className="text-xl font-black font-serif text-orange-400 mb-6 flex items-center gap-3">
                         <CheckCircle2 className="w-6 h-6 text-emerald-600" />
                         Recommended Action Steps
                       </h3>
                       <div className="space-y-4">
                         {selectedAnalysis.result?.actionSteps?.map((step: string, i: number) => (
-                          <div key={i} className="flex items-start gap-4 p-4 rounded-2xl hover:bg-zinc-950 transition-colors">
+                          <div key={i} className="flex items-start gap-4 p-4 rounded-2xl hover:bg-slate-950 transition-colors">
                             <div className="w-8 h-8 bg-emerald-500/20 text-emerald-700 rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-sm">
                               {i + 1}
                             </div>
-                            <span className="text-zinc-300 text-lg leading-relaxed">{step}</span>
+                            <span className="text-slate-300 text-lg leading-relaxed">{step}</span>
                           </div>
-                        )) || <p className="text-zinc-400 italic">No specific action steps provided.</p>}
+                        )) || <p className="text-slate-400 italic">No specific action steps provided.</p>}
                       </div>
                     </div>
                   )}
 
-                  {/* Training Challenge */}
-                  {selectedAnalysis.result?.isDogOrCat !== false && selectedAnalysis.result?.trainingChallenge && (
-                    <TrainingChallengeCard challenge={selectedAnalysis.result.trainingChallenge} />
+                  {/* Maintenance Plan */}
+                  {selectedAnalysis.result?.isVehicleOrPart !== false && selectedAnalysis.result?.maintenancePlan && (
+                    <MaintenancePlanCard challenge={selectedAnalysis.result.maintenancePlan} />
                   )}
                 </div>
 
                 <div className="space-y-8">
                   {/* Emotional State Card */}
-                  {selectedAnalysis.result?.isDogOrCat !== false && (
-                    <div className="bg-gradient-to-br from-indigo-600 to-purple-700 p-8 rounded-3xl text-white shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-gold-500/20">
+                  {selectedAnalysis.result?.isVehicleOrPart !== false && (
+                    <div className="bg-gradient-to-br from-indigo-600 to-purple-700 p-8 rounded-3xl text-white shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-orange-500/20">
                       <h3 className="text-xs font-bold uppercase tracking-widest opacity-70 mb-2">Primary Emotional State</h3>
                       <p className="text-4xl font-black font-serif tracking-tight">
                         {selectedAnalysis.result?.emotionalState || 'Unknown'}
@@ -2451,20 +2451,20 @@ export default function App() {
                   )}
 
                   {/* Follow-up Chat */}
-                  <div className="bg-zinc-900 rounded-3xl border border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex flex-col h-[500px] lg:h-[600px] overflow-hidden">
-                    <div className="p-4 lg:p-6 border-b border-zinc-800 bg-zinc-950/50 flex items-center gap-3">
-                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gold-500 rounded-xl flex items-center justify-center">
+                  <div className="bg-slate-900 rounded-3xl border border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex flex-col h-[500px] lg:h-[600px] overflow-hidden">
+                    <div className="p-4 lg:p-6 border-b border-slate-800 bg-slate-950/50 flex items-center gap-3">
+                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-orange-500 rounded-xl flex items-center justify-center">
                         <MessageSquare className="w-4 h-4 lg:w-5 lg:h-5 text-white" />
                       </div>
                       <div>
-                        <h3 className="font-black font-serif text-gold-400 text-sm lg:text-base">Follow-up Chat</h3>
-                        <p className="text-[10px] lg:text-xs text-zinc-400">Ask more about this behavior</p>
+                        <h3 className="font-black font-serif text-orange-400 text-sm lg:text-base">Follow-up Chat</h3>
+                        <p className="text-[10px] lg:text-xs text-slate-400">Ask more about this behavior</p>
                       </div>
                     </div>
 
-                    <div className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-4 bg-zinc-950/30">
-                      <div className="bg-gold-500/10 p-3 lg:p-4 rounded-2xl rounded-tl-none text-xs lg:text-sm text-indigo-900 border border-gold-500/20">
-                        Hello! I'm your AI Behaviorist. Based on the analysis above, do you have any specific questions about your pet's behavior?
+                    <div className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-4 bg-slate-950/30">
+                      <div className="bg-orange-500/10 p-3 lg:p-4 rounded-2xl rounded-tl-none text-xs lg:text-sm text-indigo-900 border border-orange-500/20">
+                        Hello! I'm your AI Behaviorist. Based on the analysis above, do you have any specific questions about your vehicle's behavior?
                       </div>
                       {chatMessages.map((msg) => (
                         <div
@@ -2472,8 +2472,8 @@ export default function App() {
                           className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                         >
                           <div className={`max-w-[85%] p-3 lg:p-4 rounded-2xl text-xs lg:text-sm ${msg.role === 'user'
-                              ? 'bg-gold-500 text-white rounded-tr-none'
-                              : 'bg-zinc-900 text-zinc-300 border border-zinc-800 rounded-tl-none shadow-[0_4px_20px_rgba(0,0,0,0.4)]'
+                              ? 'bg-orange-500 text-white rounded-tr-none'
+                              : 'bg-slate-900 text-slate-300 border border-slate-800 rounded-tl-none shadow-[0_4px_20px_rgba(0,0,0,0.4)]'
                             }`}>
                             {msg.content}
                           </div>
@@ -2481,24 +2481,24 @@ export default function App() {
                       ))}
                       {isSendingMessage && (
                         <div className="flex justify-start">
-                          <div className="bg-zinc-900 p-3 lg:p-4 rounded-2xl rounded-tl-none border border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
-                            <Loader2 className="w-4 h-4 animate-spin text-gold-400" />
+                          <div className="bg-slate-900 p-3 lg:p-4 rounded-2xl rounded-tl-none border border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                            <Loader2 className="w-4 h-4 animate-spin text-orange-400" />
                           </div>
                         </div>
                       )}
                     </div>
 
-                    <form onSubmit={handleSendMessage} className="p-3 lg:p-4 bg-zinc-900 border-t border-zinc-800 flex gap-2">
+                    <form onSubmit={handleSendMessage} className="p-3 lg:p-4 bg-slate-900 border-t border-slate-800 flex gap-2">
                       <input
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                         placeholder="Type a follow-up question..."
-                        className="flex-1 px-3 lg:px-4 py-2 rounded-xl border border-zinc-800 focus:ring-2 focus:ring-gold-500 outline-none text-xs lg:text-sm"
+                        className="flex-1 px-3 lg:px-4 py-2 rounded-xl border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none text-xs lg:text-sm"
                       />
                       <button
                         type="submit"
                         disabled={!newMessage.trim() || isSendingMessage}
-                        className="p-2 bg-gold-500 text-white rounded-xl hover:bg-gold-600 transition-all disabled:opacity-50"
+                        className="p-2 bg-orange-500 text-white rounded-xl hover:bg-orange-600 transition-all disabled:opacity-50"
                       >
                         <Send className="w-4 h-4 lg:w-5 lg:h-5" />
                       </button>
@@ -2508,23 +2508,23 @@ export default function App() {
                   {/* Metadata */}
                   <div className="bg-slate-900 p-6 lg:p-8 rounded-3xl text-white space-y-6">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 lg:w-12 lg:h-12 bg-zinc-900/10 rounded-2xl flex items-center justify-center">
+                      <div className="w-10 h-10 lg:w-12 lg:h-12 bg-slate-900/10 rounded-2xl flex items-center justify-center">
                         <FileText className="w-5 h-5 lg:w-6 lg:h-6 text-indigo-400" />
                       </div>
                       <div>
-                        <h4 className="text-[10px] lg:text-xs font-bold text-zinc-500 uppercase tracking-widest">Report ID</h4>
+                        <h4 className="text-[10px] lg:text-xs font-bold text-slate-500 uppercase tracking-widest">Report ID</h4>
                         <p className="text-slate-200 font-mono text-[10px] lg:text-xs">{selectedAnalysis.id}</p>
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4 lg:gap-6">
                       <div>
-                        <h4 className="text-[10px] lg:text-xs font-bold text-zinc-500 uppercase tracking-widest mb-1">Date</h4>
+                        <h4 className="text-[10px] lg:text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Date</h4>
                         <p className="text-slate-200 font-medium text-sm lg:text-base">
                           {new Date(selectedAnalysis.createdAt?.seconds * 1000).toLocaleDateString()}
                         </p>
                       </div>
                       <div>
-                        <h4 className="text-[10px] lg:text-xs font-bold text-zinc-500 uppercase tracking-widest mb-1">Media</h4>
+                        <h4 className="text-[10px] lg:text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Media</h4>
                         <p className="text-slate-200 font-medium capitalize text-sm lg:text-base">{selectedAnalysis.mediaType}</p>
                       </div>
                     </div>
@@ -2545,7 +2545,7 @@ export default function App() {
                   <div className="flex justify-between items-center">
                     <button
                       onClick={() => setSelectedChallenge(null)}
-                      className="flex items-center gap-2 text-zinc-400 hover:text-zinc-100 font-medium"
+                      className="flex items-center gap-2 text-slate-400 hover:text-slate-100 font-medium"
                     >
                       <ArrowLeft className="w-4 h-4" />
                       Back to Challenges
@@ -2553,7 +2553,7 @@ export default function App() {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleShareChallenge(selectedChallenge)}
-                        className="flex items-center gap-2 text-gold-400 hover:text-gold-300 font-medium px-4 py-2 rounded-xl hover:bg-gold-500/10 transition-all"
+                        className="flex items-center gap-2 text-orange-400 hover:text-orange-300 font-medium px-4 py-2 rounded-xl hover:bg-orange-500/10 transition-all"
                       >
                         <Share2 className="w-4 h-4" />
                         Share Progress
@@ -2574,7 +2574,7 @@ export default function App() {
 
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-2">
-                      <TrainingChallengeCard
+                      <MaintenancePlanCard
                         challenge={selectedChallenge}
                         onCompleteDay={async (day) => {
                           try {
@@ -2594,7 +2594,7 @@ export default function App() {
                                 origin: { y: 0.6 },
                                 colors: ['#4f46e5', '#10b981', '#f59e0b', '#ef4444']
                               });
-                              setNotification({ message: `Challenge Completed! Amazing work!`, type: 'success' });
+                              setNotification({ messyear: `Challenge Completed! Amazing work!`, type: 'success' });
                             } else {
                               confetti({
                                 particleCount: 50,
@@ -2602,7 +2602,7 @@ export default function App() {
                                 origin: { y: 0.7 },
                                 colors: ['#10b981', '#f59e0b']
                               });
-                              setNotification({ message: `Day ${day} completed! Keep it up!`, type: 'success' });
+                              setNotification({ messyear: `Day ${day} completed! Keep it up!`, type: 'success' });
                             }
 
                             // Update local state for immediate feedback
@@ -2619,21 +2619,21 @@ export default function App() {
                     </div>
 
                     <div className="space-y-6">
-                      <div className="bg-zinc-900 p-6 rounded-3xl border border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
-                        <h4 className="font-black font-serif text-gold-400 mb-4 flex items-center gap-2">
-                          <Upload className="w-4 h-4 text-gold-400" />
+                      <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                        <h4 className="font-black font-serif text-orange-400 mb-4 flex items-center gap-2">
+                          <Upload className="w-4 h-4 text-orange-400" />
                           Focused Progress Upload
                         </h4>
-                        <p className="text-sm text-zinc-400 mb-6">
-                          Upload a video of your pet performing today's exercise for a targeted analysis of their progress.
+                        <p className="text-sm text-slate-400 mb-6">
+                          Upload a video of your vehicle performing today's exercise for a targeted analysis of their progress.
                         </p>
                         <button
                           onClick={() => {
-                            setUserQuestion(`I am working on Day ${selectedChallenge.completedDays.length + 1} of the "${selectedChallenge.title}" challenge. How is my pet doing with this specific exercise?`);
-                            setSelectedPetId(selectedChallenge.petId);
+                            setUserQuestion(`I am working on Day ${selectedChallenge.completedDays.length + 1} of the "${selectedChallenge.title}" challenge. How is my vehicle doing with this specific exercise?`);
+                            setSelectedPetId(selectedChallenge.vehicleId);
                             setActiveTab('upload');
                           }}
-                          className="w-full py-3 bg-gold-500 text-white rounded-xl font-bold hover:bg-gold-600 transition-all shadow-lg shadow-gold-500/20 flex items-center justify-center gap-2"
+                          className="w-full py-3 bg-orange-500 text-white rounded-xl font-bold hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2"
                         >
                           <Play className="w-4 h-4" />
                           Upload Progress Video
@@ -2642,7 +2642,7 @@ export default function App() {
 
                       <div className="bg-slate-900 p-6 rounded-3xl text-white">
                         <h4 className="font-bold mb-2">Why this challenge?</h4>
-                        <p className="text-sm text-zinc-500 leading-relaxed">
+                        <p className="text-sm text-slate-500 leading-relaxed">
                           This challenge was custom-generated by our AI Behaviorist based on your analysis of {selectedChallenge.petName}.
                           Consistent daily practice is key to long-term behavioral change.
                         </p>
@@ -2652,11 +2652,11 @@ export default function App() {
                 </div>
               ) : (
                 <div className="space-y-8">
-                  <div className="bg-gold-500 p-6 lg:p-8 rounded-[32px] text-white relative overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-gold-500/20">
+                  <div className="bg-orange-500 p-6 lg:p-8 rounded-[32px] text-white relative overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-orange-500/20">
                     <div className="relative z-10">
-                      <h3 className="text-2xl lg:text-3xl font-black font-serif mb-2">Training Challenges</h3>
+                      <h3 className="text-2xl lg:text-3xl font-black font-serif mb-2">Maintenance Plans</h3>
                       <p className="text-indigo-100 max-w-md text-sm lg:text-base">
-                        Custom 7-day plans generated from your behavioral analyses to help you and your pet reach your goals.
+                        Custom 7-day plans generated from your behavioral analyses to help you and your vehicle reach your goals.
                       </p>
                     </div>
                     <Flame className="absolute -right-8 -bottom-8 w-48 lg:w-64 h-48 lg:h-64 text-white/10 rotate-12" />
@@ -2668,14 +2668,14 @@ export default function App() {
                         <div
                           key={challenge.id}
                           onClick={() => setSelectedChallenge(challenge)}
-                          className="bg-zinc-900 p-6 rounded-3xl border border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:border-indigo-300 transition-all cursor-pointer group"
+                          className="bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:border-indigo-300 transition-all cursor-pointer group"
                         >
                           <div className="flex items-center justify-between mb-4">
-                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${challenge.status === 'completed' ? 'bg-zinc-800 text-emerald-600' : 'bg-zinc-800 text-gold-400'}`}>
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${challenge.status === 'completed' ? 'bg-slate-800 text-emerald-600' : 'bg-slate-800 text-orange-400'}`}>
                               {challenge.status === 'completed' ? <CheckCircle2 className="w-5 h-5" /> : <Flame className="w-5 h-5" />}
                             </div>
                             <div className="flex items-center gap-2">
-                              <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-full ${challenge.status === 'completed' ? 'bg-emerald-500/20 text-emerald-700' : 'bg-gold-500/20 text-amber-700'
+                              <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-full ${challenge.status === 'completed' ? 'bg-emerald-500/20 text-emerald-700' : 'bg-orange-500/20 text-amber-700'
                                 }`}>
                                 {challenge.status}
                               </span>
@@ -2684,7 +2684,7 @@ export default function App() {
                                   e.stopPropagation();
                                   handleShareChallenge(challenge);
                                 }}
-                                className="p-2 text-slate-300 hover:text-gold-400 hover:bg-gold-500/10 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                                className="p-2 text-slate-300 hover:text-orange-400 hover:bg-orange-500/10 rounded-lg transition-all opacity-0 group-hover:opacity-100"
                               >
                                 <Share2 className="w-4 h-4" />
                               </button>
@@ -2703,29 +2703,29 @@ export default function App() {
                               </button>
                             </div>
                           </div>
-                          <h4 className="font-black font-serif text-gold-400 mb-1 group-hover:text-gold-400 transition-colors">{challenge.title}</h4>
-                          <p className="text-xs text-zinc-400 mb-4">{challenge.petName}</p>
+                          <h4 className="font-black font-serif text-orange-400 mb-1 group-hover:text-orange-400 transition-colors">{challenge.title}</h4>
+                          <p className="text-xs text-slate-400 mb-4">{challenge.petName}</p>
 
-                          <div className="w-full bg-zinc-800 h-2 rounded-full overflow-hidden mb-4">
+                          <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-4">
                             <div
-                              className={`h-full transition-all duration-500 ${challenge.status === 'completed' ? 'bg-zinc-8000' : 'bg-zinc-8000'}`}
+                              className={`h-full transition-all duration-500 ${challenge.status === 'completed' ? 'bg-slate-8000' : 'bg-slate-8000'}`}
                               style={{ width: `${(challenge.completedDays?.length || 0) / 7 * 100}%` }}
                             ></div>
                           </div>
 
-                          <div className="flex items-center justify-between text-xs font-bold text-zinc-500">
+                          <div className="flex items-center justify-between text-xs font-bold text-slate-500">
                             <span>{challenge.completedDays?.length || 0}/7 Days</span>
                             <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                           </div>
                         </div>
                       ))
                     ) : (
-                      <div className="col-span-full py-20 text-center bg-zinc-900 rounded-3xl border border-dashed border-zinc-800">
-                        <div className="w-16 h-16 bg-zinc-950 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <div className="col-span-full py-20 text-center bg-slate-900 rounded-3xl border border-dashed border-slate-800">
+                        <div className="w-16 h-16 bg-slate-950 rounded-2xl flex items-center justify-center mx-auto mb-4">
                           <Flame className="w-8 h-8 text-slate-300" />
                         </div>
-                        <h4 className="text-lg font-black font-serif text-gold-400 mb-1">No challenges yet</h4>
-                        <p className="text-zinc-400 text-sm max-w-xs mx-auto">
+                        <h4 className="text-lg font-black font-serif text-orange-400 mb-1">No challenges yet</h4>
+                        <p className="text-slate-400 text-sm max-w-xs mx-auto">
                           Upload a video for analysis to receive your first custom 7-day training challenge!
                         </p>
                       </div>
@@ -2747,31 +2747,31 @@ export default function App() {
               )}
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <StatCard label="Total Analyses" value={analyses.length} icon={<Activity className="text-gold-400" />} />
-                <StatCard label="Current Streak" value={userStats?.current_streak || 0} icon={<Flame className="text-gold-400" />} />
+                <StatCard label="Total Analyses" value={analyses.length} icon={<Activity className="text-orange-400" />} />
+                <StatCard label="Current Streak" value={userStats?.current_streak || 0} icon={<Flame className="text-orange-400" />} />
                 <StatCard label="Total Sessions" value={userStats?.total_sessions || 0} icon={<CheckCircle2 className="text-emerald-600" />} />
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-8">
-                  <div className="bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                  <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
                     <div className="flex justify-between items-center mb-8">
                       <div>
-                        <h3 className="text-xl font-black font-serif text-gold-400">Training Consistency</h3>
-                        <p className="text-sm text-zinc-400">Cumulative training sessions over time</p>
+                        <h3 className="text-xl font-black font-serif text-orange-400">Training Consistency</h3>
+                        <p className="text-sm text-slate-400">Cumulative training sessions over time</p>
                       </div>
-                      <div className="flex items-center gap-2 text-xs font-bold text-zinc-500 uppercase tracking-widest">
-                        <div className="w-3 h-3 rounded-full bg-zinc-8000"></div>
+                      <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                        <div className="w-3 h-3 rounded-full bg-slate-8000"></div>
                         Sessions
                       </div>
                     </div>
                     <ConsistencyChart activityLog={userStats?.activity_log || []} />
                   </div>
 
-                  <div className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
-                    <div className="p-6 border-b border-zinc-800 flex justify-between items-center">
-                      <h3 className="font-black font-serif text-gold-400">Recent Analyses</h3>
-                      <button onClick={() => setActiveTab('history')} className="text-gold-400 text-sm font-medium hover:underline">View All</button>
+                  <div className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                    <div className="p-6 border-b border-slate-800 flex justify-between items-center">
+                      <h3 className="font-black font-serif text-orange-400">Recent Analyses</h3>
+                      <button onClick={() => setActiveTab('history')} className="text-orange-400 text-sm font-medium hover:underline">View All</button>
                     </div>
                     <div className="divide-y divide-slate-50">
                       {analyses.slice(0, 5).map((analysis, idx) => (
@@ -2781,31 +2781,31 @@ export default function App() {
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: idx * 0.05 }}
                           onClick={() => setSelectedAnalysis(analysis)}
-                          className="p-4 hover:bg-zinc-950 transition-colors flex items-center justify-between cursor-pointer group"
+                          className="p-4 hover:bg-slate-950 transition-colors flex items-center justify-between cursor-pointer group"
                         >
                           <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-zinc-800 rounded-xl flex items-center justify-center group-hover:bg-gold-500/10 transition-colors">
-                              {analysis.mediaType === 'video' ? <Play className="w-6 h-6 text-zinc-500 group-hover:text-gold-400" /> : <Activity className="w-6 h-6 text-zinc-500 group-hover:text-gold-400" />}
+                            <div className="w-12 h-12 bg-slate-800 rounded-xl flex items-center justify-center group-hover:bg-orange-500/10 transition-colors">
+                              {analysis.mediaType === 'video' ? <Play className="w-6 h-6 text-slate-500 group-hover:text-orange-400" /> : <Activity className="w-6 h-6 text-slate-500 group-hover:text-orange-400" />}
                             </div>
                             <div>
-                              <p className="font-semibold text-zinc-100 truncate max-w-[200px] group-hover:text-gold-400 transition-colors">
+                              <p className="font-semibold text-slate-100 truncate max-w-[200px] group-hover:text-orange-400 transition-colors">
                                 {analysis.result?.emotionalState ?
                                   (analysis.result.emotionalState.length > 40 ?
                                     analysis.result.emotionalState.substring(0, 40) + '...' :
                                     analysis.result.emotionalState) :
                                   'New Analysis'}
                               </p>
-                              <p className="text-xs text-zinc-400">
-                                {analysis.petName || 'My Pet'} • {analysis.createdAt?.seconds ? new Date(analysis.createdAt.seconds * 1000).toLocaleDateString() : 'Just now'}
+                              <p className="text-xs text-slate-400">
+                                {analysis.petName || 'My Vehicle'} • {analysis.createdAt?.seconds ? new Date(analysis.createdAt.seconds * 1000).toLocaleDateString() : 'Just now'}
                               </p>
                             </div>
                           </div>
                           <div className="flex items-center gap-4">
-                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${analysis.status === 'completed' ? 'bg-zinc-800 text-emerald-700' : 'bg-zinc-800 text-amber-700'
+                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${analysis.status === 'completed' ? 'bg-slate-800 text-emerald-700' : 'bg-slate-800 text-amber-700'
                               }`}>
                               {analysis.status}
                             </span>
-                            <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-gold-400 group-hover:translate-x-1 transition-all" />
+                            <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-orange-400 group-hover:translate-x-1 transition-all" />
                           </div>
                         </motion.div>
                       ))}
@@ -2815,11 +2815,11 @@ export default function App() {
                           animate={{ opacity: 1 }}
                           className="p-12 text-center"
                         >
-                          <div className="w-16 h-16 bg-zinc-950 rounded-full flex items-center justify-center mx-auto mb-4">
+                          <div className="w-16 h-16 bg-slate-950 rounded-full flex items-center justify-center mx-auto mb-4">
                             <FileText className="w-8 h-8 text-slate-300" />
                           </div>
-                          <p className="text-zinc-400 font-medium">No analyses yet.</p>
-                          <p className="text-xs text-zinc-500 mt-1">Start by uploading a video of your pet!</p>
+                          <p className="text-slate-400 font-medium">No analyses yet.</p>
+                          <p className="text-xs text-slate-500 mt-1">Start by uploading a video of your vehicle!</p>
                         </motion.div>
                       )}
                     </div>
@@ -2827,10 +2827,10 @@ export default function App() {
                 </div>
 
                 <div className="space-y-8">
-                  <div className="bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                  <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
                     <div className="flex justify-between items-center mb-6">
-                      <h3 className="text-lg font-black font-serif text-gold-400">Upcoming Care</h3>
-                      <button onClick={() => setActiveTab('reminders')} className="text-gold-400 text-xs font-bold uppercase tracking-widest hover:underline">View All</button>
+                      <h3 className="text-lg font-black font-serif text-orange-400">Upcoming Care</h3>
+                      <button onClick={() => setActiveTab('reminders')} className="text-orange-400 text-xs font-bold uppercase tracking-widest hover:underline">View All</button>
                     </div>
                     <div className="space-y-4">
                       {reminders.filter(r => !r.completed).slice(0, 4).map((reminder, idx) => (
@@ -2839,19 +2839,19 @@ export default function App() {
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: idx * 0.05 }}
-                          className="flex items-start gap-4 p-4 rounded-2xl bg-zinc-950 border border-zinc-800 hover:border-indigo-200 transition-colors group"
+                          className="flex items-start gap-4 p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-indigo-200 transition-colors group"
                         >
-                          <div className={`p-2 rounded-xl transition-colors ${reminder.type === 'vaccination' ? 'bg-gold-500/20 text-gold-400 group-hover:bg-gold-500 group-hover:text-white' :
+                          <div className={`p-2 rounded-xl transition-colors ${reminder.type === 'vaccination' ? 'bg-orange-500/20 text-orange-400 group-hover:bg-orange-500 group-hover:text-white' :
                               reminder.type === 'medication' ? 'bg-rose-500/20 text-rose-600 group-hover:bg-rose-600 group-hover:text-white' :
-                                'bg-gold-500/20 text-gold-400 group-hover:bg-amber-600 group-hover:text-white'
+                                'bg-orange-500/20 text-orange-400 group-hover:bg-amber-600 group-hover:text-white'
                             }`}>
                             {reminder.type === 'vaccination' ? <Syringe className="w-4 h-4" /> :
                               reminder.type === 'medication' ? <Activity className="w-4 h-4" /> :
                                 <Bell className="w-4 h-4" />}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-black font-serif text-gold-400 truncate group-hover:text-gold-400 transition-colors">{reminder.title}</p>
-                            <p className="text-xs text-zinc-400">{reminder.petName} • {new Date(reminder.dueDate).toLocaleDateString()}</p>
+                            <p className="text-sm font-black font-serif text-orange-400 truncate group-hover:text-orange-400 transition-colors">{reminder.title}</p>
+                            <p className="text-xs text-slate-400">{reminder.petName} • {new Date(reminder.dueDate).toLocaleDateString()}</p>
                           </div>
                         </motion.div>
                       ))}
@@ -2862,7 +2862,7 @@ export default function App() {
                           className="py-8 text-center"
                         >
                           <Calendar className="w-8 h-8 text-slate-200 mx-auto mb-2" />
-                          <p className="text-xs text-zinc-500 font-medium">All caught up!</p>
+                          <p className="text-xs text-slate-500 font-medium">All caught up!</p>
                           <p className="text-[10px] text-slate-300">No upcoming tasks for today.</p>
                         </motion.div>
                       )}
@@ -2872,79 +2872,79 @@ export default function App() {
                   <div className="bg-amber-600 p-8 rounded-3xl text-white shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-amber-100">
                     <h3 className="text-lg font-bold mb-2">Trainer Status</h3>
                     <p className="text-amber-100 text-sm leading-relaxed">
-                      Complete 30 sessions and unlock your pet's potential!
+                      Complete 30 sessions and unlock your vehicle's potential!
                     </p>
                   </div>
                 </div>
               </div>
             </motion.div>
-          ) : activeTab === 'pets' ? (
+          ) : activeTab === 'vehicles' ? (
             <motion.div
-              key="pets"
+              key="vehicles"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               className="space-y-6"
             >
-              {selectedPetForAnalyses ? (
+              {selectedVehicleForAnalyses ? (
                 <div className="space-y-6">
                   <div className="flex items-center gap-4">
                     <button
                       onClick={() => setSelectedPetForAnalyses(null)}
-                      className="p-2 hover:bg-zinc-800 rounded-lg transition-colors"
+                      className="p-2 hover:bg-slate-800 rounded-lg transition-colors"
                     >
-                      <ArrowLeft className="w-5 h-5 text-zinc-400" />
+                      <ArrowLeft className="w-5 h-5 text-slate-400" />
                     </button>
                     <div className="flex items-center gap-4">
-                      {selectedPetForAnalyses.photoUrl ? (
+                      {selectedVehicleForAnalyses.photoUrl ? (
                         <img
-                          src={selectedPetForAnalyses.photoUrl}
-                          alt={selectedPetForAnalyses.name}
-                          className="w-12 h-12 rounded-xl object-cover border border-zinc-800"
+                          src={selectedVehicleForAnalyses.photoUrl}
+                          alt={selectedVehicleForAnalyses.name}
+                          className="w-12 h-12 rounded-xl object-cover border border-slate-800"
                           referrerPolicy="no-referrer"
                         />
                       ) : (
-                        <div className="w-12 h-12 bg-gold-500/10 rounded-xl flex items-center justify-center">
-                          {selectedPetForAnalyses.species === 'dog' ? <Dog className="w-6 h-6 text-gold-400" /> : <Cat className="w-6 h-6 text-gold-400" />}
+                        <div className="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center">
+                          {selectedVehicleForAnalyses.species === 'dog' ? <Car className="w-6 h-6 text-orange-400" /> : <Wrench className="w-6 h-6 text-orange-400" />}
                         </div>
                       )}
                       <div>
-                        <h3 className="text-xl font-black font-serif text-gold-400">{selectedPetForAnalyses.name}'s History</h3>
-                        <p className="text-sm text-zinc-400">All behavioral analyses for {selectedPetForAnalyses.name}</p>
+                        <h3 className="text-xl font-black font-serif text-orange-400">{selectedVehicleForAnalyses.name}'s History</h3>
+                        <p className="text-sm text-slate-400">All behavioral analyses for {selectedVehicleForAnalyses.name}</p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                  <div className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
                     <div className="divide-y divide-slate-50">
-                      {analyses.filter(a => a.petId === selectedPetForAnalyses.id).length > 0 ? (
+                      {analyses.filter(a => a.vehicleId === selectedVehicleForAnalyses.id).length > 0 ? (
                         analyses
-                          .filter(a => a.petId === selectedPetForAnalyses.id)
+                          .filter(a => a.vehicleId === selectedVehicleForAnalyses.id)
                           .map((analysis) => (
                             <div
                               key={analysis.id}
                               onClick={() => setSelectedAnalysis(analysis)}
-                              className="p-4 hover:bg-zinc-950 transition-colors flex items-center justify-between cursor-pointer"
+                              className="p-4 hover:bg-slate-950 transition-colors flex items-center justify-between cursor-pointer"
                             >
                               <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-zinc-800 rounded-xl flex items-center justify-center">
-                                  {analysis.mediaType === 'video' ? <Play className="w-6 h-6 text-zinc-500" /> : <Activity className="w-6 h-6 text-zinc-500" />}
+                                <div className="w-12 h-12 bg-slate-800 rounded-xl flex items-center justify-center">
+                                  {analysis.mediaType === 'video' ? <Play className="w-6 h-6 text-slate-500" /> : <Activity className="w-6 h-6 text-slate-500" />}
                                 </div>
                                 <div>
-                                  <p className="font-semibold text-zinc-100 truncate max-w-[200px]">
+                                  <p className="font-semibold text-slate-100 truncate max-w-[200px]">
                                     {analysis.result?.emotionalState ?
                                       (analysis.result.emotionalState.length > 40 ?
                                         analysis.result.emotionalState.substring(0, 40) + '...' :
                                         analysis.result.emotionalState) :
                                       'New Analysis'}
                                   </p>
-                                  <p className="text-xs text-zinc-400">
+                                  <p className="text-xs text-slate-400">
                                     {analysis.createdAt?.seconds ? new Date(analysis.createdAt.seconds * 1000).toLocaleString() : 'Just now'}
                                   </p>
                                 </div>
                               </div>
                               <div className="flex items-center gap-4">
-                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${analysis.status === 'completed' ? 'bg-zinc-800 text-emerald-700' : 'bg-zinc-800 text-amber-700'
+                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${analysis.status === 'completed' ? 'bg-slate-800 text-emerald-700' : 'bg-slate-800 text-amber-700'
                                   }`}>
                                   {analysis.status}
                                 </span>
@@ -2967,15 +2967,15 @@ export default function App() {
                           ))
                       ) : (
                         <div className="p-12 text-center">
-                          <div className="w-16 h-16 bg-zinc-950 rounded-full flex items-center justify-center mx-auto mb-4">
+                          <div className="w-16 h-16 bg-slate-950 rounded-full flex items-center justify-center mx-auto mb-4">
                             <FileText className="w-8 h-8 text-slate-300" />
                           </div>
-                          <p className="text-zinc-400">No analyses found for {selectedPetForAnalyses.name}.</p>
+                          <p className="text-slate-400">No analyses found for {selectedVehicleForAnalyses.name}.</p>
                           <button
                             onClick={() => setActiveTab('upload')}
-                            className="mt-4 text-gold-400 font-medium hover:underline"
+                            className="mt-4 text-orange-400 font-medium hover:underline"
                           >
-                            Upload a video for {selectedPetForAnalyses.name}
+                            Upload a video for {selectedVehicleForAnalyses.name}
                           </button>
                         </div>
                       )}
@@ -2985,50 +2985,50 @@ export default function App() {
               ) : (
                 <>
                   <div className="flex justify-between items-center">
-                    <h3 className="text-xl font-black font-serif text-gold-400">My Pet Profiles</h3>
+                    <h3 className="text-xl font-black font-serif text-orange-400">My Vehicle Profiles</h3>
                     <button
                       onClick={() => {
                         setIsAddingPet(true);
                         setEditingPetId(null);
-                        setPetImageFile(null);
+                        setVehicleImageFile(null);
                         setNewPet({
                           name: '',
-                          species: 'dog',
-                          breed: '',
-                          age: '',
-                          personality: '',
+                          make: 'dog',
+                          model: '',
+                          year: '',
+                          mileage: '',
                           photoUrl: '',
-                          diet: '',
-                          vaccinations: ''
+                          engine: '',
+                          transmission: ''
                         });
                       }}
-                      className="bg-gold-500 text-white px-4 py-2 rounded-xl font-medium hover:bg-gold-600 transition-all flex items-center gap-2"
+                      className="bg-orange-500 text-white px-4 py-2 rounded-xl font-medium hover:bg-orange-600 transition-all flex items-center gap-2"
                     >
                       <Plus className="w-4 h-4" />
-                      Add Pet
+                      Add Vehicle
                     </button>
                   </div>
 
-                  {isAddingPet && (
-                    <div className="bg-zinc-900 p-6 rounded-2xl border border-gold-500/20 shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-indigo-50 animate-in fade-in slide-in-from-top-4 duration-300">
-                      <h4 className="text-lg font-black font-serif text-gold-400 mb-4">{editingPetId ? 'Edit Pet Profile' : 'Add New Pet'}</h4>
+                  {isAddingVehicle && (
+                    <div className="bg-slate-900 p-6 rounded-2xl border border-orange-500/20 shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-indigo-50 animate-in fade-in slide-in-from-top-4 duration-300">
+                      <h4 className="text-lg font-black font-serif text-orange-400 mb-4">{editingVehicleId ? 'Edit Vehicle Profile' : 'Add New Vehicle'}</h4>
                       <form onSubmit={handleSavePet} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-1">
-                          <label className="text-xs font-bold text-zinc-400 uppercase">Pet Name</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase">Vehicle Name</label>
                           <input
                             required
-                            value={newPet.name}
-                            onChange={e => setNewPet({ ...newPet, name: e.target.value })}
-                            className="w-full px-4 py-2 rounded-lg border border-zinc-800 focus:ring-2 focus:ring-gold-500 outline-none"
+                            value={newVehicle.name}
+                            onChange={e => setNewPet({ ...newVehicle, name: e.target.value })}
+                            className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none"
                             placeholder="e.g., Buddy"
                           />
                         </div>
                         <div className="space-y-1">
-                          <label className="text-xs font-bold text-zinc-400 uppercase">Species</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase">Make</label>
                           <select
-                            value={newPet.species}
-                            onChange={e => setNewPet({ ...newPet, species: e.target.value })}
-                            className="w-full px-4 py-2 rounded-lg border border-zinc-800 focus:ring-2 focus:ring-gold-500 outline-none"
+                            value={newVehicle.species}
+                            onChange={e => setNewPet({ ...newVehicle, make: e.target.value })}
+                            className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none"
                           >
                             <option value="dog">Dog</option>
                             <option value="cat">Cat</option>
@@ -3036,42 +3036,42 @@ export default function App() {
                           </select>
                         </div>
                         <div className="space-y-1">
-                          <label className="text-xs font-bold text-zinc-400 uppercase">Breed</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase">Model</label>
                           <input
-                            value={newPet.breed}
-                            onChange={e => setNewPet({ ...newPet, breed: e.target.value })}
-                            className="w-full px-4 py-2 rounded-lg border border-zinc-800 focus:ring-2 focus:ring-gold-500 outline-none"
+                            value={newVehicle.breed}
+                            onChange={e => setNewPet({ ...newVehicle, model: e.target.value })}
+                            className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none"
                             placeholder="e.g., Golden Retriever"
                           />
                         </div>
                         <div className="space-y-1">
-                          <label className="text-xs font-bold text-zinc-400 uppercase">Age</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase">Year</label>
                           <input
-                            value={newPet.age}
-                            onChange={e => setNewPet({ ...newPet, age: e.target.value })}
-                            className="w-full px-4 py-2 rounded-lg border border-zinc-800 focus:ring-2 focus:ring-gold-500 outline-none"
+                            value={newVehicle.age}
+                            onChange={e => setNewPet({ ...newVehicle, year: e.target.value })}
+                            className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none"
                             placeholder="e.g., 3 years"
                           />
                         </div>
                         <div className="md:col-span-2 space-y-1">
-                          <label className="text-xs font-bold text-zinc-400 uppercase">Profile Picture</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase">Profile Picture</label>
                           <div className="flex items-center gap-4">
                             <label className="flex-1">
                               <input
                                 type="file"
                                 accept="image/*"
                                 className="hidden"
-                                onChange={(e) => setPetImageFile(e.target.files?.[0] || null)}
+                                onChange={(e) => setVehicleImageFile(e.target.files?.[0] || null)}
                               />
-                              <div className="w-full px-4 py-2 rounded-lg border border-dashed border-slate-300 hover:border-indigo-400 hover:bg-gold-500/10 transition-all cursor-pointer flex items-center justify-center gap-2 text-sm text-zinc-400">
+                              <div className="w-full px-4 py-2 rounded-lg border border-dashed border-slate-300 hover:border-indigo-400 hover:bg-orange-500/10 transition-all cursor-pointer flex items-center justify-center gap-2 text-sm text-slate-400">
                                 <Upload className="w-4 h-4" />
-                                {petImageFile ? petImageFile.name : 'Choose Image'}
+                                {vehicleImageFile ? vehicleImageFile.name : 'Choose Image'}
                               </div>
                             </label>
-                            {(petImageFile || newPet.photoUrl) && (
-                              <div className="w-10 h-10 rounded-lg overflow-hidden border border-zinc-800">
+                            {(vehicleImageFile || newVehicle.photoUrl) && (
+                              <div className="w-10 h-10 rounded-lg overflow-hidden border border-slate-800">
                                 <img
-                                  src={petImageFile ? URL.createObjectURL(petImageFile) : newPet.photoUrl}
+                                  src={vehicleImageFile ? URL.createObjectURL(vehicleImageFile) : newVehicle.photoUrl}
                                   alt="Preview"
                                   className="w-full h-full object-cover"
                                   referrerPolicy="no-referrer"
@@ -3081,29 +3081,29 @@ export default function App() {
                           </div>
                         </div>
                         <div className="md:col-span-2 space-y-1">
-                          <label className="text-xs font-bold text-zinc-400 uppercase">Dietary Information</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase">Engineary Information</label>
                           <textarea
-                            value={newPet.diet}
-                            onChange={e => setNewPet({ ...newPet, diet: e.target.value })}
-                            className="w-full px-4 py-2 rounded-lg border border-zinc-800 focus:ring-2 focus:ring-gold-500 outline-none h-20 resize-none"
+                            value={newVehicle.diet}
+                            onChange={e => setNewPet({ ...newVehicle, engine: e.target.value })}
+                            className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none h-20 resize-none"
                             placeholder="e.g., Grain-free kibble, twice a day..."
                           />
                         </div>
                         <div className="md:col-span-2 space-y-1">
-                          <label className="text-xs font-bold text-zinc-400 uppercase">Vaccination Records</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase">Vaccination Records</label>
                           <textarea
-                            value={newPet.vaccinations}
-                            onChange={e => setNewPet({ ...newPet, vaccinations: e.target.value })}
-                            className="w-full px-4 py-2 rounded-lg border border-zinc-800 focus:ring-2 focus:ring-gold-500 outline-none h-20 resize-none"
+                            value={newVehicle.vaccinations}
+                            onChange={e => setNewPet({ ...newVehicle, transmission: e.target.value })}
+                            className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none h-20 resize-none"
                             placeholder="e.g., Rabies (2025), DHPP (2024)..."
                           />
                         </div>
                         <div className="md:col-span-2 space-y-1">
-                          <label className="text-xs font-bold text-zinc-400 uppercase">Personality / Notes</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase">Mileage / Notes</label>
                           <textarea
-                            value={newPet.personality}
-                            onChange={e => setNewPet({ ...newPet, personality: e.target.value })}
-                            className="w-full px-4 py-2 rounded-lg border border-zinc-800 focus:ring-2 focus:ring-gold-500 outline-none h-20 resize-none"
+                            value={newVehicle.personality}
+                            onChange={e => setNewPet({ ...newVehicle, mileage: e.target.value })}
+                            className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none h-20 resize-none"
                             placeholder="e.g., Very energetic, afraid of thunder..."
                           />
                         </div>
@@ -3114,21 +3114,21 @@ export default function App() {
                               setIsAddingPet(false);
                               setEditingPetId(null);
                             }}
-                            className="px-4 py-2 text-zinc-400 font-medium hover:bg-zinc-950 rounded-lg transition-colors"
+                            className="px-4 py-2 text-slate-400 font-medium hover:bg-slate-950 rounded-lg transition-colors"
                           >
                             Cancel
                           </button>
                           <button
                             type="submit"
-                            disabled={isUploadingPetImage}
-                            className="px-6 py-2 bg-gold-500 text-white font-bold rounded-lg hover:bg-gold-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                            disabled={isUploadingVehicleImage}
+                            className="px-6 py-2 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                           >
-                            {isUploadingPetImage ? (
+                            {isUploadingVehicleImage ? (
                               <>
                                 <Loader2 className="w-4 h-4 animate-spin" />
                                 Saving...
                               </>
-                            ) : (editingPetId ? 'Update Pet' : 'Save Pet')}
+                            ) : (editingVehicleId ? 'Update Vehicle' : 'Save Vehicle')}
                           </button>
                         </div>
                       </form>
@@ -3136,31 +3136,31 @@ export default function App() {
                   )}
 
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {pets.map(pet => (
+                    {vehicles.map(vehicle => (
                       <div
-                        key={pet.id}
-                        onClick={() => setSelectedPetForAnalyses(pet)}
-                        className="bg-zinc-900 p-6 rounded-2xl border border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)] transition-all relative group cursor-pointer hover:border-indigo-200"
+                        key={vehicle.id}
+                        onClick={() => setSelectedPetForAnalyses(vehicle)}
+                        className="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)] transition-all relative group cursor-pointer hover:border-indigo-200"
                       >
                         <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all">
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              setEditingPetId(pet.id);
+                              setEditingPetId(vehicle.id);
                               setNewPet({
-                                name: pet.name,
-                                species: pet.species,
-                                breed: pet.breed || '',
-                                age: pet.age || '',
-                                personality: pet.personality || '',
-                                photoUrl: pet.photoUrl || '',
-                                diet: pet.diet || '',
-                                vaccinations: pet.vaccinations || ''
+                                name: vehicle.name,
+                                make: vehicle.species,
+                                model: vehicle.breed || '',
+                                year: vehicle.age || '',
+                                mileage: vehicle.personality || '',
+                                photoUrl: vehicle.photoUrl || '',
+                                engine: vehicle.diet || '',
+                                transmission: vehicle.vaccinations || ''
                               });
                               setIsAddingPet(true);
-                              setPetImageFile(null);
+                              setVehicleImageFile(null);
                             }}
-                            className="p-2 text-slate-300 hover:text-gold-400 hover:bg-gold-500/10 rounded-lg transition-all"
+                            className="p-2 text-slate-300 hover:text-orange-400 hover:bg-orange-500/10 rounded-lg transition-all"
                           >
                             <Pencil className="w-4 h-4" />
                           </button>
@@ -3168,9 +3168,9 @@ export default function App() {
                             onClick={(e) => {
                               e.stopPropagation();
                               setDeleteConfirmation({
-                                type: 'pet',
-                                id: pet.id,
-                                name: pet.name
+                                type: 'vehicle',
+                                id: vehicle.id,
+                                name: vehicle.name
                               });
                             }}
                             className="p-2 text-slate-300 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
@@ -3179,59 +3179,59 @@ export default function App() {
                           </button>
                         </div>
                         <div className="flex items-center gap-4 mb-4">
-                          {pet.photoUrl ? (
+                          {vehicle.photoUrl ? (
                             <img
-                              src={pet.photoUrl}
-                              alt={pet.name}
-                              className="w-12 h-12 rounded-xl object-cover border border-zinc-800"
+                              src={vehicle.photoUrl}
+                              alt={vehicle.name}
+                              className="w-12 h-12 rounded-xl object-cover border border-slate-800"
                               referrerPolicy="no-referrer"
                             />
                           ) : (
-                            <div className="w-12 h-12 bg-gold-500/10 rounded-xl flex items-center justify-center">
-                              {pet.species === 'dog' ? <Dog className="w-6 h-6 text-gold-400" /> : <Cat className="w-6 h-6 text-gold-400" />}
+                            <div className="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center">
+                              {vehicle.species === 'dog' ? <Car className="w-6 h-6 text-orange-400" /> : <Wrench className="w-6 h-6 text-orange-400" />}
                             </div>
                           )}
                           <div>
-                            <h4 className="font-black font-serif text-gold-400">{pet.name}</h4>
-                            <p className="text-xs text-zinc-400 capitalize">{pet.species} • {pet.breed || 'Unknown Breed'}</p>
+                            <h4 className="font-black font-serif text-orange-400">{vehicle.name}</h4>
+                            <p className="text-xs text-slate-400 capitalize">{vehicle.species} • {vehicle.breed || 'Unknown Model'}</p>
                           </div>
                         </div>
                         <div className="space-y-3">
                           <div>
-                            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Age</p>
-                            <p className="text-sm text-zinc-300">{pet.age || 'Not specified'}</p>
+                            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Year</p>
+                            <p className="text-sm text-slate-300">{vehicle.age || 'Not specified'}</p>
                           </div>
                           <div>
-                            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Personality</p>
-                            <p className="text-sm text-zinc-300 line-clamp-1">{pet.personality || 'No notes added.'}</p>
+                            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Mileage</p>
+                            <p className="text-sm text-slate-300 line-clamp-1">{vehicle.personality || 'No notes added.'}</p>
                           </div>
-                          {pet.diet && (
+                          {vehicle.diet && (
                             <div>
-                              <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1">
-                                <Utensils className="w-2 h-2" /> Diet
+                              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                                <Utensils className="w-2 h-2" /> Engine
                               </p>
-                              <p className="text-sm text-zinc-300 line-clamp-1">{pet.diet}</p>
+                              <p className="text-sm text-slate-300 line-clamp-1">{vehicle.diet}</p>
                             </div>
                           )}
-                          {pet.vaccinations && (
+                          {vehicle.vaccinations && (
                             <div>
-                              <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1">
-                                <Syringe className="w-2 h-2" /> Vaccinations
+                              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                                <Syringe className="w-2 h-2" /> Transmission
                               </p>
-                              <p className="text-sm text-zinc-300 line-clamp-1">{pet.vaccinations}</p>
+                              <p className="text-sm text-slate-300 line-clamp-1">{vehicle.vaccinations}</p>
                             </div>
                           )}
                         </div>
                         <div className="mt-4 pt-4 border-t border-slate-50 flex justify-between items-center">
-                          <span className="text-xs font-medium text-gold-400">View History</span>
+                          <span className="text-xs font-medium text-orange-400">View History</span>
                           <ChevronRight className="w-4 h-4 text-indigo-400" />
                         </div>
                       </div>
                     ))}
-                    {pets.length === 0 && !isAddingPet && (
-                      <div className="md:col-span-3 py-20 text-center bg-zinc-900 rounded-3xl border-2 border-dashed border-zinc-800">
-                        <Dog className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-                        <p className="text-zinc-400">No pet profiles yet. Add your first pet to get started!</p>
+                    {vehicles.length === 0 && !isAddingVehicle && (
+                      <div className="md:col-span-3 py-20 text-center bg-slate-900 rounded-3xl border-2 border-dashed border-slate-800">
+                        <Car className="w-12 h-12 text-slate-200 mx-auto mb-4" />
+                        <p className="text-slate-400">No vehicle profiles yet. Add your first vehicle to get started!</p>
                       </div>
                     )}
                   </div>
@@ -3244,34 +3244,34 @@ export default function App() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
+              className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
             >
               <div className="divide-y divide-slate-50">
                 {analyses.map((analysis) => (
                   <div
                     key={analysis.id}
                     onClick={() => setSelectedAnalysis(analysis)}
-                    className="p-4 hover:bg-zinc-950 transition-colors flex items-center justify-between cursor-pointer"
+                    className="p-4 hover:bg-slate-950 transition-colors flex items-center justify-between cursor-pointer"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-zinc-800 rounded-xl flex items-center justify-center">
-                        {analysis.mediaType === 'video' ? <Play className="w-6 h-6 text-zinc-500" /> : <Activity className="w-6 h-6 text-zinc-500" />}
+                      <div className="w-12 h-12 bg-slate-800 rounded-xl flex items-center justify-center">
+                        {analysis.mediaType === 'video' ? <Play className="w-6 h-6 text-slate-500" /> : <Activity className="w-6 h-6 text-slate-500" />}
                       </div>
                       <div>
-                        <p className="font-semibold text-zinc-100 truncate max-w-[250px]">
+                        <p className="font-semibold text-slate-100 truncate max-w-[250px]">
                           {analysis.result?.emotionalState ?
                             (analysis.result.emotionalState.length > 50 ?
                               analysis.result.emotionalState.substring(0, 50) + '...' :
                               analysis.result.emotionalState) :
                             'New Analysis'}
                         </p>
-                        <p className="text-xs text-zinc-400">
-                          {analysis.petName || 'My Pet'} • {analysis.createdAt?.seconds ? new Date(analysis.createdAt.seconds * 1000).toLocaleString() : 'Just now'}
+                        <p className="text-xs text-slate-400">
+                          {analysis.petName || 'My Vehicle'} • {analysis.createdAt?.seconds ? new Date(analysis.createdAt.seconds * 1000).toLocaleString() : 'Just now'}
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${analysis.status === 'completed' ? 'bg-zinc-800 text-emerald-700' : 'bg-zinc-800 text-amber-700'
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${analysis.status === 'completed' ? 'bg-slate-800 text-emerald-700' : 'bg-slate-800 text-amber-700'
                         }`}>
                         {analysis.status}
                       </span>
@@ -3281,7 +3281,7 @@ export default function App() {
                           setDeleteConfirmation({
                             type: 'analysis',
                             id: analysis.id,
-                            name: `${analysis.petName || 'Pet'}'s analysis`
+                            name: `${analysis.petName || 'Vehicle'}'s analysis`
                           });
                         }}
                         className="p-2 text-slate-300 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
@@ -3303,10 +3303,10 @@ export default function App() {
               className="space-y-8"
             >
               <div className="flex justify-between items-center">
-                <h3 className="text-xl font-black font-serif text-gold-400">Care Reminders</h3>
+                <h3 className="text-xl font-black font-serif text-orange-400">Care Reminders</h3>
                 <button
                   onClick={() => setIsAddingReminder(true)}
-                  className="bg-gold-500 text-white px-4 py-2 rounded-xl font-medium hover:bg-gold-600 transition-all flex items-center gap-2"
+                  className="bg-orange-500 text-white px-4 py-2 rounded-xl font-medium hover:bg-orange-600 transition-all flex items-center gap-2"
                 >
                   <Plus className="w-4 h-4" />
                   Add Reminder
@@ -3314,29 +3314,29 @@ export default function App() {
               </div>
 
               {isAddingReminder && (
-                <div className="bg-zinc-900 p-6 rounded-2xl border border-gold-500/20 shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-indigo-50 animate-in fade-in slide-in-from-top-4 duration-300">
-                  <h4 className="text-lg font-black font-serif text-gold-400 mb-4">{editingReminderId ? 'Edit Reminder' : 'New Reminder'}</h4>
+                <div className="bg-slate-900 p-6 rounded-2xl border border-orange-500/20 shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-indigo-50 animate-in fade-in slide-in-from-top-4 duration-300">
+                  <h4 className="text-lg font-black font-serif text-orange-400 mb-4">{editingReminderId ? 'Edit Reminder' : 'New Reminder'}</h4>
                   <form onSubmit={handleSaveReminder} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-zinc-400 uppercase">Pet</label>
+                      <label className="text-xs font-bold text-slate-400 uppercase">Vehicle</label>
                       <select
                         required
-                        value={newReminder.petId}
-                        onChange={e => setNewReminder({ ...newReminder, petId: e.target.value })}
-                        className="w-full px-4 py-2 rounded-lg border border-zinc-800 focus:ring-2 focus:ring-gold-500 outline-none"
+                        value={newReminder.vehicleId}
+                        onChange={e => setNewReminder({ ...newReminder, vehicleId: e.target.value })}
+                        className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none"
                       >
-                        <option value="">Select Pet</option>
-                        {pets.map(pet => (
-                          <option key={pet.id} value={pet.id}>{pet.name}</option>
+                        <option value="">Select Vehicle</option>
+                        {vehicles.map(vehicle => (
+                          <option key={vehicle.id} value={vehicle.id}>{vehicle.name}</option>
                         ))}
                       </select>
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-zinc-400 uppercase">Type</label>
+                      <label className="text-xs font-bold text-slate-400 uppercase">Type</label>
                       <select
                         value={newReminder.type}
                         onChange={e => setNewReminder({ ...newReminder, type: e.target.value })}
-                        className="w-full px-4 py-2 rounded-lg border border-zinc-800 focus:ring-2 focus:ring-gold-500 outline-none"
+                        className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none"
                       >
                         <option value="vaccination">Vaccination</option>
                         <option value="medication">Medication</option>
@@ -3346,23 +3346,23 @@ export default function App() {
                       </select>
                     </div>
                     <div className="md:col-span-2 space-y-1">
-                      <label className="text-xs font-bold text-zinc-400 uppercase">Reminder Title</label>
+                      <label className="text-xs font-bold text-slate-400 uppercase">Reminder Title</label>
                       <input
                         required
                         value={newReminder.title}
                         onChange={e => setNewReminder({ ...newReminder, title: e.target.value })}
-                        className="w-full px-4 py-2 rounded-lg border border-zinc-800 focus:ring-2 focus:ring-gold-500 outline-none"
+                        className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none"
                         placeholder="e.g., Annual Rabies Shot"
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-zinc-400 uppercase">Due Date</label>
+                      <label className="text-xs font-bold text-slate-400 uppercase">Due Date</label>
                       <input
                         required
                         type="date"
                         value={newReminder.dueDate}
                         onChange={e => setNewReminder({ ...newReminder, dueDate: e.target.value })}
-                        className="w-full px-4 py-2 rounded-lg border border-zinc-800 focus:ring-2 focus:ring-gold-500 outline-none"
+                        className="w-full px-4 py-2 rounded-lg border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none"
                       />
                     </div>
                     <div className="md:col-span-2 flex justify-end gap-3 mt-2">
@@ -3372,13 +3372,13 @@ export default function App() {
                           setIsAddingReminder(false);
                           setEditingReminderId(null);
                         }}
-                        className="px-4 py-2 text-zinc-400 font-medium hover:bg-zinc-950 rounded-lg transition-colors"
+                        className="px-4 py-2 text-slate-400 font-medium hover:bg-slate-950 rounded-lg transition-colors"
                       >
                         Cancel
                       </button>
                       <button
                         type="submit"
-                        className="px-6 py-2 bg-gold-500 text-white font-bold rounded-lg hover:bg-gold-600 transition-colors"
+                        className="px-6 py-2 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors"
                       >
                         {editingReminderId ? 'Update Reminder' : 'Save Reminder'}
                       </button>
@@ -3391,7 +3391,7 @@ export default function App() {
                 {reminders.map(reminder => (
                   <div
                     key={reminder.id}
-                    className={`bg-zinc-900 p-6 rounded-2xl border transition-all relative group ${reminder.completed ? 'border-zinc-800 opacity-60' : 'border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)]'
+                    className={`bg-slate-900 p-6 rounded-2xl border transition-all relative group ${reminder.completed ? 'border-slate-800 opacity-60' : 'border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)]'
                       }`}
                   >
                     <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all">
@@ -3399,7 +3399,7 @@ export default function App() {
                         onClick={() => {
                           setEditingReminderId(reminder.id);
                           setNewReminder({
-                            petId: reminder.petId,
+                            vehicleId: reminder.vehicleId,
                             title: reminder.title,
                             type: reminder.type,
                             dueDate: reminder.dueDate,
@@ -3407,7 +3407,7 @@ export default function App() {
                           });
                           setIsAddingReminder(true);
                         }}
-                        className="p-2 text-slate-300 hover:text-gold-400 hover:bg-gold-500/10 rounded-lg transition-all"
+                        className="p-2 text-slate-300 hover:text-orange-400 hover:bg-orange-500/10 rounded-lg transition-all"
                       >
                         <Pencil className="w-4 h-4" />
                       </button>
@@ -3419,30 +3419,30 @@ export default function App() {
                       </button>
                     </div>
                     <div className="flex items-center gap-4 mb-4">
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${reminder.completed ? 'bg-zinc-800 text-zinc-500' :
-                          reminder.type === 'vaccination' ? 'bg-gold-500/10 text-gold-400' :
-                            reminder.type === 'medication' ? 'bg-zinc-800 text-rose-600' :
-                              'bg-zinc-800 text-gold-400'
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${reminder.completed ? 'bg-slate-800 text-slate-500' :
+                          reminder.type === 'vaccination' ? 'bg-orange-500/10 text-orange-400' :
+                            reminder.type === 'medication' ? 'bg-slate-800 text-rose-600' :
+                              'bg-slate-800 text-orange-400'
                         }`}>
                         {reminder.type === 'vaccination' ? <Syringe className="w-6 h-6" /> :
                           reminder.type === 'medication' ? <Activity className="w-6 h-6" /> :
                             <Bell className="w-6 h-6" />}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className={`font-black font-serif text-gold-400 truncate ${reminder.completed ? 'line-through' : ''}`}>{reminder.title}</h4>
-                        <p className="text-xs text-zinc-400 capitalize">{reminder.petName} • {reminder.type}</p>
+                        <h4 className={`font-black font-serif text-orange-400 truncate ${reminder.completed ? 'line-through' : ''}`}>{reminder.title}</h4>
+                        <p className="text-xs text-slate-400 capitalize">{reminder.petName} • {reminder.type}</p>
                       </div>
                     </div>
                     <div className="flex items-center justify-between mt-6">
-                      <div className="flex items-center gap-2 text-zinc-400">
+                      <div className="flex items-center gap-2 text-slate-400">
                         <Calendar className="w-4 h-4" />
                         <span className="text-xs font-medium">{new Date(reminder.dueDate).toLocaleDateString()}</span>
                       </div>
                       <button
                         onClick={() => handleToggleReminder(reminder.id, reminder.completed)}
                         className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${reminder.completed
-                            ? 'bg-zinc-800 text-zinc-400'
-                            : 'bg-gold-500/10 text-gold-400 hover:bg-gold-500 hover:text-white'
+                            ? 'bg-slate-800 text-slate-400'
+                            : 'bg-orange-500/10 text-orange-400 hover:bg-orange-500 hover:text-white'
                           }`}
                       >
                         {reminder.completed ? 'Completed' : 'Mark Done'}
@@ -3451,9 +3451,9 @@ export default function App() {
                   </div>
                 ))}
                 {reminders.length === 0 && !isAddingReminder && (
-                  <div className="md:col-span-3 py-20 text-center bg-zinc-900 rounded-3xl border-2 border-dashed border-zinc-800">
+                  <div className="md:col-span-3 py-20 text-center bg-slate-900 rounded-3xl border-2 border-dashed border-slate-800">
                     <Bell className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-                    <p className="text-zinc-400">No care reminders yet. Stay on top of your pet's health!</p>
+                    <p className="text-slate-400">No care reminders yet. Stay on top of your vehicle's health!</p>
                   </div>
                 )}
               </div>
@@ -3466,16 +3466,16 @@ export default function App() {
               exit={{ opacity: 0, y: -10 }}
               className="max-w-2xl mx-auto space-y-8"
             >
-              <div className="bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
-                <h3 className="text-2xl font-black font-serif text-gold-400 mb-6">Account Settings</h3>
+              <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                <h3 className="text-2xl font-black font-serif text-orange-400 mb-6">Account Settings</h3>
 
                 {userData?.subscriptionTier === 'pro' && (
-                  <div className="mb-8 p-6 bg-gold-500/10 rounded-2xl border border-gold-500/20">
+                  <div className="mb-8 p-6 bg-orange-500/10 rounded-2xl border border-orange-500/20">
                     <h4 className="text-lg font-bold text-indigo-900 mb-2 flex items-center gap-2">
                       <Zap className="w-5 h-5" />
                       Pro Membership Active
                     </h4>
-                    <p className="text-sm text-gold-300">
+                    <p className="text-sm text-orange-300">
                       You have unlimited access to all AI Behaviorist features.
                     </p>
                   </div>
@@ -3484,7 +3484,7 @@ export default function App() {
                 <div className="space-y-8">
                   {/* Profile Section */}
                   <section className="space-y-4">
-                    <h4 className="text-sm font-bold text-zinc-500 uppercase tracking-wider">Profile Information</h4>
+                    <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider">Profile Information</h4>
 
                     <div className="flex items-center gap-6 mb-6">
                       <div className="relative group">
@@ -3496,8 +3496,8 @@ export default function App() {
                             referrerPolicy="no-referrer"
                           />
                         ) : (
-                          <div className="w-20 h-20 rounded-full bg-gold-500/20 flex items-center justify-center border-4 border-white shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
-                            <UserIcon className="w-8 h-8 text-gold-400" />
+                          <div className="w-20 h-20 rounded-full bg-orange-500/20 flex items-center justify-center border-4 border-white shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
+                            <UserIcon className="w-8 h-8 text-orange-400" />
                           </div>
                         )}
                         <label className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
@@ -3516,34 +3516,34 @@ export default function App() {
                         </label>
                       </div>
                       <div>
-                        <p className="font-black font-serif text-gold-400">Profile Picture</p>
-                        <p className="text-xs text-zinc-400">Click the image to upload a new one.</p>
+                        <p className="font-black font-serif text-orange-400">Profile Picture</p>
+                        <p className="text-xs text-slate-400">Click the image to upload a new one.</p>
                       </div>
                     </div>
 
                     <form onSubmit={handleUpdateProfile} className="space-y-4">
                       <div className="space-y-1">
-                        <label className="text-xs font-bold text-zinc-400 uppercase">Display Name</label>
+                        <label className="text-xs font-bold text-slate-400 uppercase">Display Name</label>
                         <input
                           value={settingsName}
                           onChange={(e) => setSettingsName(e.target.value)}
-                          className="w-full px-4 py-3 rounded-xl border border-zinc-800 focus:ring-2 focus:ring-gold-500 outline-none transition-all"
+                          className="w-full px-4 py-3 rounded-xl border border-slate-800 focus:ring-2 focus:ring-orange-500 outline-none transition-all"
                           placeholder="Your full name"
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-xs font-bold text-zinc-400 uppercase">Email Address</label>
+                        <label className="text-xs font-bold text-slate-400 uppercase">Email Address</label>
                         <input
                           disabled
                           value={user?.email || ''}
-                          className="w-full px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-950 text-zinc-500 outline-none cursor-not-allowed"
+                          className="w-full px-4 py-3 rounded-xl border border-slate-800 bg-slate-950 text-slate-500 outline-none cursor-not-allowed"
                         />
-                        <p className="text-[10px] text-zinc-500 italic">Email cannot be changed currently.</p>
+                        <p className="text-[10px] text-slate-500 italic">Email cannot be changed currently.</p>
                       </div>
                       <button
                         type="submit"
                         disabled={isUpdatingProfile || settingsName === user?.displayName}
-                        className="px-6 py-3 bg-gold-500 text-white font-bold rounded-xl hover:bg-gold-600 transition-all disabled:opacity-50 flex items-center gap-2"
+                        className="px-6 py-3 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 transition-all disabled:opacity-50 flex items-center gap-2"
                       >
                         {isUpdatingProfile && <Loader2 className="w-4 h-4 animate-spin" />}
                         Update Profile
@@ -3551,32 +3551,32 @@ export default function App() {
                     </form>
                   </section>
 
-                  <hr className="border-zinc-800" />
+                  <hr className="border-slate-800" />
 
                   {/* Subscription Section */}
                   <section className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <h4 className="text-sm font-bold text-zinc-500 uppercase tracking-wider">Subscription Plan</h4>
+                      <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider">Subscription Plan</h4>
                       <div className="flex items-center gap-2">
                         {isSandbox && (
-                          <span className="bg-gold-500/20 text-gold-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">
+                          <span className="bg-orange-500/20 text-orange-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">
                             Sandbox
                           </span>
                         )}
-                        <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${userData?.subscriptionTier === 'pro' ? 'bg-gold-500/20 text-gold-400' : 'bg-zinc-800 text-zinc-400'
+                        <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${userData?.subscriptionTier === 'pro' ? 'bg-orange-500/20 text-orange-400' : 'bg-slate-800 text-slate-400'
                           }`}>
                           {userData?.subscriptionTier === 'pro' ? 'Pro' : 'Free'} Tier
                         </span>
                       </div>
                     </div>
 
-                    <div className="p-6 rounded-3xl border border-zinc-800 bg-zinc-900 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                    <div className="p-6 rounded-3xl border border-slate-800 bg-slate-900 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
                       <div className="flex items-start justify-between gap-6">
                         <div className="space-y-2">
-                          <p className="font-black font-serif text-gold-400">
-                            {userData?.subscriptionTier === 'pro' ? 'Pawsitive Behavior Pro' : 'Pawsitive Behavior Free'}
+                          <p className="font-black font-serif text-orange-400">
+                            {userData?.subscriptionTier === 'pro' ? 'AutoDiagnostic Pro' : 'AutoDiagnostic Free'}
                           </p>
-                          <p className="text-sm text-zinc-400 leading-relaxed">
+                          <p className="text-sm text-slate-400 leading-relaxed">
                             {userData?.subscriptionTier === 'pro'
                               ? 'You have unlimited access to behavioral analyses and expert follow-up chats.'
                               : `You have used ${userData?.analysesCount || 0}/3 free analyses. Upgrade for unlimited access.`}
@@ -3584,8 +3584,8 @@ export default function App() {
                         </div>
                         {userData?.subscriptionTier !== 'pro' ? (
                           <button
-                            onClick={() => setShowLimitModal({ type: 'upgrade', message: "Unlock unlimited analyses and expert chat with Pawsitive Behavior Pro!" })}
-                            className="shrink-0 px-6 py-3 bg-gold-500 text-white font-bold rounded-xl hover:bg-gold-600 transition-all shadow-lg shadow-gold-500/20"
+                            onClick={() => setShowLimitModal({ type: 'upgrade', messyear: "Unlock unlimited analyses and expert chat with AutoDiagnostic Pro!" })}
+                            className="shrink-0 px-6 py-3 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20"
                           >
                             Upgrade to Pro
                           </button>
@@ -3593,7 +3593,7 @@ export default function App() {
                           <button
                             onClick={handleRestorePurchases}
                             disabled={isRestoring}
-                            className="shrink-0 px-6 py-3 bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold rounded-xl hover:bg-zinc-950 transition-all flex items-center gap-2"
+                            className="shrink-0 px-6 py-3 bg-slate-900 border border-slate-800 text-slate-400 font-bold rounded-xl hover:bg-slate-950 transition-all flex items-center gap-2"
                           >
                             {isRestoring && <Loader2 className="w-4 h-4 animate-spin" />}
                             Restore Purchases
@@ -3603,43 +3603,43 @@ export default function App() {
 
                       {userData?.subscriptionTier !== 'pro' && (
                         <div className="mt-6 pt-6 border-t border-slate-50 grid grid-cols-2 gap-4">
-                          <div className="flex items-center gap-2 text-xs text-zinc-400">
+                          <div className="flex items-center gap-2 text-xs text-slate-400">
                             <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                             3 Analyses Total
                           </div>
-                          <div className="flex items-center gap-2 text-xs text-zinc-400">
+                          <div className="flex items-center gap-2 text-xs text-slate-400">
                             <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                             2 Chats per Analysis
                           </div>
                         </div>
                       )}
 
-                      <div className="mt-4 flex flex-wrap items-center gap-4 text-[10px] text-zinc-500">
-                        <button onClick={() => setShowTermsModal(true)} className="hover:text-gold-400 underline">Terms of Use (EULA)</button>
-                        <button onClick={() => setShowPrivacyModal(true)} className="hover:text-gold-400 underline">Privacy Policy</button>
-                        <button onClick={() => setShowFairUseModal(true)} className="hover:text-gold-400 underline">Fair Use Policy</button>
+                      <div className="mt-4 flex flex-wrap items-center gap-4 text-[10px] text-slate-500">
+                        <button onClick={() => setShowTermsModal(true)} className="hover:text-orange-400 underline">Terms of Use (EULA)</button>
+                        <button onClick={() => setShowPrivacyModal(true)} className="hover:text-orange-400 underline">Privacy Policy</button>
+                        <button onClick={() => setShowFairUseModal(true)} className="hover:text-orange-400 underline">Fair Use Policy</button>
                       </div>
                     </div>
                   </section>
 
-                  <hr className="border-zinc-800" />
+                  <hr className="border-slate-800" />
 
                   {/* Referral Section */}
                   <section className="space-y-4">
-                    <h4 className="text-sm font-bold text-zinc-500 uppercase tracking-wider">Referral Program</h4>
-                    <div className="bg-zinc-800 p-6 rounded-3xl border border-amber-100 space-y-4">
+                    <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider">Referral Program</h4>
+                    <div className="bg-slate-800 p-6 rounded-3xl border border-amber-100 space-y-4">
                       <div>
                         <p className="text-sm font-bold text-amber-900 mb-1">Your Referral Code</p>
                         <div className="flex items-center gap-2">
-                          <code className="bg-zinc-900 px-4 py-2 rounded-xl border border-gold-500/50 font-mono font-bold text-gold-400 text-lg">
+                          <code className="bg-slate-900 px-4 py-2 rounded-xl border border-orange-500/50 font-mono font-bold text-orange-400 text-lg">
                             {userData?.referralCode || '------'}
                           </code>
                           <button
                             onClick={() => {
                               navigator.clipboard.writeText(userData?.referralCode || '');
-                              setNotification({ message: "Referral code copied!", type: 'success' });
+                              setNotification({ messyear: "Referral code copied!", type: 'success' });
                             }}
-                            className="p-2 text-gold-400 hover:bg-zinc-900 rounded-lg transition-all"
+                            className="p-2 text-orange-400 hover:bg-slate-900 rounded-lg transition-all"
                           >
                             <Copy className="w-5 h-5" />
                           </button>
@@ -3650,14 +3650,14 @@ export default function App() {
                       </div>
 
                       {!userData?.referredBy && (
-                        <div className="pt-4 border-t border-gold-500/50">
+                        <div className="pt-4 border-t border-orange-500/50">
                           <p className="text-sm font-bold text-amber-900 mb-2">Have a referral code?</p>
                           <form onSubmit={handleReferralSubmit} className="flex gap-2">
                             <input
                               value={referralInput}
                               onChange={(e) => setReferralInput(e.target.value)}
                               placeholder="ENTER CODE"
-                              className="flex-1 px-4 py-2 rounded-xl border border-gold-500/50 focus:ring-2 focus:ring-amber-500 outline-none uppercase font-mono"
+                              className="flex-1 px-4 py-2 rounded-xl border border-orange-500/50 focus:ring-2 focus:ring-amber-500 outline-none uppercase font-mono"
                             />
                             <button
                               type="submit"
@@ -3672,21 +3672,21 @@ export default function App() {
                     </div>
                   </section>
 
-                  <hr className="border-zinc-800" />
+                  <hr className="border-slate-800" />
 
                   {/* Security Section */}
                   <section className="space-y-4">
-                    <h4 className="text-sm font-bold text-zinc-500 uppercase tracking-wider">Security</h4>
-                    <div className="p-4 bg-zinc-950 rounded-2xl border border-zinc-800">
+                    <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider">Security</h4>
+                    <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800">
                       <div className="flex items-center justify-between gap-4">
                         <div>
-                          <p className="font-black font-serif text-gold-400">Reset Password</p>
-                          <p className="text-sm text-zinc-400">We'll send a password reset link to your email address.</p>
+                          <p className="font-black font-serif text-orange-400">Reset Password</p>
+                          <p className="text-sm text-slate-400">We'll send a password reset link to your email address.</p>
                         </div>
                         <button
                           onClick={handlePasswordReset}
                           disabled={isSendingReset}
-                          className="px-4 py-2 bg-zinc-900 border border-zinc-800 text-zinc-300 font-bold rounded-xl hover:bg-zinc-950 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.4)] disabled:opacity-50 flex items-center gap-2"
+                          className="px-4 py-2 bg-slate-900 border border-slate-800 text-slate-300 font-bold rounded-xl hover:bg-slate-950 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.4)] disabled:opacity-50 flex items-center gap-2"
                         >
                           {isSendingReset && <Loader2 className="w-4 h-4 animate-spin" />}
                           Send Link
@@ -3695,7 +3695,7 @@ export default function App() {
                     </div>
                   </section>
 
-                  <hr className="border-zinc-800" />
+                  <hr className="border-slate-800" />
 
                   {/* Danger Zone */}
                   <section className="space-y-4">
@@ -3709,9 +3709,9 @@ export default function App() {
                     </button>
                   </section>
 
-                  <div className="pt-8 text-center border-t border-zinc-800 mt-8">
-                    <p className="text-sm text-zinc-400">
-                      Need help? Contact us at: <a href="mailto:xyz@gmail.com" className="text-gold-400 hover:underline font-bold">xyz@gmail.com</a>
+                  <div className="pt-8 text-center border-t border-slate-800 mt-8">
+                    <p className="text-sm text-slate-400">
+                      Need help? Contact us at: <a href="mailto:xyz@gmail.com" className="text-orange-400 hover:underline font-bold">xyz@gmail.com</a>
                     </p>
                   </div>
                 </div>
@@ -3725,14 +3725,14 @@ export default function App() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="max-w-2xl mx-auto"
             >
-              <div className="bg-zinc-900 rounded-3xl border-2 border-dashed border-zinc-800 p-12 text-center">
+              <div className="bg-slate-900 rounded-3xl border-2 border-dashed border-slate-800 p-12 text-center">
                 {isUploading ? (
                   <div className="space-y-6">
                     <div className="relative w-24 h-24 mx-auto">
                       <svg className="w-full h-full" viewBox="0 0 100 100">
                         <circle className="text-slate-100 stroke-current" strokeWidth="8" cx="50" cy="50" r="40" fill="transparent" />
                         <circle
-                          className="text-gold-400 stroke-current transition-all duration-500"
+                          className="text-orange-400 stroke-current transition-all duration-500"
                           strokeWidth="8"
                           strokeDasharray={251.2}
                           strokeDashoffset={251.2 - (251.2 * uploadProgress) / 100}
@@ -3740,50 +3740,50 @@ export default function App() {
                           cx="50" cy="50" r="40" fill="transparent"
                         />
                       </svg>
-                      <div className="absolute inset-0 flex items-center justify-center font-bold text-gold-400">
+                      <div className="absolute inset-0 flex items-center justify-center font-bold text-orange-400">
                         {uploadProgress}%
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <h3 className="text-xl font-black font-serif text-gold-400">{uploadStatus || 'Analyzing Behavior...'}</h3>
-                      <p className="text-zinc-400">Please wait while we process your request.</p>
+                      <h3 className="text-xl font-black font-serif text-orange-400">{uploadStatus || 'Analyzing Behavior...'}</h3>
+                      <p className="text-slate-400">Please wait while we process your request.</p>
                     </div>
                   </div>
                 ) : (
                   <div className="space-y-6">
-                    <div className="w-20 h-20 bg-gold-500/10 rounded-2xl flex items-center justify-center mx-auto">
-                      <Upload className="w-10 h-10 text-gold-400" />
+                    <div className="w-20 h-20 bg-orange-500/10 rounded-2xl flex items-center justify-center mx-auto">
+                      <Upload className="w-10 h-10 text-orange-400" />
                     </div>
                     <div className="space-y-2">
-                      <h3 className="text-xl font-black font-serif text-gold-400">Upload Pet Media</h3>
-                      <p className="text-zinc-400">Select a video or audio clip of your pet's behavior for analysis.</p>
+                      <h3 className="text-xl font-black font-serif text-orange-400">Upload Vehicle Media</h3>
+                      <p className="text-slate-400">Select a video or audio clip of your vehicle's behavior for analysis.</p>
                     </div>
 
                     <div className="max-w-md mx-auto space-y-4">
                       <div className="text-left">
-                        <label className="block text-sm font-semibold text-zinc-300 mb-1">Select Pet</label>
+                        <label className="block text-sm font-semibold text-slate-300 mb-1">Select Vehicle</label>
                         <select
-                          value={selectedPetId}
+                          value={selectedVehicleId}
                           onChange={(e) => setSelectedPetId(e.target.value)}
-                          className="w-full px-4 py-3 rounded-xl border border-zinc-800 focus:ring-2 focus:ring-gold-500 focus:border-transparent transition-all text-sm"
+                          className="w-full px-4 py-3 rounded-xl border border-slate-800 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all text-sm"
                         >
-                          <option value="">General Analysis (No Pet Profile)</option>
-                          {pets.map(pet => (
-                            <option key={pet.id} value={pet.id}>{pet.name} ({pet.species})</option>
+                          <option value="">General Analysis (No Vehicle Profile)</option>
+                          {vehicles.map(vehicle => (
+                            <option key={vehicle.id} value={vehicle.id}>{vehicle.name} ({vehicle.species})</option>
                           ))}
                         </select>
-                        {pets.length === 0 && (
-                          <p className="text-xs text-gold-400 mt-1">Tip: Add a pet profile first for more accurate results!</p>
+                        {vehicles.length === 0 && (
+                          <p className="text-xs text-orange-400 mt-1">Tip: Add a vehicle profile first for more accurate results!</p>
                         )}
                       </div>
 
                       <div className="text-left">
-                        <label className="block text-sm font-semibold text-zinc-300 mb-1">Specific Question ("e.g., am I training my dog to sit correctly?)</label>
+                        <label className="block text-sm font-semibold text-slate-300 mb-1">Specific Question ("e.g., am I training my dog to sit correctly?)</label>
                         <textarea
                           value={userQuestion}
                           onChange={(e) => setUserQuestion(e.target.value)}
                           placeholder="e.g., Why does my dog bark when the doorbell rings?"
-                          className="w-full px-4 py-3 rounded-xl border border-zinc-800 focus:ring-2 focus:ring-gold-500 focus:border-transparent transition-all resize-none h-24 text-sm"
+                          className="w-full px-4 py-3 rounded-xl border border-slate-800 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all resize-none h-24 text-sm"
                         />
                       </div>
 
@@ -3799,8 +3799,8 @@ export default function App() {
                           onClick={handleInitiateUpload}
                           disabled={paywallCooldown}
                           className={`w-full inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold transition-all shadow-lg cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed ${paywallCooldown
-                              ? 'bg-zinc-800 text-zinc-500 shadow-none'
-                              : 'bg-gold-500 text-white hover:bg-gold-600 shadow-gold-500/20'
+                              ? 'bg-slate-800 text-slate-500 shadow-none'
+                              : 'bg-orange-500 text-white hover:bg-orange-600 shadow-orange-500/20'
                             }`}
                         >
                           {paywallCooldown ? (
@@ -3815,7 +3815,7 @@ export default function App() {
                       </div>
                     </div>
 
-                    <p className="text-xs text-zinc-500">Supported formats: MP4, MOV, MP3, WAV (Max 50MB)</p>
+                    <p className="text-xs text-slate-500">Supported formats: MP4, MOV, MP3, WAV (Max 50MB)</p>
                   </div>
                 )}
               </div>
@@ -3832,25 +3832,25 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-zinc-900 rounded-3xl p-8 max-w-sm w-full shadow-2xl border border-zinc-800"
+              className="bg-slate-900 rounded-3xl p-8 max-w-sm w-full shadow-2xl border border-slate-800"
             >
               <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mb-6">
                 <Trash2 className="w-8 h-8 text-red-600" />
               </div>
-              <h3 className="text-2xl font-black font-serif text-gold-400 mb-2">Delete {deleteConfirmation.type}?</h3>
-              <p className="text-zinc-400 mb-8 leading-relaxed">
-                Are you sure you want to delete <span className="font-black font-serif text-gold-400">"{deleteConfirmation.name}"</span>? This action cannot be undone.
+              <h3 className="text-2xl font-black font-serif text-orange-400 mb-2">Delete {deleteConfirmation.type}?</h3>
+              <p className="text-slate-400 mb-8 leading-relaxed">
+                Are you sure you want to delete <span className="font-black font-serif text-orange-400">"{deleteConfirmation.name}"</span>? This action cannot be undone.
               </p>
               <div className="flex gap-3">
                 <button
                   onClick={() => setDeleteConfirmation(null)}
-                  className="flex-1 px-6 py-3 rounded-xl font-bold text-zinc-400 hover:bg-zinc-950 transition-colors"
+                  className="flex-1 px-6 py-3 rounded-xl font-bold text-slate-400 hover:bg-slate-950 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={() => {
-                    if (deleteConfirmation.type === 'pet') {
+                    if (deleteConfirmation.type === 'vehicle') {
                       handleDeletePet(deleteConfirmation.id);
                     } else if (deleteConfirmation.type === 'analysis') {
                       handleDeleteAnalysis(deleteConfirmation.id);
@@ -3908,24 +3908,24 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="bg-zinc-900 rounded-3xl p-8 max-w-md w-full shadow-2xl text-center"
+              className="bg-slate-900 rounded-3xl p-8 max-w-md w-full shadow-2xl text-center"
             >
-              <div className="w-20 h-20 bg-gold-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                <ShieldAlert className="w-10 h-10 text-gold-400" />
+              <div className="w-20 h-20 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <ShieldAlert className="w-10 h-10 text-orange-400" />
               </div>
-              <h2 className="text-2xl font-black font-serif text-gold-400 mb-4">Verification Required</h2>
-              <p className="text-zinc-400 mb-8">
+              <h2 className="text-2xl font-black font-serif text-orange-400 mb-4">Verification Required</h2>
+              <p className="text-slate-400 mb-8">
                 You've reached a high usage threshold (300+ analyses). To ensure service quality for everyone, please verify you are a human.
               </p>
 
-              <div className="bg-zinc-950 p-6 rounded-2xl border border-zinc-800 mb-8">
+              <div className="bg-slate-950 p-6 rounded-2xl border border-slate-800 mb-8">
                 <label className="flex items-center gap-4 cursor-pointer group">
                   <input
                     type="checkbox"
-                    className="w-6 h-6 rounded border-slate-300 text-gold-400 focus:ring-gold-500"
+                    className="w-6 h-6 rounded border-slate-300 text-orange-400 focus:ring-orange-500"
                     onChange={(e) => setIsBotVerified(e.target.checked)}
                   />
-                  <span className="text-lg font-medium text-zinc-300 group-hover:text-gold-400 transition-colors">
+                  <span className="text-lg font-medium text-slate-300 group-hover:text-orange-400 transition-colors">
                     I am not a bot
                   </span>
                 </label>
@@ -3935,13 +3935,13 @@ export default function App() {
                 onClick={() => {
                   if (isBotVerified) {
                     setShowBotModal(false);
-                    setNotification({ message: "Verification successful. You can continue.", type: 'success' });
+                    setNotification({ messyear: "Verification successful. You can continue.", type: 'success' });
                   }
                 }}
                 disabled={!isBotVerified}
                 className={`w-full py-4 rounded-2xl font-bold transition-all ${isBotVerified
-                    ? 'bg-gold-500 text-white shadow-lg shadow-indigo-200 hover:bg-gold-600'
-                    : 'bg-slate-200 text-zinc-500 cursor-not-allowed'
+                    ? 'bg-orange-500 text-white shadow-lg shadow-indigo-200 hover:bg-orange-600'
+                    : 'bg-slate-200 text-slate-500 cursor-not-allowed'
                   }`}
               >
                 Continue Analysis
@@ -3959,39 +3959,39 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-zinc-900 rounded-3xl p-8 max-w-lg w-full shadow-2xl border border-zinc-800 max-h-[90vh] overflow-y-auto"
+              className="bg-slate-900 rounded-3xl p-8 max-w-lg w-full shadow-2xl border border-slate-800 max-h-[90vh] overflow-y-auto"
             >
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-black font-serif text-gold-400">Unlimited Analysis Fair Use Policy</h2>
-                <button onClick={() => setShowFairUseModal(false)} className="p-2 text-zinc-500 hover:bg-zinc-800 rounded-full transition-colors">
+                <h2 className="text-2xl font-black font-serif text-orange-400">Unlimited Analysis Fair Use Policy</h2>
+                <button onClick={() => setShowFairUseModal(false)} className="p-2 text-slate-500 hover:bg-slate-800 rounded-full transition-colors">
                   <X className="w-6 h-6" />
                 </button>
               </div>
 
-              <div className="space-y-6 text-zinc-400 text-sm leading-relaxed">
+              <div className="space-y-6 text-slate-400 text-sm leading-relaxed">
                 <p>
                   To ensure a high-quality experience for all users, our "Unlimited" plan is subject to a Fair Use Policy. This plan is intended for personal, non-commercial use by a single individual.
                 </p>
 
                 <div>
-                  <h4 className="font-black font-serif text-gold-400 mb-1">Personal Use</h4>
-                  <p>Analysis is intended for pets owned by the subscriber. Commercial use (e.g., professional training facilities or shelters) requires a Business License.</p>
+                  <h4 className="font-black font-serif text-orange-400 mb-1">Personal Use</h4>
+                  <p>Analysis is intended for vehicles owned by the subscriber. Commercial use (e.g., professional training facilities or shelters) requires a Business License.</p>
                 </div>
 
                 <div>
-                  <h4 className="font-black font-serif text-gold-400 mb-1">Usage Caps</h4>
+                  <h4 className="font-black font-serif text-orange-400 mb-1">Usage Caps</h4>
                   <p>Accounts exceeding 300 analyses per month or 30 analyses per day may be subject to temporary speed throttling or a transition to our Standard Intelligence model.</p>
                 </div>
 
                 <div>
-                  <h4 className="font-black font-serif text-gold-400 mb-1">Automated Use</h4>
+                  <h4 className="font-black font-serif text-orange-400 mb-1">Automated Use</h4>
                   <p>Any attempt to use scripts, bots, or automated tools to submit videos is strictly prohibited and will result in immediate account termination.</p>
                 </div>
               </div>
 
               <button
                 onClick={() => setShowFairUseModal(false)}
-                className="w-full mt-8 py-4 bg-zinc-800 text-zinc-100 font-bold rounded-2xl hover:bg-zinc-700 transition-all"
+                className="w-full mt-8 py-4 bg-slate-800 text-slate-100 font-bold rounded-2xl hover:bg-slate-700 transition-all"
               >
                 Close
               </button>
@@ -4008,42 +4008,42 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-zinc-900 rounded-3xl p-8 max-w-2xl w-full shadow-2xl border border-zinc-800 max-h-[90vh] overflow-y-auto"
+              className="bg-slate-900 rounded-3xl p-8 max-w-2xl w-full shadow-2xl border border-slate-800 max-h-[90vh] overflow-y-auto"
             >
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-black font-serif text-gold-400">Terms of Use (EULA)</h2>
-                <button onClick={() => setShowTermsModal(false)} className="p-2 text-zinc-500 hover:bg-zinc-800 rounded-full transition-colors">
+                <h2 className="text-2xl font-black font-serif text-orange-400">Terms of Use (EULA)</h2>
+                <button onClick={() => setShowTermsModal(false)} className="p-2 text-slate-500 hover:bg-slate-800 rounded-full transition-colors">
                   <X className="w-6 h-6" />
                 </button>
               </div>
 
-              <div className="space-y-6 text-zinc-400 text-sm leading-relaxed">
+              <div className="space-y-6 text-slate-400 text-sm leading-relaxed">
                 <p className="italic">Last Updated: April 2026</p>
 
                 <div>
-                  <h4 className="font-black font-serif text-gold-400 mb-1">1. Acceptance of Terms</h4>
-                  <p>By accessing and using Pawsitive Behavior, you agree to be bound by these Terms of Use. If you do not agree, please do not use the application.</p>
+                  <h4 className="font-black font-serif text-orange-400 mb-1">1. Acceptance of Terms</h4>
+                  <p>By accessing and using AutoDiagnostic, you agree to be bound by these Terms of Use. If you do not agree, please do not use the application.</p>
                 </div>
 
                 <div>
-                  <h4 className="font-black font-serif text-gold-400 mb-1">2. Medical Disclaimer</h4>
-                  <p>Pawsitive Behavior provides AI-driven behavioral analysis for educational and training purposes only. It is NOT a substitute for professional veterinary or trainer's advice, diagnosis, or treatment. Always consult a qualified veterinarian for medical concerns.</p>
+                  <h4 className="font-black font-serif text-orange-400 mb-1">2. Medical Disclaimer</h4>
+                  <p>AutoDiagnostic provides AI-driven behavioral analysis for educational and training purposes only. It is NOT a substitute for professional veterinary or trainer's advice, diagnosis, or treatment. Always consult a qualified veterinarian for medical concerns.</p>
                 </div>
 
                 <div>
-                  <h4 className="font-black font-serif text-gold-400 mb-1">3. User Content</h4>
-                  <p>You retain ownership of the videos and audio you upload. By uploading, you grant Pawsitive Behavior a license to process this media solely for the purpose of providing the analysis service.</p>
+                  <h4 className="font-black font-serif text-orange-400 mb-1">3. User Content</h4>
+                  <p>You retain ownership of the videos and audio you upload. By uploading, you grant AutoDiagnostic a license to process this media solely for the purpose of providing the analysis service.</p>
                 </div>
 
                 <div>
-                  <h4 className="font-black font-serif text-gold-400 mb-1">4. Subscriptions and Billing</h4>
+                  <h4 className="font-black font-serif text-orange-400 mb-1">4. Subscriptions and Billing</h4>
                   <p>Premium features require a subscription. Payments are processed securely through your device's app store (Apple App Store or Google Play). Subscriptions automatically renew unless canceled at least 24 hours before the end of the current period.</p>
                 </div>
               </div>
 
               <button
                 onClick={() => setShowTermsModal(false)}
-                className="w-full mt-8 py-4 bg-zinc-800 text-zinc-100 font-bold rounded-2xl hover:bg-zinc-700 transition-all"
+                className="w-full mt-8 py-4 bg-slate-800 text-slate-100 font-bold rounded-2xl hover:bg-slate-700 transition-all"
               >
                 Close
               </button>
@@ -4060,42 +4060,42 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-zinc-900 rounded-3xl p-8 max-w-2xl w-full shadow-2xl border border-zinc-800 max-h-[90vh] overflow-y-auto"
+              className="bg-slate-900 rounded-3xl p-8 max-w-2xl w-full shadow-2xl border border-slate-800 max-h-[90vh] overflow-y-auto"
             >
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-black font-serif text-gold-400">Privacy Policy</h2>
-                <button onClick={() => setShowPrivacyModal(false)} className="p-2 text-zinc-500 hover:bg-zinc-800 rounded-full transition-colors">
+                <h2 className="text-2xl font-black font-serif text-orange-400">Privacy Policy</h2>
+                <button onClick={() => setShowPrivacyModal(false)} className="p-2 text-slate-500 hover:bg-slate-800 rounded-full transition-colors">
                   <X className="w-6 h-6" />
                 </button>
               </div>
 
-              <div className="space-y-6 text-zinc-400 text-sm leading-relaxed">
+              <div className="space-y-6 text-slate-400 text-sm leading-relaxed">
                 <p className="italic">Last Updated: April 2026</p>
 
                 <div>
-                  <h4 className="font-black font-serif text-gold-400 mb-1">1. Information We Collect</h4>
-                  <p>We collect information you provide directly to us, including your email address, pet profiles (name, breed, age), and the media (video/audio) you upload for analysis.</p>
+                  <h4 className="font-black font-serif text-orange-400 mb-1">1. Information We Collect</h4>
+                  <p>We collect information you provide directly to us, including your email address, vehicle profiles (name, breed, age), and the media (video/audio) you upload for analysis.</p>
                 </div>
 
                 <div>
-                  <h4 className="font-black font-serif text-gold-400 mb-1">2. How We Use Your Information</h4>
+                  <h4 className="font-black font-serif text-orange-400 mb-1">2. How We Use Your Information</h4>
                   <p>Your media is processed using advanced AI models to provide behavioral insights. We do not use your personal videos to train public AI models. Your data is used strictly to deliver and improve your personal experience within the app.</p>
                 </div>
 
                 <div>
-                  <h4 className="font-black font-serif text-gold-400 mb-1">3. Data Storage and Security</h4>
+                  <h4 className="font-black font-serif text-orange-400 mb-1">3. Data Storage and Security</h4>
                   <p>Your data is securely stored using industry-standard cloud infrastructure. We implement robust security measures to protect your personal information from unauthorized access.</p>
                 </div>
 
                 <div>
-                  <h4 className="font-black font-serif text-gold-400 mb-1">4. Data Deletion</h4>
-                  <p>You can delete your pet profiles, analyses, or your entire account at any time from within the app. Deleting an item permanently removes it from our active servers.</p>
+                  <h4 className="font-black font-serif text-orange-400 mb-1">4. Data Deletion</h4>
+                  <p>You can delete your vehicle profiles, analyses, or your entire account at any time from within the app. Deleting an item permanently removes it from our active servers.</p>
                 </div>
               </div>
 
               <button
                 onClick={() => setShowPrivacyModal(false)}
-                className="w-full mt-8 py-4 bg-zinc-800 text-zinc-100 font-bold rounded-2xl hover:bg-zinc-700 transition-all"
+                className="w-full mt-8 py-4 bg-slate-800 text-slate-100 font-bold rounded-2xl hover:bg-slate-700 transition-all"
               >
                 Close
               </button>
@@ -4129,11 +4129,11 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-zinc-900 rounded-3xl p-8 max-w-sm w-full shadow-2xl border border-zinc-800"
+              className="bg-slate-900 rounded-3xl p-8 max-w-sm w-full shadow-2xl border border-slate-800"
             >
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-black font-serif text-gold-400">Media Source</h3>
-                <button onClick={() => setShowUploadTypeModal(false)} className="p-2 text-zinc-500 hover:bg-zinc-800 rounded-full transition-colors">
+                <h3 className="text-2xl font-black font-serif text-orange-400">Media Source</h3>
+                <button onClick={() => setShowUploadTypeModal(false)} className="p-2 text-slate-500 hover:bg-slate-800 rounded-full transition-colors">
                   <X className="w-6 h-6" />
                 </button>
               </div>
@@ -4144,14 +4144,14 @@ export default function App() {
                     const fileInput = document.getElementById('behavior-file-input');
                     if (fileInput) (fileInput as HTMLInputElement).click();
                   }}
-                  className="w-full flex items-center gap-4 p-4 rounded-2xl bg-zinc-950 border border-zinc-800 hover:border-gold-500/50 hover:bg-zinc-900 transition-all text-left"
+                  className="w-full flex items-center gap-4 p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-orange-500/50 hover:bg-slate-900 transition-all text-left"
                 >
-                  <div className="w-12 h-12 bg-gold-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Upload className="w-6 h-6 text-gold-400" />
+                  <div className="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Upload className="w-6 h-6 text-orange-400" />
                   </div>
                   <div>
-                    <p className="font-bold text-zinc-100">Upload Video</p>
-                    <p className="text-xs text-zinc-400">Choose from your library</p>
+                    <p className="font-bold text-slate-100">Upload Video</p>
+                    <p className="text-xs text-slate-400">Choose from your library</p>
                   </div>
                 </button>
 
@@ -4160,14 +4160,14 @@ export default function App() {
                     setShowUploadTypeModal(false);
                     startCameraPreview();
                   }}
-                  className="w-full flex items-center gap-4 p-4 rounded-2xl bg-zinc-950 border border-zinc-800 hover:border-gold-500/50 hover:bg-zinc-900 transition-all text-left"
+                  className="w-full flex items-center gap-4 p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-orange-500/50 hover:bg-slate-900 transition-all text-left"
                 >
-                  <div className="w-12 h-12 bg-gold-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Camera className="w-6 h-6 text-gold-400" />
+                  <div className="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Camera className="w-6 h-6 text-orange-400" />
                   </div>
                   <div>
-                    <p className="font-bold text-zinc-100">Record Video</p>
-                    <p className="text-xs text-zinc-400">Record right now (max 30s)</p>
+                    <p className="font-bold text-slate-100">Record Video</p>
+                    <p className="text-xs text-slate-400">Record right now (max 30s)</p>
                   </div>
                 </button>
               </div>
@@ -4265,8 +4265,8 @@ function NavItem({ active, onClick, icon, label }: { active: boolean, onClick: (
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
       className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-serif font-bold text-base ${active
-          ? 'bg-gold-500 text-white shadow-lg shadow-gold-500/20'
-          : 'text-zinc-400 hover:bg-zinc-950 hover:text-gold-400'
+          ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
+          : 'text-slate-400 hover:bg-slate-950 hover:text-orange-400'
         }`}
     >
       {icon}
@@ -4279,13 +4279,13 @@ function StatCard({ label, value, icon }: { label: string, value: number | strin
   return (
     <motion.div
       whileHover={{ y: -5 }}
-      className="bg-zinc-900 p-4 lg:p-6 rounded-2xl border border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
+      className="bg-slate-900 p-4 lg:p-6 rounded-2xl border border-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
     >
       <div className="flex justify-between items-start mb-4">
-        <div className="p-2 bg-zinc-950 rounded-lg">{icon}</div>
+        <div className="p-2 bg-slate-950 rounded-lg">{icon}</div>
       </div>
-      <p className="text-zinc-400 text-xs lg:text-sm font-medium">{label}</p>
-      <p className="text-xl lg:text-2xl font-black font-serif text-gold-400 mt-1">{value}</p>
+      <p className="text-slate-400 text-xs lg:text-sm font-medium">{label}</p>
+      <p className="text-xl lg:text-2xl font-black font-serif text-orange-400 mt-1">{value}</p>
     </motion.div>
   );
 }

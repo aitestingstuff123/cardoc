@@ -4,17 +4,17 @@
   --font-sans: "Inter", sans-serif;
   --font-serif: "Playfair Display", serif;
 
-  --color-gold-50: #fbf9f1;
-  --color-gold-100: #f5f0db;
-  --color-gold-200: #ecdfb5;
-  --color-gold-300: #e0c885;
-  --color-gold-400: #d4af37;
-  --color-gold-500: #c69b2b;
-  --color-gold-600: #aa7d20;
-  --color-gold-700: #885f1b;
-  --color-gold-800: #714e1c;
-  --color-gold-900: #61421b;
-  --color-gold-950: #38240d;
+  --color-orange-50: #fff8f1;
+  --color-orange-100: #ffecd6;
+  --color-orange-200: #ffd3a6;
+  --color-orange-300: #ffb46c;
+  --color-orange-400: #ff8c2c;
+  --color-orange-500: #fa6c05;
+  --color-orange-600: #eb5303;
+  --color-orange-700: #c23d04;
+  --color-orange-800: #99310b;
+  --color-orange-900: #7b290d;
+  --color-orange-950: #421204;
 }
 
 /* ── Global input text & placeholder colours ── */
