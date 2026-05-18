@@ -548,6 +548,11 @@ async function startServer() {
       
       const vehicleContext = req.body.vehicleContext || '';
       const userQuestion = req.body.userQuestion || '';
+      const locale = req.body.locale || 'en';
+
+      const languageInstruction = locale === 'ko'
+        ? "\n\nCRITICAL: You MUST translate and respond in Korean (South Korean Hangul) for all text fields in your JSON response (overallCondition, observations event and meaning, actionSteps, userQuestionAnswer, and the maintenancePlan title, description, and days)."
+        : "\n\nYou MUST respond in English for all text fields in the JSON response.";
 
       const geminiResponse = await ai.models.generateContent({
         model: modelToUse,
@@ -560,7 +565,7 @@ async function startServer() {
           }
         ],
           config: {
-          systemInstruction: `You are a Master ASE Certified Mechanic specializing in automotive diagnostics. Your goal is to provide accurate, professional, and actionable insights based on vehicle diagnostic footage or audio. 
+          systemInstruction: `You are a Master ASE Certified Mechanic specializing in automotive diagnostics. Your goal is to provide accurate, professional, and actionable insights based on vehicle diagnostic footage or audio. ${languageInstruction}
             
           ${vehicleContext}
 
@@ -692,26 +697,31 @@ async function startServer() {
   // Chat Route
   apiRouter.post("/chat", async (req, res) => {
     try {
-      const { history, messageContent, vehicleContext, analysisContext } = req.body;
-      const systemPrompt = `System Instruction: You are a Master ASE Certified Mechanic specializing in automotive diagnostics. You are having a follow-up conversation about a specific diagnostic analysis you performed. 
+      const { history, messageContent, vehicleContext, analysisContext, locale } = req.body;
+      const targetLocale = locale || 'en';
+      const languageInstruction = targetLocale === 'ko'
+        ? "\n\nCRITICAL: You MUST write your follow-up response in Korean (South Korean Hangul)."
+        : "\n\nYou MUST write your response in English.";
+
+      const systemPrompt = `System Instruction: You are a Master ASE Certified Mechanic specializing in automotive diagnostics. You are having a follow-up conversation about a specific diagnostic analysis you performed. ${languageInstruction}
         ${vehicleContext || ''}
         ${analysisContext || ''}
-
+ 
         TONE AND MANNER:
         - Always respond in a highly professional, analytical, and helpful manner.
         - Use clear, concise automotive terminology but explain complex issues so a layman can understand.
         - Be supportive of the user's effort to maintain and understand their vehicle.
         - Maintain an objective, diagnostic-focused tone throughout the analysis.
-
+ 
         STRICT CONTENT RESTRICTIONS:
         - You must ONLY respond to questions directly related to automotive vehicles (cars, trucks, SUVs, motorcycles).
         - You MUST NOT converse about any content involving harm or violence.
         - You MUST NOT respond to topics unrelated to automotive diagnostics, maintenance, or repair.
         - If the user asks about restricted topics, politely but firmly decline and state that you are only programmed for automotive vehicle analysis.
-
+ 
         MANDATORY DISCLAIMER:
         - Every response MUST include a reminder that this is an AI diagnostic tool and is not a substitute for an in-person professional inspection. You must recommend seeking a certified local mechanic for major repairs or safety concerns.
-
+ 
         Keep your answers concise, professional, and mechanical-focused. Do not provide legal or safety guarantees. If asked about non-vehicle topics, politely state you only specialize in cars and trucks.`;
 
       const response = await ai.models.generateContent({

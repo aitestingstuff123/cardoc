@@ -50,6 +50,7 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useAuth } from './lib/AuthContext';
+import { TRANSLATIONS, SUPPORTED_LANGUAGES, LocaleCode } from './lib/i18n';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // API URL Strategy (commercial app):
@@ -380,7 +381,7 @@ const ConsistencyChart = ({ activityLog }: { activityLog: any[] }) => {
   );
 };
 
-const StreakHeader = ({ streak, activityLog }: { streak: number, activityLog: any[] }) => {
+const StreakHeader = ({ streak, activityLog, t }: { streak: number, activityLog: any[], t: (key: string, replacements?: any) => string }) => {
   const today = new Date().toDateString();
   const hasUploadedToday = activityLog.some(ts => new Date(ts.toMillis()).toDateString() === today);
 
@@ -414,17 +415,17 @@ const StreakHeader = ({ streak, activityLog }: { streak: number, activityLog: an
       </div>
       <div className="text-center sm:text-left">
         <div className="flex flex-col sm:flex-row items-center gap-2">
-          <h2 className="text-2xl lg:text-3xl font-black font-serif text-slate-100">🔥 {streak} Day Streak</h2>
+          <h2 className="text-2xl lg:text-3xl font-black font-serif text-slate-100">🔥 {t('streak_day', { streak })}</h2>
           {hasUploadedToday && (
             <span className="bg-orange-500/20 text-orange-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">
-              Daily Goal Met
+              {t('daily_goal_met')}
             </span>
           )}
         </div>
         <p className="text-sm text-slate-400 mt-1">
           {hasUploadedToday
-            ? "Great job! You've completed your maintenance tasks for today."
-            : "Keep the momentum going! Upload a video or audio clip to maintain your streak."}
+            ? t('streak_subtitle_met')
+            : t('streak_subtitle_unmet')}
         </p>
       </div>
     </div>
@@ -469,6 +470,25 @@ import { Camera as CapCamera } from '@capacitor/camera';
 export default function App() {
   const { user, userData, loading, isAdmin, setUserData } = useAuth();
   const [activeTab, setActiveTab] = useState<'dashboard' | 'upload' | 'history' | 'vehicles' | 'settings' | 'reminders' | 'challenges'>('dashboard');
+
+  const [locale, setLocale] = useState<LocaleCode>(() => {
+    return (localStorage.getItem('app_locale') as LocaleCode) || 'en';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('app_locale', locale);
+  }, [locale]);
+
+  const t = (key: string, replacements?: Record<string, string | number>) => {
+    let text = TRANSLATIONS[locale]?.[key] || TRANSLATIONS['en']?.[key] || key;
+    if (replacements) {
+      Object.entries(replacements).forEach(([k, v]) => {
+        text = text.split(`{${k}}`).join(String(v));
+      });
+    }
+    return text;
+  };
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -1133,6 +1153,7 @@ export default function App() {
     formData.append('media', file);
     formData.append('userId', user.uid);
     formData.append('vehicleContext', vehicleContext);
+    formData.append('locale', locale);
     if (userQuestion.trim()) {
       formData.append('userQuestion', userQuestion.trim());
     }
@@ -1348,7 +1369,8 @@ export default function App() {
           history,
           messageContent,
           vehicleContext,
-          analysisContext
+          analysisContext,
+          locale
         })
       });
 
@@ -2339,43 +2361,43 @@ export default function App() {
             active={activeTab === 'dashboard'}
             onClick={() => { setActiveTab('dashboard'); setSelectedAnalysis(null); setIsSidebarOpen(false); }}
             icon={<Activity className="w-5 h-5" />}
-            label="Dashboard"
+            label={t('dashboard')}
           />
           <NavItem
             active={activeTab === 'upload'}
             onClick={() => { setActiveTab('upload'); setSelectedAnalysis(null); setIsSidebarOpen(false); }}
             icon={<Upload className="w-5 h-5" />}
-            label="New Analysis"
+            label={t('new_analysis')}
           />
           <NavItem
             active={activeTab === 'history'}
             onClick={() => { setActiveTab('history'); setSelectedAnalysis(null); setIsSidebarOpen(false); }}
             icon={<History className="w-5 h-5" />}
-            label="History"
+            label={t('history')}
           />
           <NavItem
             active={activeTab === 'vehicles'}
             onClick={() => { setActiveTab('vehicles'); setSelectedAnalysis(null); setIsSidebarOpen(false); }}
             icon={<Car className="w-5 h-5" />}
-            label="My Vehicles"
+            label={t('my_vehicles')}
           />
           <NavItem
             active={activeTab === 'reminders'}
             onClick={() => { setActiveTab('reminders'); setSelectedAnalysis(null); setIsSidebarOpen(false); }}
             icon={<Bell className="w-5 h-5" />}
-            label="Reminders"
+            label={t('reminders')}
           />
           <NavItem
             active={activeTab === 'challenges'}
             onClick={() => { setActiveTab('challenges'); setSelectedAnalysis(null); setIsSidebarOpen(false); }}
             icon={<Flame className="w-5 h-5" />}
-            label="Maintenance Plans"
+            label={t('maintenance_plans')}
           />
           <NavItem
             active={activeTab === 'settings'}
             onClick={() => { setActiveTab('settings'); setSelectedAnalysis(null); setIsSidebarOpen(false); }}
             icon={<Settings className="w-5 h-5" />}
-            label="Settings"
+            label={t('settings')}
           />
         </nav>
 
@@ -2398,7 +2420,7 @@ export default function App() {
             className="w-full flex items-center gap-2 text-slate-400 hover:text-red-600 hover:bg-red-50 p-2 rounded-lg transition-colors text-sm font-medium"
           >
             <LogOut className="w-4 h-4" />
-            Sign Out
+            {t('sign_out')}
           </button>
         </div>
       </aside>
@@ -2408,16 +2430,16 @@ export default function App() {
         <header className="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
             <h2 className="text-2xl lg:text-3xl font-black font-serif text-orange-400">
-              {selectedAnalysis ? 'Analysis Report' :
-                activeTab === 'dashboard' ? 'Dashboard' :
-                  activeTab === 'upload' ? 'New Analysis' :
-                    activeTab === 'settings' ? 'Settings' :
-                      activeTab === 'reminders' ? 'Reminders' :
-                        activeTab === 'challenges' ? 'Maintenance Plans' :
-                          'Report History'}
+              {selectedAnalysis ? t('report_for', { name: selectedAnalysis.petName || 'My Vehicle' }) :
+                activeTab === 'dashboard' ? t('dashboard') :
+                  activeTab === 'upload' ? t('new_analysis') :
+                    activeTab === 'settings' ? t('settings') :
+                      activeTab === 'reminders' ? t('reminders') :
+                        activeTab === 'challenges' ? t('maintenance_plans') :
+                          t('active_analyses_history')}
             </h2>
             <p className="text-slate-400 mt-1 text-sm lg:text-base">
-              {selectedAnalysis ? `Report for ${selectedAnalysis.petName || 'My Vehicle'}` : `Welcome back, ${(user.displayName || 'User').split(' ')[0]}`}
+              {selectedAnalysis ? t('custom_checklist', { name: selectedAnalysis.petName || 'My Vehicle' }) : t('welcome_back', { name: (user.displayName || 'User').split(' ')[0] })}
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -2877,13 +2899,13 @@ export default function App() {
               className="space-y-8"
             >
               {userStats && (
-                <StreakHeader streak={userStats.current_streak || 0} activityLog={userStats.activity_log || []} />
+                <StreakHeader streak={userStats.current_streak || 0} activityLog={userStats.activity_log || []} t={t} />
               )}
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <StatCard label="Total Analyses" value={analyses.length} icon={<Activity className="text-orange-400" />} />
-                <StatCard label="Current Streak" value={userStats?.current_streak || 0} icon={<Flame className="text-orange-400" />} />
-                <StatCard label="Total Sessions" value={userStats?.total_sessions || 0} icon={<CheckCircle2 className="text-emerald-600" />} />
+                <StatCard label={t('total_analyses')} value={analyses.length} icon={<Activity className="text-orange-400" />} />
+                <StatCard label={t('current_streak')} value={userStats?.current_streak || 0} icon={<Flame className="text-orange-400" />} />
+                <StatCard label={t('total_sessions')} value={userStats?.total_sessions || 0} icon={<CheckCircle2 className="text-emerald-600" />} />
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -3692,6 +3714,40 @@ export default function App() {
                         Update Profile
                       </button>
                     </form>
+                  </section>
+
+                  <hr className="border-slate-800" />
+
+                  {/* Language Preference Section */}
+                  <section className="space-y-4">
+                    <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider">{t('language_preference')}</h4>
+                    <div className="p-6 rounded-3xl border border-slate-800 bg-slate-900 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                      <label className="block text-xs font-bold text-slate-400 uppercase mb-3">{t('select_language')}</label>
+                      <div className="grid grid-cols-2 gap-4">
+                        {SUPPORTED_LANGUAGES.map((lang) => (
+                          <button
+                            key={lang.code}
+                            type="button"
+                            onClick={() => setLocale(lang.code)}
+                            className={`flex items-center justify-between p-4 rounded-2xl border transition-all text-left ${
+                              locale === lang.code
+                                ? 'bg-orange-500/10 border-orange-500 text-orange-400 font-bold'
+                                : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200'
+                            }`}
+                          >
+                            <span className="flex items-center gap-3">
+                              <span className="text-2xl">{lang.flag}</span>
+                              <span className="text-sm">{lang.label}</span>
+                            </span>
+                            {locale === lang.code && (
+                              <div className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center">
+                                <CheckCircle2 className="w-4 h-4 text-white" />
+                              </div>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   </section>
 
                   <hr className="border-slate-800" />
