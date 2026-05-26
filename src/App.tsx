@@ -46,7 +46,8 @@ import {
   X,
   Camera,
   Mic,
-  Square
+  Square,
+  AlertTriangle
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useAuth } from './lib/AuthContext';
@@ -459,7 +460,8 @@ import {
   sendPasswordResetEmail,
   handleFirestoreError,
   OperationType,
-  increment
+  increment,
+  deleteUser
 } from './lib/firebase';
 import { rewardedAdService } from './lib/adService';
 import { Capacitor } from '@capacitor/core';
@@ -510,6 +512,7 @@ export default function App() {
   const [analyses, setAnalyses] = useState<any[]>([]);
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [selectedAnalysis, setSelectedAnalysis] = useState<any>(null);
+  const [lockedAnalysisPrompt, setLockedAnalysisPrompt] = useState<any>(null);
   const [chatMessages, setChatMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [isSendingMessage, setIsSendingMessage] = useState(false);
@@ -574,6 +577,8 @@ export default function App() {
     type: 'success' | 'error';
   } | null>(null);
   const [isRestoring, setIsRestoring] = useState(false);
+  const [showDeleteAccountConfirm, setShowDeleteAccountConfirm] = useState(false);
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
 
   const [isSandbox, setIsSandbox] = useState(false);
 
@@ -1235,6 +1240,7 @@ export default function App() {
       // Step 4: Save results to Firestore
       console.log("[Firestore] Saving analysis record...");
       try {
+        const isPro = userData.subscriptionTier === 'pro';
         const analysisRef = await addDoc(collection(db, 'analyses'), {
           userId: user.uid,
           vehicleId: selectedVehicleId || null,
@@ -1244,6 +1250,7 @@ export default function App() {
           status: 'completed',
           userQuestion: userQuestion || null,
           result,
+          isUnlocked: isPro,
           createdAt: Timestamp.now()
         });
 
@@ -1310,7 +1317,17 @@ export default function App() {
 
       setTimeout(() => {
         setIsUploading(false);
-        setActiveTab('dashboard');
+        const isPro = userData.subscriptionTier === 'pro';
+        if (!isPro) {
+          // Send them to dashboard, but immediately prompt the locked analysis
+          setActiveTab('dashboard');
+          setLockedAnalysisPrompt({
+            id: analysisRef.id,
+            isUnlocked: false
+          });
+        } else {
+          setActiveTab('dashboard');
+        }
       }, 500);
     } catch (error: any) {
       console.error("Upload failed:", error);
@@ -1617,6 +1634,7 @@ export default function App() {
                 });
                 setNotification({ messyear: 'Reward earned! +1 Chat granted.', type: 'success' });
               }
+              setIsWatchingAd(false);
               setShowLimitModal(null);
             } catch (error) {
               console.error("Failed to grant reward:", error);
@@ -1637,6 +1655,48 @@ export default function App() {
         setNotification({ messyear: 'Ad failed to load. Please try again.', type: 'error' });
       },
       onUserEarnedReward: () => { } // Handled in showAd
+    });
+  };
+
+  const handleWatchAdToUnlock = () => {
+    if (!user || !lockedAnalysisPrompt) return;
+
+    setIsWatchingAd(true);
+    rewardedAdService.loadAd('ca-app-pub-3940256099942544/5224354917', {
+      onAdLoaded: () => {
+        rewardedAdService.showAd({
+          onUserEarnedReward: async (reward) => {
+            console.log("[Reward] User earned reward, unlocking analysis:", reward);
+            try {
+              const analysisRef = doc(db, 'analyses', lockedAnalysisPrompt.id);
+              await updateDoc(analysisRef, {
+                isUnlocked: true
+              });
+              setNotification({ messyear: 'Analysis unlocked!', type: 'success' });
+              
+              // Open the analysis
+              setSelectedAnalysis({ ...lockedAnalysisPrompt, isUnlocked: true });
+              setLockedAnalysisPrompt(null);
+            } catch (error) {
+              console.error("Failed to unlock analysis:", error);
+              setNotification({ messyear: 'Failed to unlock analysis. Please try again.', type: 'error' });
+            }
+          },
+          onAdClosed: () => {
+            setIsWatchingAd(false);
+          },
+          onAdFailedToLoad: (err) => {
+            console.error("Ad failed to show:", err);
+            setIsWatchingAd(false);
+            setNotification({ messyear: 'Failed to load ad. Please try again.', type: 'error' });
+          }
+        });
+      },
+      onAdFailedToLoad: (err) => {
+        console.error("Ad failed to load:", err);
+        setIsWatchingAd(false);
+        setNotification({ messyear: 'No ads available right now. Please try again later.', type: 'error' });
+      }
     });
   };
 
@@ -1755,6 +1815,44 @@ export default function App() {
       handleFirestoreError(error, OperationType.DELETE, `challenges/${challengeId}`);
     } finally {
       setDeleteConfirmation(null);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!auth.currentUser || !user) return;
+    setIsDeletingAccount(true);
+    try {
+      const vehiclesSnapshot = await getDocs(query(collection(db, 'vehicles'), where('userId', '==', user.uid)));
+      await Promise.all(vehiclesSnapshot.docs.map(d => deleteDoc(doc(db, 'vehicles', d.id))));
+      
+      const analysesSnapshot = await getDocs(query(collection(db, 'analyses'), where('userId', '==', user.uid)));
+      await Promise.all(analysesSnapshot.docs.map(async d => {
+        const messagesSnapshot = await getDocs(collection(db, 'analyses', d.id, 'messages'));
+        await Promise.all(messagesSnapshot.docs.map(m => deleteDoc(doc(db, 'analyses', d.id, 'messages', m.id))));
+        await deleteDoc(doc(db, 'analyses', d.id));
+      }));
+      
+      const remindersSnapshot = await getDocs(query(collection(db, 'reminders'), where('userId', '==', user.uid)));
+      await Promise.all(remindersSnapshot.docs.map(d => deleteDoc(doc(db, 'reminders', d.id))));
+      
+      const challengesSnapshot = await getDocs(query(collection(db, 'challenges'), where('userId', '==', user.uid)));
+      await Promise.all(challengesSnapshot.docs.map(d => deleteDoc(doc(db, 'challenges', d.id))));
+      
+      await deleteDoc(doc(db, 'user_stats', user.uid));
+      await deleteDoc(doc(db, 'users', user.uid));
+
+      await deleteUser(auth.currentUser);
+      logout();
+    } catch (error: any) {
+      console.error("Failed to delete account:", error);
+      if (error.code === 'auth/requires-recent-login') {
+        alert("For security reasons, you must log out and log back in to verify your identity before deleting your account.");
+      } else {
+        alert("Failed to delete account. Please try again later.");
+      }
+    } finally {
+      setIsDeletingAccount(false);
+      setShowDeleteAccountConfirm(false);
     }
   };
 
@@ -2947,7 +3045,13 @@ export default function App() {
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: idx * 0.05 }}
-                          onClick={() => setSelectedAnalysis(analysis)}
+                          onClick={() => {
+                      if (analysis.isUnlocked === false) {
+                        setLockedAnalysisPrompt(analysis);
+                      } else {
+                        setSelectedAnalysis(analysis);
+                      }
+                    }}
                           className="p-4 hover:bg-slate-950 transition-colors flex items-center justify-between cursor-pointer group"
                         >
                           <div className="flex items-center gap-4">
@@ -3089,7 +3193,13 @@ export default function App() {
                           .map((analysis) => (
                             <div
                               key={analysis.id}
-                              onClick={() => setSelectedAnalysis(analysis)}
+                              onClick={() => {
+                      if (analysis.isUnlocked === false) {
+                        setLockedAnalysisPrompt(analysis);
+                      } else {
+                        setSelectedAnalysis(analysis);
+                      }
+                    }}
                               className="p-4 hover:bg-slate-950 transition-colors flex items-center justify-between cursor-pointer"
                             >
                               <div className="flex items-center gap-4">
@@ -3414,7 +3524,13 @@ export default function App() {
                 {analyses.map((analysis) => (
                   <div
                     key={analysis.id}
-                    onClick={() => setSelectedAnalysis(analysis)}
+                    onClick={() => {
+                      if (analysis.isUnlocked === false) {
+                        setLockedAnalysisPrompt(analysis);
+                      } else {
+                        setSelectedAnalysis(analysis);
+                      }
+                    }}
                     className="p-4 hover:bg-slate-950 transition-colors flex items-center justify-between cursor-pointer"
                   >
                     <div className="flex items-center gap-4">
@@ -3830,9 +3946,6 @@ export default function App() {
                             <Copy className="w-5 h-5" />
                           </button>
                         </div>
-                        <p className="text-xs text-amber-700 mt-2">
-                          {t('referral_share_desc')}<span className="font-bold">{t('referral_bonus_them')}</span>{t('referral_share_mid')}<span className="font-bold">{t('referral_bonus_you')}</span>{t('referral_share_end')}
-                        </p>
                       </div>
 
                       {!userData?.referredBy && (
@@ -3892,6 +4005,13 @@ export default function App() {
                     >
                       <LogOut className="w-5 h-5" />
                       {t('sign_out_all_devices')}
+                    </button>
+                    <button
+                      onClick={() => setShowDeleteAccountConfirm(true)}
+                      className="w-full px-6 py-4 bg-slate-900 border border-red-500/50 text-red-500 font-bold rounded-2xl hover:bg-red-950 transition-all flex items-center justify-center gap-2 mt-4"
+                    >
+                      <AlertTriangle className="w-5 h-5" />
+                      {t('delete_account')}
                     </button>
                   </section>
 
@@ -4081,6 +4201,31 @@ export default function App() {
             }}
             onShowPrivacy={() => {
               setShowLimitModal(null);
+              setShowPrivacyModal(true);
+            }}
+            t={t}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Locked Analysis Ad-Gate Prompt */}
+      <AnimatePresence>
+        {lockedAnalysisPrompt && (
+          <SubscriptionPage
+            message={`Your vehicle analysis is ready! Watch a short ad to reveal the results, or upgrade to Pro for an ad-free experience.`}
+            onUpgrade={handleUpgrade}
+            onRestore={handleRestorePurchases}
+            isSandbox={isSandbox}
+            onWatchAd={handleWatchAdToUnlock}
+            isWatchingAd={isWatchingAd}
+            type="analysis"
+            onClose={() => setLockedAnalysisPrompt(null)}
+            onShowTerms={() => {
+              setLockedAnalysisPrompt(null);
+              setShowTermsModal(true);
+            }}
+            onShowPrivacy={() => {
+              setLockedAnalysisPrompt(null);
               setShowPrivacyModal(true);
             }}
             t={t}
@@ -4522,6 +4667,49 @@ export default function App() {
                 </button>
               </div>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Delete Account Modal */}
+      <AnimatePresence>
+        {showDeleteAccountConfirm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[120] bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-slate-900 border border-red-500/30 rounded-3xl p-6 max-w-sm w-full shadow-2xl"
+            >
+              <div className="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mb-4 mx-auto">
+                <AlertTriangle className="w-6 h-6 text-red-500" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-100 text-center mb-2">{t('delete_account_confirm_title')}</h3>
+              <p className="text-slate-400 text-center mb-6">
+                {t('delete_account_confirm_desc')}
+              </p>
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={handleDeleteAccount}
+                  disabled={isDeletingAccount}
+                  className="w-full px-6 py-3 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {isDeletingAccount ? <Loader2 className="w-5 h-5 animate-spin" /> : t('delete_account')}
+                </button>
+                <button
+                  onClick={() => setShowDeleteAccountConfirm(false)}
+                  disabled={isDeletingAccount}
+                  className="w-full px-6 py-3 bg-slate-800 text-slate-300 font-bold rounded-xl hover:bg-slate-700 transition-all disabled:opacity-50"
+                >
+                  {t('cancel')}
+                </button>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
