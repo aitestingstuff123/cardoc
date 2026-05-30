@@ -469,9 +469,81 @@ import { Purchases } from '@revenuecat/purchases-capacitor';
 import { Share } from '@capacitor/share';
 import { Camera as CapCamera } from '@capacitor/camera';
 
+import { InAppReview } from '@capgo/capacitor-in-app-review';
+
+const ReviewPromptModal = ({ onClose }: { onClose: () => void }) => {
+  const [step, setStep] = useState<1 | 2>(1);
+
+  const handleYes = async () => {
+    localStorage.setItem('has_seen_review_prompt', 'true');
+    setStep(2);
+    try {
+      if (Capacitor.isNativePlatform()) {
+        await InAppReview.requestReview();
+      }
+    } catch (e) {
+      console.error("InAppReview failed", e);
+    }
+    setTimeout(() => onClose(), 2000);
+  };
+
+  const handleNo = () => {
+    localStorage.setItem('has_seen_review_prompt', 'true');
+    setStep(2);
+    setTimeout(() => onClose(), 3000);
+  };
+
+  return (
+    <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        className="bg-slate-900 rounded-3xl p-6 lg:p-8 max-w-sm w-full shadow-2xl border border-slate-800 text-center"
+      >
+        {step === 1 ? (
+          <>
+            <div className="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <CheckCircle2 className="w-8 h-8 text-emerald-400" />
+            </div>
+            <h3 className="text-xl font-black font-serif text-slate-100 mb-2">Are you finding AutoDiagnostic helpful?</h3>
+            <p className="text-sm text-slate-400 mb-8">We'd love to know how your experience is going.</p>
+            <div className="flex gap-4">
+              <button
+                onClick={handleNo}
+                className="flex-1 py-3 bg-slate-800 text-slate-300 font-bold rounded-2xl hover:bg-slate-700 transition-all text-sm"
+              >
+                Not Really
+              </button>
+              <button
+                onClick={handleYes}
+                className="flex-1 py-3 bg-emerald-500 text-white font-bold rounded-2xl hover:bg-emerald-600 transition-all shadow-[0_10px_40px_rgba(0,0,0,0.6)] shadow-emerald-500/20 text-sm"
+              >
+                Yes, I love it!
+              </button>
+            </div>
+          </>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <div className="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <MessageSquare className="w-8 h-8 text-blue-400" />
+            </div>
+            <h3 className="text-xl font-black font-serif text-slate-100 mb-2">Thank you!</h3>
+            <p className="text-sm text-slate-400">We appreciate your feedback. It helps us improve the app.</p>
+          </motion.div>
+        )}
+      </motion.div>
+    </div>
+  );
+};
+
 export default function App() {
   const { user, userData, loading, isAdmin, setUserData } = useAuth();
   const [activeTab, setActiveTab] = useState<'dashboard' | 'upload' | 'history' | 'vehicles' | 'settings' | 'reminders' | 'challenges'>('dashboard');
+  const [showReviewPrompt, setShowReviewPrompt] = useState(false);
 
   const [locale, setLocale] = useState<LocaleCode>(() => {
     return (localStorage.getItem('app_locale') as LocaleCode) || 'en';
@@ -1318,6 +1390,15 @@ export default function App() {
       setTimeout(() => {
         setIsUploading(false);
         const isPro = userData.subscriptionTier === 'pro';
+
+        // Trigger review prompt after 15 seconds if they haven't seen it
+        const hasSeenReview = localStorage.getItem('has_seen_review_prompt');
+        if (!hasSeenReview) {
+          setTimeout(() => {
+            setShowReviewPrompt(true);
+          }, 15000);
+        }
+
         if (!isPro) {
           // Send them to dashboard, but immediately prompt the locked analysis
           setActiveTab('dashboard');
@@ -4712,6 +4793,11 @@ export default function App() {
             </motion.div>
           </motion.div>
         )}
+      </AnimatePresence>
+
+      {/* Review Prompt Modal */}
+      <AnimatePresence>
+        {showReviewPrompt && <ReviewPromptModal onClose={() => setShowReviewPrompt(false)} />}
       </AnimatePresence>
     </div>
   );

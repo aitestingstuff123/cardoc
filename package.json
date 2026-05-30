@@ -24,6 +24,7 @@
     "@capacitor/filesystem": "^8.1.2",
     "@capacitor/share": "^8.0.1",
     "@capacitor/splash-screen": "^8.0.1",
+    "@capgo/capacitor-in-app-review": "^8.1.5",
     "@fontsource-variable/geist": "^5.2.8",
     "@google/genai": "^1.29.0",
     "@ionic/pwa-elements": "^3.4.0",
