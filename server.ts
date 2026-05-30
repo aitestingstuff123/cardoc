@@ -450,11 +450,11 @@ async function startServer() {
         ];
 
         if (isHeavyUser) {
-          // Aggressive downsampling: 480p, 10 FPS
-          ffmpegOptions.push("-vf scale='min(640,iw)':-2,fps=10");
+          // Heavy Users: 480p, 10 FPS
+          ffmpegOptions.push("-vf scale='min(854,iw)':-2,fps=10");
         } else {
-          // Standard: 480p, 15 FPS
-          ffmpegOptions.push("-vf scale='min(854,iw)':-2,fps=15");
+          // Standard: 720p, 15 FPS
+          ffmpegOptions.push("-vf scale='min(1280,iw)':-2,fps=15");
         }
 
         await new Promise((resolve, reject) => {
